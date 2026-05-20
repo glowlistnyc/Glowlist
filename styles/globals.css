@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
+:root {
+  --navy:     #1a2035;
+  --navy-l:   #222b45;
+  --beige:    #d4c4a8;
+  --beige-s:  #c4a882;
+  --beige-d:  #a08a68;
+  --beige-f:  rgba(212,196,168,.07);
+  --beige-f2: rgba(212,196,168,.13);
+  --border:   rgba(212,196,168,.17);
+  --border-s: rgba(212,196,168,.30);
+  --serif:    'Cormorant Garamond', serif;
+  --sans:     'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--beige);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: .5;
+}
+
+* { position: relative; z-index: 1; }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 300;
+  letter-spacing: .02em;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; display: block; }
+
+/* ── Utilities ── */
+.divider { width: 100%; height: .5px; background: var(--border); }
+
+.btn {
+  display: inline-block;
+  padding: .72rem 1.9rem;
+  font-family: var(--sans);
+  font-size: .76rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all .25s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--beige);
+  color: var(--navy);
+  border: 1px solid var(--beige);
+}
+.btn-primary:hover { background: transparent; color: var(--beige); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--beige);
+  border: .5px solid var(--border-s);
+}
+.btn-ghost:hover { background: var(--beige-f2); border-color: var(--beige); }
+
+.sec-label {
+  font-size: .68rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  margin-bottom: .9rem;
+  display: block;
+}
+
+.sec-title {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  color: var(--beige);
+  line-height: 1.12;
+  margin-bottom: 1.4rem;
+}
+
+.tag {
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  border: .5px solid var(--border);
+  padding: .22rem .6rem;
+  display: inline-block;
+}
+
+/* ── Fade in ── */
+.fi {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.fi.vis { opacity: 1; transform: translateY(0); }

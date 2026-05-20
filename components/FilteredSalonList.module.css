@@ -1,0 +1,104 @@
+.panel {
+  background: var(--navy-l);
+  border: .5px solid var(--border);
+  padding: 1.8rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.rowLabel {
+  font-size: .65rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  margin-bottom: .7rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.rowLabel::after { content: ''; flex: 1; height: .5px; background: var(--border); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: 1.4rem;
+}
+
+.chip {
+  font-size: .67rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  border: .5px solid var(--border);
+  background: none;
+  padding: .28rem .75rem;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: var(--sans);
+  white-space: nowrap;
+}
+.chip:hover { color: var(--beige); border-color: var(--beige-s); background: var(--beige-f); }
+.chip.active { color: var(--navy); background: var(--beige-s); border-color: var(--beige-s); }
+
+.subChips { margin-top: -.6rem; }
+.sub { font-size: .63rem; padding: .22rem .6rem; }
+
+.summary {
+  display: flex;
+  align-items: center;
+  margin-top: .4rem;
+  font-size: .72rem;
+  color: var(--beige-d);
+  letter-spacing: .04em;
+}
+.summary strong { color: var(--beige-s); }
+
+.reset {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-family: var(--sans);
+  margin-left: .8rem;
+  transition: color .2s;
+}
+.reset:hover { color: var(--beige); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  background: var(--border);
+}
+
+.empty {
+  grid-column: 1 / -1;
+  padding: 3rem;
+  text-align: center;
+  color: var(--beige-d);
+  font-size: .85rem;
+  letter-spacing: .1em;
+}
+
+.resetInline {
+  background: none;
+  border: none;
+  color: var(--beige-s);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: inherit;
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+  .panel { padding: 1.2rem; }
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+}
