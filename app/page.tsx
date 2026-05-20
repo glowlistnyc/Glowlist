@@ -102,8 +102,8 @@ export default async function HomePage() {
           <Link href="/service/korean-lash-lift" className={styles.exploreCard}>
             <div className={styles.exploreImg}>
               <Image
-                src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&q=80&auto=format&fit=crop&crop=top"
-                alt="Korean lash lift NYC"
+                src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=900&q=80&auto=format&fit=crop&crop=top"
+                alt="Asian woman eyelash lift NYC"
                 fill
                 style={{ objectFit: 'cover', filter: 'brightness(.78) contrast(1.05) saturate(.8)' }}
               />
@@ -182,11 +182,11 @@ export default async function HomePage() {
       )}
 
       {/* ── BLOG ── */}
-      {posts.length > 0 && (
-        <>
-          <section className={styles.section}>
-            <span className="sec-label">From the Blog</span>
-            <h2 className="sec-title">Guides & recommendations</h2>
+      <section className={styles.section}>
+        <span className="sec-label">From the Blog</span>
+        <h2 className="sec-title">Guides & recommendations</h2>
+        {posts.length > 0 ? (
+          <>
             <div className={styles.blogGrid}>
               {posts.map((post) => (
                 <Link key={post.sys.id} href={`/blog/${post.fields.slug}`} className={styles.blogCard}>
@@ -202,10 +202,18 @@ export default async function HomePage() {
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
               <Link href="/blog" className="btn btn-ghost">All posts →</Link>
             </div>
-          </section>
-          <div className="divider" />
-        </>
-      )}
+          </>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '3rem 0' }}>
+            <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', marginBottom: '1.5rem', fontWeight: 300 }}>
+              Beauty guides and recommendations coming soon.
+            </p>
+            <Link href="/blog" className="btn btn-ghost">Visit Blog →</Link>
+          </div>
+        )}
+      </section>
+
+      <div className="divider" />
 
       {/* ── COMMUNITY ── */}
       <section className={styles.section} id="community">
