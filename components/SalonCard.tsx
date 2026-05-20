@@ -10,7 +10,7 @@ export default function SalonCard({ salon }: Props) {
   const { name, slug, category, area, tags, instagramHandle, bookingUrl, priceRange, language, verified } = salon.fields;
 
   return (
-    <Link href={`/salon/${slug}`} className={styles.card}>
+    <article className={styles.card}>
       <p className={styles.name}>
         {name}
         {verified && <span className={styles.badge}>Verified</span>}
@@ -30,7 +30,6 @@ export default function SalonCard({ salon }: Props) {
           href={`https://www.instagram.com/${instagramHandle}/`}
           target="_blank"
           rel="noopener"
-          onClick={(e) => e.stopPropagation()}
           className={styles.link}
         >
           Instagram ↗
@@ -39,13 +38,14 @@ export default function SalonCard({ salon }: Props) {
           href={bookingUrl}
           target="_blank"
           rel="noopener"
-          onClick={(e) => e.stopPropagation()}
           className={styles.link}
         >
           Book ↗
         </a>
       </div>
-      <p className={styles.hint}>Tap for details →</p>
-    </Link>
+      <Link href={`/salon/${slug}`} className={styles.hint}>
+        Tap for details →
+      </Link>
+    </article>
   );
 }
