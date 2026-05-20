@@ -36,6 +36,8 @@ export interface SalonFields {
   tags: string[];                  // ["Japanese gel", "Kokoist", "HEMA-free"]
   instagramHandle: string;         // mellowbarnyc (@ なし)
   bookingUrl: string;
+  websiteUrl?: string;             // 公式HP URL
+  address?: string;                // 住所 (e.g. "120 Sullivan St, New York, NY 10012")
   priceRange: string;              // "From $70" など
   language?: string;               // "Japanese-speaking" など
   priceDetails: PriceCategory[];   // 料金表 (JSONフィールド)
