@@ -3,13 +3,13 @@
 :root {
   --navy:     #1a2035;
   --navy-l:   #222b45;
-  --beige:    #d4c4a8;
-  --beige-s:  #c4a882;
-  --beige-d:  #a08a68;
-  --beige-f:  rgba(212,196,168,.07);
-  --beige-f2: rgba(212,196,168,.13);
-  --border:   rgba(212,196,168,.17);
-  --border-s: rgba(212,196,168,.30);
+  --beige:    #e0d4bc;
+  --beige-s:  #cdb899;
+  --beige-d:  #b09a7a;
+  --beige-f:  rgba(224,212,188,.07);
+  --beige-f2: rgba(224,212,188,.13);
+  --border:   rgba(224,212,188,.18);
+  --border-s: rgba(224,212,188,.32);
   --serif:    'Cormorant Garamond', serif;
   --sans:     'DM Sans', sans-serif;
 }

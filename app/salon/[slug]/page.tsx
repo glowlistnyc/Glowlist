@@ -5,6 +5,9 @@ import { notFound } from 'next/navigation';
 import { getAllSalons, getSalonBySlug } from '@/lib/contentful';
 import styles from './page.module.css';
 
+export const revalidate = 60;
+
+
 interface Props { params: { slug: string } }
 
 export async function generateStaticParams() {

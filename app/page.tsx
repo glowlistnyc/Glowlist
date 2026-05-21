@@ -6,6 +6,9 @@ import SalonCard from '@/components/SalonCard';
 import FilteredSalonList from '@/components/FilteredSalonList';
 import styles from './page.module.css';
 
+export const revalidate = 60;
+
+
 export const metadata: Metadata = {
   title: 'Glowlist NYC — Curated Asian-inspired Beauty Guide for New York',
   description:
@@ -102,8 +105,8 @@ export default async function HomePage() {
           <Link href="/service/korean-lash-lift" className={styles.exploreCard}>
             <div className={styles.exploreImg}>
               <Image
-                src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=900&q=80&auto=format&fit=crop&crop=top"
-                alt="Asian woman eyelash lift NYC"
+                src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=900&q=80&auto=format&fit=crop&crop=top"
+                alt="Asian woman eyelash close-up NYC"
                 fill
                 style={{ objectFit: 'cover', filter: 'brightness(.78) contrast(1.05) saturate(.8)' }}
               />
