@@ -15,7 +15,12 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   background: var(--navy);
@@ -24,6 +29,21 @@ body {
   font-weight: 300;
   line-height: 1.7;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* iOS Safari forces system font on form controls — reset explicitly */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
 }
 
 body::before {

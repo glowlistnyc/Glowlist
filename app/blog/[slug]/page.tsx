@@ -3,10 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/contentful';
+import { getAllBlogPosts, getBlogPostBySlug, getAllSalons } from '@/lib/contentful';
 import SalonCard from '@/components/SalonCard';
-import { getAllSalons } from '@/lib/contentful';
 import styles from './page.module.css';
+
+export const revalidate = 60;
+
 
 interface Props { params: { slug: string } }
 

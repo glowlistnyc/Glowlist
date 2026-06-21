@@ -4,6 +4,9 @@ import { getAllAreas, getAreaBySlug, getSalonsByArea } from '@/lib/contentful';
 import SalonCard from '@/components/SalonCard';
 import styles from './page.module.css';
 
+export const revalidate = 60;
+
+
 interface Props { params: { slug: string } }
 
 export async function generateStaticParams() {

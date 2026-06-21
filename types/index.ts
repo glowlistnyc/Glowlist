@@ -45,6 +45,7 @@ export interface SalonFields {
   notes?: string;
   heroImage?: ContentfulImage;
   photos?: ContentfulImage[];      // サロン公式写真
+  relatedSalons?: Salon[];         // 他店舗・同チェーン店
   seoTitle?: string;
   seoDescription?: string;
   featured: boolean;               // Community Picksに表示

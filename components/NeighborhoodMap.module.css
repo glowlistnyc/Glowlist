@@ -1,0 +1,138 @@
+.wrap {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 2.5rem;
+}
+
+.mapBox {
+  background: var(--navy-l);
+  border: .5px solid var(--border);
+  padding: 1.5rem;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.borough {
+  fill: var(--beige-f);
+  stroke: var(--border-s);
+  stroke-width: 1;
+  transition: fill .3s;
+}
+
+.boroughLabel {
+  font-family: var(--sans);
+  font-size: 9px;
+  letter-spacing: .15em;
+  fill: var(--beige-d);
+  opacity: .6;
+}
+
+.boroughLabelSmall {
+  font-family: var(--sans);
+  font-size: 7px;
+  letter-spacing: .12em;
+  fill: var(--beige-d);
+  opacity: .55;
+}
+
+.dotGroup { cursor: pointer; }
+
+.dot {
+  fill: var(--beige-s);
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  transition: fill .2s, r .2s;
+}
+.dotHover { fill: var(--beige); }
+
+.dotPulse {
+  fill: none;
+  stroke: var(--beige-s);
+  stroke-width: 1;
+  opacity: .35;
+  animation: pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%   { r: 6;  opacity: .4; }
+  100% { r: 18; opacity: 0; }
+}
+
+.tooltipBg {
+  fill: var(--navy);
+  stroke: var(--border-s);
+  stroke-width: .5;
+}
+.tooltipText {
+  font-family: var(--sans);
+  font-size: 9px;
+  letter-spacing: .04em;
+  fill: var(--beige);
+}
+
+/* ── Legend ── */
+.legend {}
+
+.legendTitle {
+  font-size: .68rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  margin-bottom: 1rem;
+  padding-bottom: .8rem;
+  border-bottom: .5px solid var(--border);
+}
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .65rem 0;
+  border-bottom: .5px solid var(--beige-f2);
+  text-decoration: none;
+  transition: padding-left .18s;
+}
+.legendItem:hover { padding-left: .4rem; }
+.legendItem:last-child { border-bottom: none; }
+
+.legendDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--beige-s);
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  font-size: .82rem;
+  color: var(--beige-s);
+  flex: 1;
+  transition: color .15s;
+}
+.legendItem:hover .legendLabel { color: var(--beige); }
+
+.legendCount {
+  font-family: var(--serif);
+  font-size: .85rem;
+  color: var(--beige-d);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: 1fr; gap: 1.8rem; }
+}
+@media (max-width: 480px) {
+  .mapBox { padding: 1rem; }
+}

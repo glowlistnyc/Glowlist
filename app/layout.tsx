@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -6,6 +6,14 @@ import '@/styles/globals.css';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://glowlistnyc.com';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#1a2035',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

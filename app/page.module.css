@@ -80,6 +80,7 @@
   cursor: pointer;
   transition: background .3s;
   overflow: hidden;
+  text-decoration: none;
 }
 .exploreCard:hover { background: var(--navy-l); }
 
@@ -89,6 +90,13 @@
   position: relative;
   overflow: hidden;
   margin-bottom: .4rem;
+}
+
+.exploreImgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(26,32,53,.5) 100%);
+  z-index: 1;
 }
 
 .ecNum {

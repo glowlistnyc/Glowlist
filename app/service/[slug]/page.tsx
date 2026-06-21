@@ -5,6 +5,9 @@ import { getAllServices, getServiceBySlug, getSalonsByService } from '@/lib/cont
 import SalonCard from '@/components/SalonCard';
 import Link from 'next/link';
 
+export const revalidate = 60;
+
+
 interface Props { params: { slug: string } }
 
 export async function generateStaticParams() {

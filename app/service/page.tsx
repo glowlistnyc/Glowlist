@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllServices } from '@/lib/contentful';
 
+export const revalidate = 60;
+
+
 export const metadata: Metadata = {
   title: 'Beauty Services in NYC — Glowlist',
   description: 'Browse Japanese gel nails, Korean lash lifts, brow lamination and more Asian-inspired beauty services in New York City.',

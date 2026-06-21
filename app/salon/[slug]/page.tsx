@@ -7,7 +7,6 @@ import styles from './page.module.css';
 
 export const revalidate = 60;
 
-
 interface Props { params: { slug: string } }
 
 export async function generateStaticParams() {
@@ -32,204 +31,87 @@ export default async function SalonPage({ params }: Props) {
     name, area, areaSlug, category, tags,
     instagramHandle, bookingUrl, websiteUrl, address,
     priceRange, language, verified, notes,
-    priceDetails, heroImage, photos,
+    priceDetails, photos, relatedSalons,
   } = salon.fields;
 
   const igUrl = `https://www.instagram.com/${instagramHandle}/`;
-
-  // Google Maps embed URL (addressがある場合)
   const mapQuery = address
     ? encodeURIComponent(address)
     : encodeURIComponent(`${name} ${area} New York`);
-  const mapEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=${mapQuery}`;
-  const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
     name,
     description: `${name} — ${category} salon in ${area}, NYC`,
-    address: { '@type': 'PostalAddress', streetAddress: address ?? '', addressLocality: 'New York', addressRegion: 'NY', addressCountry: 'US' },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: address ?? '',
+      addressLocality: 'New York',
+      addressRegion: 'NY',
+      addressCountry: 'US',
+    },
     url: websiteUrl ?? bookingUrl,
     sameAs: [igUrl],
     priceRange: priceRange ?? undefined,
-    ...(heroImage ? { image: `https:${heroImage.fields.file.url}` } : {}),
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
-      {/* ── HERO ── */}
-      <section className={styles.hero}>
-        {heroImage && (
-          <div className={styles.heroImg}>
-            <Image
-              src={`https:${heroImage.fields.file.url}`}
-              alt={`${name} — ${category} salon in ${area} NYC`}
-              fill
-              style={{ objectFit: 'cover', filter: 'brightness(.75) contrast(1.05)' }}
-              priority
-            />
-          </div>
-        )}
-        <div className={styles.heroCopy}>
+      {/* ── HEADER ── */}
+      <section className={styles.header}>
+        <div className={styles.headerInner}>
           <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-            <Link href="/">Home</Link> / <Link href="/#spots">Spots</Link> / <span>{name}</span>
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/#spots">Spots</Link>
+            <span>/</span>
+            <span>{name}</span>
           </nav>
-          <h1 className={styles.h1}>
-            {name}
-            {verified && <span className={styles.badge}>Verified</span>}
-          </h1>
-          <p className={styles.meta}>
-            <Link href={`/area/${areaSlug}`}>{area}</Link>
-            {' · '}{category.charAt(0).toUpperCase() + category.slice(1)}
-            {language && ` · ${language}`}
-            {priceRange && ` · ${priceRange}`}
-          </p>
-          <div className={styles.tags}>
-            {tags.map((t) => <span key={t} className="tag">{t}</span>)}
-          </div>
-          {/* ── CTAボタン：全て同じサイズ ── */}
-          <div className={styles.ctaRow}>
-            <a href={bookingUrl} target="_blank" rel="noopener" className={styles.ctaBtn}>
-              Book Now →
-            </a>
-            <a href={igUrl} target="_blank" rel="noopener" className={`${styles.ctaBtn} ${styles.ctaBtnGhost}`}>
-              Instagram ↗
-            </a>
-            {websiteUrl && (
-              <a href={websiteUrl} target="_blank" rel="noopener" className={`${styles.ctaBtn} ${styles.ctaBtnGhost}`}>
-                Website ↗
+
+          <div className={styles.titleRow}>
+            <div>
+              <h1 className={styles.h1}>
+                {name}
+                {verified && <span className={styles.badge}>Verified</span>}
+              </h1>
+              <p className={styles.meta}>
+                <Link href={`/area/${areaSlug}`} className={styles.metaLink}>{area}</Link>
+                {' · '}{cap(category)}
+                {language && ` · ${language}`}
+                {priceRange && <span className={styles.priceTag}>{priceRange}</span>}
+              </p>
+              <div className={styles.tags}>
+                {tags.map((t) => <span key={t} className="tag">{t}</span>)}
+              </div>
+            </div>
+
+            {/* CTA buttons — 全て同じサイズ */}
+            <div className={styles.ctaGroup}>
+              <a href={bookingUrl} target="_blank" rel="noopener" className={styles.ctaPrimary}>
+                Book Now →
               </a>
-            )}
+              <a href={igUrl} target="_blank" rel="noopener" className={styles.ctaGhost}>
+                Instagram ↗
+              </a>
+              {websiteUrl && (
+                <a href={websiteUrl} target="_blank" rel="noopener" className={styles.ctaGhost}>
+                  Website ↗
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       <div className="divider" />
 
+      {/* ── BODY ── */}
       <div className={styles.body}>
-
-        {/* ── BASIC INFORMATION ── */}
-        <section className={styles.infoSection}>
-          <h2 className={styles.sectionTitle}>Basic Information</h2>
-          <div className={styles.infoGrid}>
-            <div className={styles.infoLeft}>
-              <table className={styles.infoTable}>
-                <tbody>
-                  <tr>
-                    <td className={styles.infoLabel}>Category</td>
-                    <td className={styles.infoValue}>{category.charAt(0).toUpperCase() + category.slice(1)}</td>
-                  </tr>
-                  <tr>
-                    <td className={styles.infoLabel}>Area</td>
-                    <td className={styles.infoValue}>{area}</td>
-                  </tr>
-                  {address && (
-                    <tr>
-                      <td className={styles.infoLabel}>Address</td>
-                      <td className={styles.infoValue}>
-                        <a href={mapSearchUrl} target="_blank" rel="noopener" className={styles.mapLink}>
-                          {address} ↗
-                        </a>
-                      </td>
-                    </tr>
-                  )}
-                  {language && (
-                    <tr>
-                      <td className={styles.infoLabel}>Language</td>
-                      <td className={styles.infoValue}>{language}</td>
-                    </tr>
-                  )}
-                  {priceRange && (
-                    <tr>
-                      <td className={styles.infoLabel}>Price Range</td>
-                      <td className={styles.infoValue}>{priceRange}</td>
-                    </tr>
-                  )}
-                  {websiteUrl && (
-                    <tr>
-                      <td className={styles.infoLabel}>Website</td>
-                      <td className={styles.infoValue}>
-                        <a href={websiteUrl} target="_blank" rel="noopener" className={styles.mapLink}>
-                          {websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗
-                        </a>
-                      </td>
-                    </tr>
-                  )}
-                  <tr>
-                    <td className={styles.infoLabel}>Instagram</td>
-                    <td className={styles.infoValue}>
-                      <a href={igUrl} target="_blank" rel="noopener" className={styles.mapLink}>
-                        @{instagramHandle} ↗
-                      </a>
-                    </td>
-                  </tr>
-                  {notes && (
-                    <tr>
-                      <td className={styles.infoLabel}>Notes</td>
-                      <td className={styles.infoValue}>{notes}</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-              {tags.length > 0 && (
-                <div className={styles.infoTags}>
-                  {tags.map((t) => <span key={t} className="tag">{t}</span>)}
-                </div>
-              )}
-            </div>
-
-            {/* Google Map */}
-            <div className={styles.infoRight}>
-              <div className={styles.mapWrap}>
-                <iframe
-                  title={`${name} on Google Maps`}
-                  src={mapEmbedUrl}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
-              <a href={mapSearchUrl} target="_blank" rel="noopener" className={styles.mapLinkBtn}>
-                Open in Google Maps ↗
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <div className="divider" style={{ marginBottom: '3rem' }} />
-
-        {/* ── PRICES ── */}
-        <section className={styles.priceSection}>
-          <h2 className={styles.sectionTitle}>Prices</h2>
-          {priceDetails && priceDetails.length > 0 ? (
-            priceDetails.map((cat) => (
-              <div key={cat.category} className={styles.priceCat}>
-                <p className={styles.priceCatTitle}>{cat.category}</p>
-                {cat.items.map((item) => (
-                  <div key={item.service} className={styles.priceRow}>
-                    <span>{item.service}</span>
-                    <span className={styles.priceAmt}>{item.price}</span>
-                  </div>
-                ))}
-              </div>
-            ))
-          ) : (
-            <p className={styles.noPrice}>
-              Pricing not listed.{' '}
-              <a href={websiteUrl ?? bookingUrl} target="_blank" rel="noopener">Check their site</a> for current prices.
-            </p>
-          )}
-          {notes && <p className={styles.notes}>{notes}</p>}
-          <p className={styles.priceDisclaimer}>
-            Prices sourced from public menus and may not reflect current rates. Confirm directly before booking.
-          </p>
-        </section>
 
         {/* ── PHOTOS ── */}
         {photos && photos.length > 0 && (
@@ -240,18 +122,185 @@ export default async function SalonPage({ params }: Props) {
                 <div key={i} className={styles.photoWrap}>
                   <Image
                     src={`https:${photo.fields.file.url}`}
-                    alt={photo.fields.description ?? `${name} photo ${i + 1}`}
+                    alt={photo.fields.description ?? `${name} — photo ${i + 1}`}
                     fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
+              ))}
+            </div>
+            {/* 
+              ── PHOTO UPLOAD GUIDE (Contentful) ──
+              サロン写真を追加するには：
+              1. contentful.com にログイン
+              2. Content → 該当サロンのエントリを開く
+              3. "Photos" フィールドに画像をアップロード
+              4. Publish → 60秒後に自動反映
+
+              ユーザー投稿写真を表示するには：
+              1. Google Formsでユーザーから写真を収集
+              2. 収集した写真を確認・許可取得後にContentfulのPhotosフィールドに追加
+              3. Publish → 自動反映
+            */}
+          </section>
+        )}
+
+        {photos && photos.length === 0 && (
+          <section className={styles.photoSection}>
+            <h2 className={styles.sectionTitle}>Photos</h2>
+            <div className={styles.noPhotos}>
+              <p>Photos coming soon.</p>
+              <a
+                href="https://forms.gle/DLBDikk6Do6LHSxu6"
+                target="_blank"
+                rel="noopener"
+                className={styles.photoSubmitLink}
+              >
+                Submit a photo via Glowlist Photo Drop ✨
+              </a>
+            </div>
+          </section>
+        )}
+
+        {/* ── BASIC INFO ── */}
+        <section className={styles.infoSection}>
+          <h2 className={styles.sectionTitle}>Basic Information</h2>
+          <table className={styles.infoTable}>
+            <tbody>
+              <tr>
+                <td className={styles.infoLabel}>Category</td>
+                <td className={styles.infoVal}>{cap(category)}</td>
+              </tr>
+              <tr>
+                <td className={styles.infoLabel}>Area</td>
+                <td className={styles.infoVal}>{area}</td>
+              </tr>
+              {address && (
+                <tr>
+                  <td className={styles.infoLabel}>Address</td>
+                  <td className={styles.infoVal}>
+                    <a href={mapUrl} target="_blank" rel="noopener" className={styles.infoLink}>
+                      {address} ↗
+                    </a>
+                  </td>
+                </tr>
+              )}
+              {language && (
+                <tr>
+                  <td className={styles.infoLabel}>Language</td>
+                  <td className={styles.infoVal}>{language}</td>
+                </tr>
+              )}
+              {priceRange && (
+                <tr>
+                  <td className={styles.infoLabel}>Price</td>
+                  <td className={styles.infoVal}>{priceRange}</td>
+                </tr>
+              )}
+              {websiteUrl && (
+                <tr>
+                  <td className={styles.infoLabel}>Website</td>
+                  <td className={styles.infoVal}>
+                    <a href={websiteUrl} target="_blank" rel="noopener" className={styles.infoLink}>
+                      {websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗
+                    </a>
+                  </td>
+                </tr>
+              )}
+              <tr>
+                <td className={styles.infoLabel}>Instagram</td>
+                <td className={styles.infoVal}>
+                  <a href={igUrl} target="_blank" rel="noopener" className={styles.infoLink}>
+                    @{instagramHandle} ↗
+                  </a>
+                </td>
+              </tr>
+              {notes && (
+                <tr>
+                  <td className={styles.infoLabel}>Notes</td>
+                  <td className={styles.infoVal}>{notes}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          <div className={styles.tagRow}>
+            {tags.map((t) => <span key={t} className="tag">{t}</span>)}
+          </div>
+          {address && (
+            <a href={mapUrl} target="_blank" rel="noopener" className={styles.mapLink}>
+              Open in Google Maps ↗
+            </a>
+          )}
+        </section>
+
+        {/* ── PRICES ── */}
+        <section className={styles.priceSection}>
+          <h2 className={styles.sectionTitle}>Prices</h2>
+          {priceDetails && priceDetails.length > 0 ? (
+            priceDetails.map((cat) => (
+              <div key={cat.category} className={styles.priceCat}>
+                <p className={styles.priceCatTitle}>{cat.category}</p>
+                {cat.items.map((item) => (
+                  <div key={item.service} className={styles.priceRow}>
+                    <span className={styles.priceSvc}>{item.service}</span>
+                    <span className={styles.priceAmt}>{item.price}</span>
+                  </div>
+                ))}
+              </div>
+            ))
+          ) : (
+            <p className={styles.noPrice}>
+              Pricing not listed.{' '}
+              <a href={websiteUrl ?? bookingUrl} target="_blank" rel="noopener">
+                Check their site
+              </a>{' '}
+              for current prices.
+            </p>
+          )}
+          {notes && <p className={styles.notes}>{notes}</p>}
+          <p className={styles.disclaimer}>
+            Prices sourced from public menus and may not reflect current rates. Confirm directly before booking.
+          </p>
+          <a href={bookingUrl} target="_blank" rel="noopener" className={styles.bookBtn}>
+            Book at {name} →
+          </a>
+        </section>
+
+        {/* ── OTHER LOCATIONS ── */}
+        {relatedSalons && relatedSalons.length > 0 && (
+          <section className={styles.relatedSection}>
+            <h2 className={styles.sectionTitle}>Other locations</h2>
+            <div className={styles.relatedGrid}>
+              {relatedSalons.map((related) => (
+                <Link
+                  key={related.sys.id}
+                  href={`/salon/${related.fields.slug}`}
+                  className={styles.relatedCard}
+                >
+                  <div className={styles.relatedCardInner}>
+                    <p className={styles.relatedName}>{related.fields.name}</p>
+                    <p className={styles.relatedMeta}>
+                      {related.fields.area}
+                      {related.fields.address && (
+                        <span className={styles.relatedAddress}>
+                          {related.fields.address}
+                        </span>
+                      )}
+                    </p>
+                    {related.fields.priceRange && (
+                      <p className={styles.relatedPrice}>{related.fields.priceRange}</p>
+                    )}
+                  </div>
+                  <span className={styles.relatedArrow}>→</span>
+                </Link>
               ))}
             </div>
           </section>
         )}
 
         {/* ── BACK ── */}
-        <div style={{ marginTop: '3rem' }}>
+        <div className={styles.backLink}>
           <Link href="/#spots" className="btn btn-ghost">← Back to all spots</Link>
         </div>
       </div>

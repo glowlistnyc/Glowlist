@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAllSalons, getAllAreas, getAllServices, getRecentBlogPosts } from '@/lib/contentful';
-import SalonCard from '@/components/SalonCard';
+import { getAllSalons, getAllAreas, getRecentBlogPosts } from '@/lib/contentful';
 import FilteredSalonList from '@/components/FilteredSalonList';
+import NeighborhoodMap from '@/components/NeighborhoodMap';
 import styles from './page.module.css';
 
 export const revalidate = 60;
-
 
 export const metadata: Metadata = {
   title: 'Glowlist NYC — Curated Asian-inspired Beauty Guide for New York',
@@ -20,7 +19,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Schema.org for the homepage
 function HomeSchema() {
   const schema = {
     '@context': 'https://schema.org',
@@ -28,29 +26,16 @@ function HomeSchema() {
     name: 'Glowlist NYC',
     url: 'https://glowlistnyc.com',
     description: 'Curated guide to Asian-inspired nails, lashes, and beauty spots in New York.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://glowlistnyc.com/?q={search_term_string}',
-      'query-input': 'required name=search_term_string',
-    },
   };
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
 export default async function HomePage() {
-  const [salons, areas, services, posts] = await Promise.all([
+  const [salons, areas, posts] = await Promise.all([
     getAllSalons(),
     getAllAreas(),
-    getAllServices(),
     getRecentBlogPosts(3),
   ]);
-
-  const featuredSalons = salons.filter((s) => s.fields.featured);
 
   return (
     <>
@@ -58,42 +43,50 @@ export default async function HomePage() {
 
       {/* ── HERO ── */}
       <section className={styles.hero}>
-        <p className={styles.eyebrow}>Asian-inspired Beauty · New York</p>
+        <p className={styles.eyebrow}>
+          <span />Asian-inspired Beauty · New York<span />
+        </p>
         <h1 className={styles.h1}>
-          Find beauty<br />you can <em>trust</em>
+          A little treat<br />for <em>yourself.</em>
         </h1>
         <p className={styles.city}>New York City</p>
         <p className={styles.desc}>
-          A curated guide to Asian-inspired nails, lashes, and beauty spots in New York.
-          Find places by style, vibe, language, and area — not just star ratings.
+          Because you deserve to feel taken care of.<br />
+          Find Asian-inspired nails, lashes, and beauty in NYC —<br />
+          curated by style, quality, and real community recommendations.
         </p>
         <div className={styles.ctaRow}>
-          <Link href="#spots" className="btn btn-primary">Explore Spots</Link>
+          <Link href="#spots" className="btn btn-primary">Find Your Spot</Link>
           <a href="https://forms.gle/DLBDikk6Do6LHSxu6" target="_blank" rel="noopener" className="btn btn-ghost">
-            Submit a Photo
+            Share a Photo
           </a>
         </div>
       </section>
 
       <div className="divider" />
 
-      {/* ── EXPLORE CATEGORIES ── */}
+      {/* ── EXPLORE ── */}
       <section className={styles.section} id="explore">
-        <span className="sec-label">Discover</span>
-        <h2 className="sec-title">Curated by category</h2>
+        <span className="sec-label">Start Here</span>
+        <h2 className="sec-title">What are you looking for?</h2>
         <div className={styles.exploreGrid}>
+
+          {/* Nails */}
           <Link href="/service/japanese-gel-nails" className={styles.exploreCard}>
             <div className={styles.exploreImg}>
               <Image
                 src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900&q=80&auto=format&fit=crop"
                 alt="Japanese gel nails NYC"
                 fill
-                style={{ objectFit: 'cover', filter: 'brightness(.78) contrast(1.05) saturate(.8)' }}
+                style={{ objectFit: 'cover', filter: 'brightness(.75) contrast(1.08) saturate(.85)' }}
               />
+              <div className={styles.exploreImgOverlay} />
             </div>
             <span className={styles.ecNum}>01</span>
             <h2 className={styles.ecTitle}>Japanese<br /><em>Gel Nails</em></h2>
-            <p className={styles.ecDesc}>Japanese-style gel, minimal designs, and technicians trained in Japanese technique.</p>
+            <p className={styles.ecDesc}>
+              Soft, minimal, and designed to last. Japanese gel technique prioritises nail health — the kind of manicure that still looks perfect two weeks later.
+            </p>
             <div className={styles.ecTags}>
               <span className="tag">Japanese gel</span>
               <span className="tag">Kokoist</span>
@@ -102,18 +95,22 @@ export default async function HomePage() {
             <span className={styles.ecArrow}>→</span>
           </Link>
 
+          {/* Lashes */}
           <Link href="/service/korean-lash-lift" className={styles.exploreCard}>
             <div className={styles.exploreImg}>
               <Image
-                src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=900&q=80&auto=format&fit=crop&crop=top"
+                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=900&q=80&auto=format&fit=crop&crop=top"
                 alt="Asian woman eyelash close-up NYC"
                 fill
-                style={{ objectFit: 'cover', filter: 'brightness(.78) contrast(1.05) saturate(.8)' }}
+                style={{ objectFit: 'cover', filter: 'brightness(.75) contrast(1.08) saturate(.85)' }}
               />
+              <div className={styles.exploreImgOverlay} />
             </div>
             <span className={styles.ecNum}>02</span>
-            <h2 className={styles.ecTitle}>Lashes &<br /><em>Lash Lifts</em></h2>
-            <p className={styles.ecDesc}>Korean lash lifts, natural extensions, and soft curls for the understated look.</p>
+            <h2 className={styles.ecTitle}>Lashes &amp;<br /><em>Lash Lifts</em></h2>
+            <p className={styles.ecDesc}>
+              Wake up with naturally lifted lashes. Korean lash lift technique gives you a clean, open-eyed look that lasts 6–8 weeks — no extensions needed.
+            </p>
             <div className={styles.ecTags}>
               <span className="tag">Lash lift</span>
               <span className="tag">Korean-style</span>
@@ -126,20 +123,30 @@ export default async function HomePage() {
 
       <div className="divider" />
 
-      {/* ── WHY GLOWLIST ── */}
+      {/* ── WHY ── */}
       <section className={styles.section}>
         <span className="sec-label">Why Glowlist</span>
-        <h2 className="sec-title" style={{ maxWidth: 480 }}>
-          Finding good Asian-inspired beauty in NYC
-          <em style={{ fontStyle: 'italic', color: 'var(--beige-s)', display: 'block' }}>
-            should not be this hard.
-          </em>
+        <h2 className="sec-title" style={{ maxWidth: 520 }}>
+          Finding the right place should feel<br />
+          <em style={{ fontStyle: 'italic', color: 'var(--beige-s)' }}>as good as the service itself.</em>
         </h2>
         <div className={styles.whyGrid}>
           {[
-            { n: '01', title: 'Style over stars', body: 'Filter by Japanese gel, Korean lash, natural aesthetic, quiet vibe — the things that actually matter, not just average ratings.' },
-            { n: '02', title: 'Language & comfort', body: 'See at a glance which salons have Japanese-speaking staff or a calm atmosphere for first-timers.' },
-            { n: '03', title: 'Community-powered', body: 'Built on real recommendations — not paid placements dressed as reviews.' },
+            {
+              n: '01',
+              title: 'Style over star ratings',
+              body: 'Filter by Japanese gel, Korean lash lift, quiet vibe, Japanese-speaking staff — the things Google Maps won\'t tell you.',
+            },
+            {
+              n: '02',
+              title: 'A space to exhale',
+              body: 'Every spot on Glowlist is chosen with care. Calm atmospheres, skilled hands, and the little details that make a service feel like a real treat.',
+            },
+            {
+              n: '03',
+              title: 'Community-powered',
+              body: 'Built on real recommendations from people who actually went. Not ads, not sponsorships — just spots worth knowing about.',
+            },
           ].map((w) => (
             <div key={w.n} className={styles.whyItem}>
               <div className={styles.whyNum}>{w.n}</div>
@@ -152,12 +159,12 @@ export default async function HomePage() {
 
       <div className="divider" />
 
-      {/* ── SPOTS WITH FILTER ── */}
+      {/* ── SPOTS ── */}
       <section className={styles.section} id="spots">
         <span className="sec-label">Curated List</span>
         <h2 className="sec-title">Spots to try in NYC</h2>
-        <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', marginBottom: '1.8rem', fontWeight: 300 }}>
-          Tap any card for prices and details.
+        <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', marginBottom: '2rem', fontWeight: 300, lineHeight: 1.8 }}>
+          Every salon on Glowlist is handpicked. Tap any card to see prices, photos, and booking info.
         </p>
         <FilteredSalonList salons={salons} />
       </section>
@@ -170,7 +177,11 @@ export default async function HomePage() {
           <section className={styles.section}>
             <span className="sec-label">Browse by Area</span>
             <h2 className="sec-title">Find spots near you</h2>
-            <div className={styles.areaGrid}>
+            <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', marginBottom: '0', fontWeight: 300, lineHeight: 1.8 }}>
+              See where each neighborhood sits, or browse the full list below.
+            </p>
+            <NeighborhoodMap salons={salons} />
+            <div className={styles.areaGrid} style={{ marginTop: '3rem' }}>
               {areas.map((area) => (
                 <Link key={area.sys.id} href={`/area/${area.fields.slug}`} className={styles.areaCard}>
                   <p className={styles.areaName}>{area.fields.name}</p>
@@ -194,7 +205,9 @@ export default async function HomePage() {
               {posts.map((post) => (
                 <Link key={post.sys.id} href={`/blog/${post.fields.slug}`} className={styles.blogCard}>
                   <p className={styles.blogDate}>
-                    {new Date(post.fields.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    {new Date(post.fields.publishedAt).toLocaleDateString('en-US', {
+                      year: 'numeric', month: 'long', day: 'numeric',
+                    })}
                   </p>
                   <h3 className={styles.blogTitle}>{post.fields.title}</h3>
                   <p className={styles.blogExcerpt}>{post.fields.excerpt}</p>
@@ -223,18 +236,22 @@ export default async function HomePage() {
         <div className={styles.communityWrap}>
           <div>
             <span className="sec-label">Contribute</span>
-            <h2 className="sec-title">Help us build the NYC beauty map girls actually need.</h2>
-            <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', lineHeight: 1.85, marginTop: '1rem', fontWeight: 300 }}>
-              Got a salon recommendation? A nail photo you&apos;re proud of?
-              Your contribution helps other girls find beauty spots they can trust.
+            <h2 className="sec-title">
+              Help us build the beauty map<br />
+              <em style={{ fontStyle: 'italic', color: 'var(--beige-s)' }}>NYC actually needs.</em>
+            </h2>
+            <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', lineHeight: 1.9, marginTop: '1rem', fontWeight: 300 }}>
+              Found a spot that deserves to be on here?<br />
+              Had a great experience worth sharing?<br />
+              This guide gets better when more people contribute.
             </p>
           </div>
           <div className={styles.communityActions}>
             {[
               { label: 'Submit a Spot', desc: 'Know a great nail or lash salon? Add it to Glowlist.', href: 'https://forms.gle/VmLJBtzQ3tXpjFri9' },
-              { label: 'Glowlist Photo Drop ✨', desc: 'Got your nails or lashes done? Share a photo — anonymously OK.', href: 'https://forms.gle/DLBDikk6Do6LHSxu6' },
-              { label: 'Report an Update', desc: 'Price, hours, or service changed? Let us know.', href: 'https://forms.gle/U8ame9qVVGbc4gpn9' },
-              { label: 'Follow on Instagram', desc: '@glowlist_nyc — new spots, community picks, and more.', href: 'https://www.instagram.com/glowlist_nyc/' },
+              { label: 'Glowlist Photo Drop ✨', desc: 'Nails or lashes you\'re proud of? Share it — anonymously OK.', href: 'https://forms.gle/DLBDikk6Do6LHSxu6' },
+              { label: 'Report an Update', desc: 'Price, hours, or something changed? Let us know.', href: 'https://forms.gle/U8ame9qVVGbc4gpn9' },
+              { label: 'Follow on Instagram', desc: '@glowlist_nyc — new spots, picks, and behind-the-scenes.', href: 'https://www.instagram.com/glowlist_nyc/' },
             ].map((a) => (
               <a key={a.label} href={a.href} target="_blank" rel="noopener" className={styles.ca}>
                 <div>

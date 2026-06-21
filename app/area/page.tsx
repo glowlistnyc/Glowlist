@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { getAllAreas } from '@/lib/contentful';
 import styles from './page.module.css';
 
+export const revalidate = 60;
+
+
 export const metadata: Metadata = {
   title: 'Beauty Spots by Area — Glowlist NYC',
   description: 'Find Asian-inspired nail salons and lash studios in Manhattan, Brooklyn, Queens, and across New York City.',
