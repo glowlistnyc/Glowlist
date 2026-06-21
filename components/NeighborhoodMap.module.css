@@ -71,10 +71,16 @@
   stroke-width: .5;
 }
 .tooltipText {
-  font-family: var(--sans);
-  font-size: 9px;
-  letter-spacing: .04em;
+  font-family: var(--serif);
+  font-size: 10px;
+  letter-spacing: .02em;
   fill: var(--beige);
+}
+.tooltipSub {
+  font-family: var(--sans);
+  font-size: 7.5px;
+  letter-spacing: .06em;
+  fill: var(--beige-d);
 }
 
 /* ── Legend ── */
@@ -93,13 +99,15 @@
 .legendList {
   display: flex;
   flex-direction: column;
+  max-height: 380px;
+  overflow-y: auto;
 }
 
 .legendItem {
   display: flex;
   align-items: center;
   gap: .7rem;
-  padding: .65rem 0;
+  padding: .6rem 0;
   border-bottom: .5px solid var(--beige-f2);
   text-decoration: none;
   transition: padding-left .18s;
@@ -120,13 +128,15 @@
   color: var(--beige-s);
   flex: 1;
   transition: color .15s;
+  font-family: var(--serif);
 }
 .legendItem:hover .legendLabel { color: var(--beige); }
 
-.legendCount {
-  font-family: var(--serif);
-  font-size: .85rem;
+.legendArea {
+  font-size: .65rem;
+  letter-spacing: .04em;
   color: var(--beige-d);
+  white-space: nowrap;
 }
 
 /* ── Responsive ── */

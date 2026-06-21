@@ -2,11 +2,13 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllSalons, getAllAreas, getRecentBlogPosts } from '@/lib/contentful';
+import { resolveSalonPins } from '@/lib/salonPins';
 import FilteredSalonList from '@/components/FilteredSalonList';
 import NeighborhoodMap from '@/components/NeighborhoodMap';
 import styles from './page.module.css';
 
-export const revalidate = 60;
+// マップが住所をジオコーディングするため、リスト系ページより少し長めの間隔で再生成
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'Glowlist NYC — Curated Asian-inspired Beauty Guide for New York',
@@ -36,6 +38,9 @@ export default async function HomePage() {
     getAllAreas(),
     getRecentBlogPosts(3),
   ]);
+
+  // Contentfulの住所データを実際にジオコーディングしてマップ座標を解決
+  const pins = await resolveSalonPins(salons);
 
   return (
     <>
@@ -95,12 +100,12 @@ export default async function HomePage() {
             <span className={styles.ecArrow}>→</span>
           </Link>
 
-          {/* Lashes */}
+          {/* Lashes — eyelash extension / lash lift result close-up */}
           <Link href="/service/korean-lash-lift" className={styles.exploreCard}>
             <div className={styles.exploreImg}>
               <Image
-                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=900&q=80&auto=format&fit=crop&crop=top"
-                alt="Asian woman eyelash close-up NYC"
+                src="https://images.unsplash.com/photo-1639629509821-c54cdd984227?w=900&q=80&auto=format&fit=crop"
+                alt="Eyelash extension and lash lift close-up NYC"
                 fill
                 style={{ objectFit: 'cover', filter: 'brightness(.75) contrast(1.08) saturate(.85)' }}
               />
@@ -169,6 +174,21 @@ export default async function HomePage() {
         <FilteredSalonList salons={salons} />
       </section>
 
+      {/* ── MAP (Spots to try NYC の直下) ── */}
+      {pins.length > 0 && (
+        <>
+          <div className="divider" />
+          <section className={styles.section}>
+            <span className="sec-label">On the Map</span>
+            <h2 className="sec-title">Where to find them</h2>
+            <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', marginBottom: '0', fontWeight: 300, lineHeight: 1.8 }}>
+              Hover a pin, or browse the list, to see where each spot actually sits.
+            </p>
+            <NeighborhoodMap pins={pins} />
+          </section>
+        </>
+      )}
+
       <div className="divider" />
 
       {/* ── AREAS ── */}
@@ -177,11 +197,7 @@ export default async function HomePage() {
           <section className={styles.section}>
             <span className="sec-label">Browse by Area</span>
             <h2 className="sec-title">Find spots near you</h2>
-            <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', marginBottom: '0', fontWeight: 300, lineHeight: 1.8 }}>
-              See where each neighborhood sits, or browse the full list below.
-            </p>
-            <NeighborhoodMap salons={salons} />
-            <div className={styles.areaGrid} style={{ marginTop: '3rem' }}>
+            <div className={styles.areaGrid}>
               {areas.map((area) => (
                 <Link key={area.sys.id} href={`/area/${area.fields.slug}`} className={styles.areaCard}>
                   <p className={styles.areaName}>{area.fields.name}</p>

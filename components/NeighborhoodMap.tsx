@@ -1,146 +1,135 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import type { Salon } from '@/types';
+import type { SalonPin } from '@/lib/salonPins';
 import styles from './NeighborhoodMap.module.css';
 
-interface Props { salons: Salon[] }
+interface Props { pins: SalonPin[] }
 
-// ── 簡略化したNYCエリア座標（実際の地理ではなく、デザイン用の概略マップ）──
-const AREA_POSITIONS: Record<string, { x: number; y: number; label: string }> = {
-  'upper-west-side':  { x: 120, y: 95,  label: 'Upper West Side' },
-  'upper-east-side':  { x: 215, y: 95,  label: 'Upper East Side' },
-  'midtown':          { x: 168, y: 175, label: 'Midtown' },
-  'midtown-east':     { x: 205, y: 190, label: 'Midtown East' },
-  'k-town':           { x: 178, y: 210, label: 'K-Town' },
-  'nomad':             { x: 180, y: 235, label: 'NoMad' },
-  'chelsea':          { x: 140, y: 245, label: 'Chelsea / Flatiron' },
-  'union-square':     { x: 175, y: 258, label: 'Union Square' },
-  'east-village':     { x: 195, y: 280, label: 'East Village' },
-  'soho':             { x: 145, y: 295, label: 'SoHo / West Village' },
-  'lower-east-side':  { x: 190, y: 305, label: 'Lower East Side' },
-  'tribeca':          { x: 135, y: 330, label: 'Tribeca' },
-  'lower-manhattan':  { x: 145, y: 365, label: 'Lower Manhattan' },
-  'williamsburg':     { x: 270, y: 290, label: 'Williamsburg' },
-  'brooklyn':         { x: 280, y: 380, label: 'Brooklyn' },
-  'long-island-city': { x: 295, y: 230, label: 'Long Island City' },
-};
-
-export default function NeighborhoodMap({ salons }: Props) {
+export default function NeighborhoodMap({ pins }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
-
-  // エリアごとのサロン数を集計
-  const counts = salons.reduce<Record<string, number>>((acc, s) => {
-    const slug = s.fields.areaSlug;
-    acc[slug] = (acc[slug] || 0) + 1;
-    return acc;
-  }, {});
-
-  const activeAreas = Object.keys(AREA_POSITIONS).filter((slug) => counts[slug] > 0);
+  const hoveredPin = pins.find((p) => p.id === hovered);
 
   return (
     <div className={styles.wrap}>
       <div className={styles.mapBox}>
-        <svg viewBox="0 0 360 420" className={styles.svg} role="img" aria-label="Map of Glowlist NYC salon areas">
-          {/* ── Manhattan（簡略形）── */}
+        <svg viewBox="0 0 360 420" className={styles.svg} role="img" aria-label="Map of Glowlist NYC salon locations">
+          {/* ── Manhattan（実座標を投影した簡略形）── */}
           <path
-            d="M150,40 C170,38 190,45 200,60 C215,85 220,130 210,170
-               C218,200 222,230 215,260 C210,290 195,310 180,330
-               C165,350 150,375 140,400 C135,408 125,406 122,398
-               C115,370 110,340 108,310 C105,270 103,230 105,190
-               C107,150 112,110 122,75 C128,55 138,42 150,40 Z"
+            d="M147,30
+               C190,28 245,28 261,30
+               C262,55 250,90 237,124
+               C224,158 200,175 189,187
+               C178,200 163,218 156,234
+               C148,252 140,266 135,280
+               C128,296 112,305 105,312
+               C99,318 53,325 51,312
+               C49,300 55,287 57,280
+               C61,266 60,253 63,234
+               C66,217 78,200 84,187
+               C90,174 78,156 100,124
+               C115,99 100,72 123,30
+               C130,18 140,28 147,30 Z"
             className={styles.borough}
           />
           {/* ── Brooklyn（簡略形）── */}
           <path
-            d="M230,260 C250,255 275,260 295,275 C315,290 320,320 310,350
-               C300,380 275,400 250,405 C235,407 222,398 218,382
-               C212,355 215,325 218,300 C220,285 222,270 230,260 Z"
+            d="M218,300 C235,288 260,283 280,290
+               C300,297 312,318 310,340
+               C308,362 290,382 268,392
+               C248,400 228,396 218,382
+               C210,368 212,350 213,335
+               C214,322 213,310 218,300 Z"
             className={styles.borough}
           />
-          {/* ── Queens（簡略形）── */}
+          {/* ── Queens / Long Island City（簡略形）── */}
           <path
-            d="M250,180 C270,175 295,180 310,195 C322,208 320,225 305,232
-               C288,240 268,235 252,225 C242,218 240,198 250,180 Z"
+            d="M225,195 C240,188 262,190 275,200
+               C285,208 286,222 276,229
+               C264,237 246,235 233,226
+               C223,219 218,204 225,195 Z"
             className={styles.borough}
           />
 
-          <text x="155" y="180" className={styles.boroughLabel}>MANHATTAN</text>
-          <text x="248" y="335" className={styles.boroughLabel}>BROOKLYN</text>
-          <text x="263" y="210" className={styles.boroughLabelSmall}>QUEENS</text>
+          <text x="155" y="170" className={styles.boroughLabel}>MANHATTAN</text>
+          <text x="240" y="345" className={styles.boroughLabel}>BROOKLYN</text>
+          <text x="232" y="213" className={styles.boroughLabelSmall}>QUEENS</text>
 
-          {/* ── Area dots ── */}
-          {activeAreas.map((slug) => {
-            const pos = AREA_POSITIONS[slug];
-            const count = counts[slug];
-            const isHovered = hovered === slug;
-            const radius = Math.min(6 + count * 1.2, 14);
+          {/* ── Salon pins（実座標 or エリア代表座標）── */}
+          {pins.map((pin) => {
+            const isHovered = hovered === pin.id;
             return (
               <g
-                key={slug}
-                onMouseEnter={() => setHovered(slug)}
+                key={pin.id}
+                onMouseEnter={() => setHovered(pin.id)}
                 onMouseLeave={() => setHovered(null)}
                 className={styles.dotGroup}
               >
-                <Link href={`/area/${slug}`}>
+                <Link href={`/salon/${pin.slug}`} aria-label={pin.name}>
                   <circle
-                    cx={pos.x}
-                    cy={pos.y}
-                    r={radius}
+                    cx={pin.x}
+                    cy={pin.y}
+                    r={isHovered ? 6 : 4.5}
                     className={`${styles.dot} ${isHovered ? styles.dotHover : ''}`}
                   />
-                  <circle
-                    cx={pos.x}
-                    cy={pos.y}
-                    r={radius}
-                    className={styles.dotPulse}
-                  />
+                  {isHovered && (
+                    <circle cx={pin.x} cy={pin.y} r="4.5" className={styles.dotPulse} />
+                  )}
                 </Link>
               </g>
             );
           })}
 
-          {/* ── Tooltip (hover時のみ表示) ── */}
-          {hovered && AREA_POSITIONS[hovered] && (
+          {/* ── Tooltip ── */}
+          {hoveredPin && (
             <g>
               <rect
-                x={AREA_POSITIONS[hovered].x - 55}
-                y={AREA_POSITIONS[hovered].y - 38}
-                width="110"
-                height="26"
+                x={Math.min(Math.max(hoveredPin.x - 60, 4), 360 - 124)}
+                y={Math.max(hoveredPin.y - 40, 4)}
+                width="120"
+                height="30"
                 rx="2"
                 className={styles.tooltipBg}
               />
               <text
-                x={AREA_POSITIONS[hovered].x}
-                y={AREA_POSITIONS[hovered].y - 21}
+                x={Math.min(Math.max(hoveredPin.x, 64), 360 - 64)}
+                y={Math.max(hoveredPin.y - 25, 19)}
                 className={styles.tooltipText}
                 textAnchor="middle"
               >
-                {AREA_POSITIONS[hovered].label} ({counts[hovered]})
+                {hoveredPin.name}
+              </text>
+              <text
+                x={Math.min(Math.max(hoveredPin.x, 64), 360 - 64)}
+                y={Math.max(hoveredPin.y - 14, 30)}
+                className={styles.tooltipSub}
+                textAnchor="middle"
+              >
+                {hoveredPin.area}
               </text>
             </g>
           )}
         </svg>
       </div>
 
-      {/* ── Legend / area list ── */}
+      {/* ── Legend ── */}
       <div className={styles.legend}>
-        <p className={styles.legendTitle}>Areas with spots</p>
+        <p className={styles.legendTitle}>{pins.length} spots on the map</p>
         <div className={styles.legendList}>
-          {activeAreas
-            .sort((a, b) => counts[b] - counts[a])
-            .map((slug) => (
+          {pins
+            .slice()
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((pin) => (
               <Link
-                key={slug}
-                href={`/area/${slug}`}
+                key={pin.id}
+                href={`/salon/${pin.slug}`}
                 className={styles.legendItem}
-                onMouseEnter={() => setHovered(slug)}
+                onMouseEnter={() => setHovered(pin.id)}
                 onMouseLeave={() => setHovered(null)}
               >
                 <span className={styles.legendDot} />
-                <span className={styles.legendLabel}>{AREA_POSITIONS[slug]?.label ?? slug}</span>
-                <span className={styles.legendCount}>{counts[slug]}</span>
+                <span className={styles.legendLabel}>{pin.name}</span>
+                <span className={styles.legendArea}>{pin.area}</span>
               </Link>
             ))}
         </div>

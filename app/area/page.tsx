@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllAreas } from '@/lib/contentful';
+import { getAllAreas, getAllSalons } from '@/lib/contentful';
+import { resolveSalonPins } from '@/lib/salonPins';
+import NeighborhoodMap from '@/components/NeighborhoodMap';
 import styles from './page.module.css';
 
-export const revalidate = 60;
-
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'Beauty Spots by Area — Glowlist NYC',
@@ -12,7 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AreaIndexPage() {
-  const areas = await getAllAreas();
+  const [areas, salons] = await Promise.all([
+    getAllAreas(),
+    getAllSalons(),
+  ]);
+  const pins = await resolveSalonPins(salons);
 
   const byBig = areas.reduce<Record<string, typeof areas>>((acc, a) => {
     const big = a.fields.bigArea;
@@ -28,6 +33,12 @@ export default async function AreaIndexPage() {
       <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', marginBottom: '3rem', fontWeight: 300 }}>
         Find Asian-inspired nails and lashes across New York City.
       </p>
+
+      {pins.length > 0 && (
+        <div style={{ marginBottom: '4rem' }}>
+          <NeighborhoodMap pins={pins} />
+        </div>
+      )}
 
       {(['manhattan', 'brooklyn', 'queens'] as const).map((big) => {
         const list = byBig[big] ?? [];
