@@ -99,6 +99,6 @@
   .grid { grid-template-columns: 1fr 1fr; }
   .panel { padding: 1.2rem; }
 }
-@media (max-width: 480px) {
-  .grid { grid-template-columns: 1fr; }
+@media (max-width: 420px) {
+  .grid { grid-template-columns: 1fr 1fr; gap: 1px; }
 }

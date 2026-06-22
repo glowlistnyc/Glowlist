@@ -72,3 +72,12 @@
   text-decoration: none;
 }
 .link:hover { color: var(--beige); border-color: var(--beige); }
+
+@media (max-width: 420px) {
+  .cardInner { padding: 1.1rem 1rem .8rem; gap: .5rem; }
+  .name { font-size: .92rem; }
+  .meta { font-size: .64rem; }
+  .price { font-size: .85rem; }
+  .links { padding: .6rem 1rem 1rem; gap: .5rem; }
+  .link { font-size: .6rem; }
+}
