@@ -1,0 +1,110 @@
+.mapWrap {
+  border: .5px solid var(--border);
+  overflow: hidden;
+  margin-bottom: .5px;
+}
+
+.mapHint {
+  font-size: .65rem;
+  color: var(--beige-d);
+  padding: .6rem 1rem;
+  background: var(--navy-l);
+  border: .5px solid var(--border);
+  border-top: none;
+  letter-spacing: .04em;
+  margin-bottom: 3rem;
+}
+
+.areaSection {}
+
+.group { margin-bottom: 3rem; }
+
+.groupTitle {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  color: var(--beige-s);
+  margin-bottom: 1rem;
+  font-weight: 300;
+  letter-spacing: .06em;
+  padding-bottom: .7rem;
+  border-bottom: .5px solid var(--border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  background: var(--border);
+}
+
+.card {
+  background: var(--navy);
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background .2s;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+}
+.card:hover { background: var(--navy-l); }
+.cardActive { background: var(--navy-l) !important; }
+.cardActive .areaName { color: var(--beige); }
+.cardActive .arrow { color: var(--beige); }
+
+.cardInner {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.areaName {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--beige-s);
+  font-weight: 400;
+  transition: color .2s;
+}
+.card:hover .areaName { color: var(--beige); }
+
+.count {
+  font-size: .65rem;
+  letter-spacing: .08em;
+  color: var(--beige-d);
+}
+
+.arrow {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  color: var(--beige-s);
+  transition: transform .2s, color .2s;
+  flex-shrink: 0;
+}
+.card:hover .arrow { transform: translateX(3px); color: var(--beige); }
+
+.browseLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.browseLink {
+  font-size: .68rem;
+  letter-spacing: .06em;
+  color: var(--beige-d);
+  border-bottom: .5px solid var(--border);
+  text-decoration: none;
+  transition: color .2s;
+}
+.browseLink:hover { color: var(--beige-s); }
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+}

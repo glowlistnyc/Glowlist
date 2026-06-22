@@ -7,10 +7,13 @@ export interface SalonPin {
   name: string;
   slug: string;
   area: string;
-  lat: number;   // 実際の緯度（Leaflet用）
-  lng: number;   // 実際の経度（Leaflet用）
-  x: number;     // SVG座標（後方互換）
-  y: number;     // SVG座標（後方互換）
+  areaSlug: string;
+  category: 'nails' | 'lashes' | 'both';
+  tags: string[];
+  lat: number;
+  lng: number;
+  x: number;
+  y: number;
   usedFallback: boolean;
 }
 
@@ -18,7 +21,7 @@ export async function resolveSalonPins(salons: Salon[]): Promise<SalonPin[]> {
   const pins: SalonPin[] = [];
 
   for (const salon of salons) {
-    const { name, slug, address, area, areaSlug } = salon.fields;
+    const { name, slug, address, area, areaSlug, category, tags } = salon.fields;
     let point: { lat: number; lng: number } | null = null;
     let usedFallback = false;
 
@@ -40,11 +43,10 @@ export async function resolveSalonPins(salons: Salon[]): Promise<SalonPin[]> {
     const { x, y } = projectToSvg(point.lat, point.lng);
     pins.push({
       id: salon.sys.id,
-      name, slug, area,
-      lat: point.lat,
-      lng: point.lng,
-      x, y,
-      usedFallback,
+      name, slug, area, areaSlug,
+      category, tags,
+      lat: point.lat, lng: point.lng,
+      x, y, usedFallback,
     });
   }
 

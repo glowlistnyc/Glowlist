@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getAllAreas, getAllSalons } from '@/lib/contentful';
 import { resolveSalonPins } from '@/lib/salonPins';
-import NeighborhoodMap from '@/components/NeighborhoodMap';
-import styles from './page.module.css';
+import AreaIndexClient from './AreaIndexClient';
 
 export const revalidate = 300;
 
@@ -13,50 +11,17 @@ export const metadata: Metadata = {
 };
 
 export default async function AreaIndexPage() {
-  const [areas, salons] = await Promise.all([
-    getAllAreas(),
-    getAllSalons(),
-  ]);
+  const [areas, salons] = await Promise.all([getAllAreas(), getAllSalons()]);
   const pins = await resolveSalonPins(salons);
-
-  const byBig = areas.reduce<Record<string, typeof areas>>((acc, a) => {
-    const big = a.fields.bigArea;
-    if (!acc[big]) acc[big] = [];
-    acc[big].push(a);
-    return acc;
-  }, {});
 
   return (
     <section style={{ padding: '5rem 5vw' }}>
       <span className="sec-label">Browse</span>
       <h1 className="sec-title">Beauty Spots by Area</h1>
-      <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', marginBottom: '3rem', fontWeight: 300 }}>
-        Find Asian-inspired nails and lashes across New York City.
+      <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', marginBottom: '2rem', fontWeight: 300 }}>
+        Click an area to zoom in on the map.
       </p>
-
-      {pins.length > 0 && (
-        <div style={{ marginBottom: '4rem' }}>
-          <NeighborhoodMap pins={pins} />
-        </div>
-      )}
-
-      {(['manhattan', 'brooklyn', 'queens'] as const).map((big) => {
-        const list = byBig[big] ?? [];
-        if (!list.length) return null;
-        return (
-          <div key={big} className={styles.bigGroup}>
-            <h2 className={styles.bigTitle}>{big.charAt(0).toUpperCase() + big.slice(1)}</h2>
-            <div className={styles.grid}>
-              {list.map((area) => (
-                <Link key={area.sys.id} href={`/area/${area.fields.slug}`} className={styles.card}>
-                  <p className={styles.name}>{area.fields.name}</p>
-                  <span className={styles.arrow}>→</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        );
-      })}
+      <AreaIndexClient areas={areas} pins={pins} />
     </section>
   );
 }
