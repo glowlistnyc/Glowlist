@@ -100,14 +100,14 @@ export default async function HomePage() {
             <span className={styles.ecArrow}>→</span>
           </Link>
 
-          {/* Lashes — close up eye with long eyelashes / extensions */}
+          {/* Lashes — Asian woman eye close-up (Linh Ha / Unsplash) */}
           <Link href="/service/korean-lash-lift" className={styles.exploreCard}>
             <div className={styles.exploreImg}>
               <Image
-                src="https://images.unsplash.com/photo-1683719312734-e31de63957ab?w=900&q=80&auto=format&fit=crop&crop=top"
-                alt="Eyelash extension close-up NYC"
+                src="https://images.unsplash.com/photo-1542833807-ad5af0977050?w=900&q=80&auto=format&fit=crop&crop=top"
+                alt="Asian woman eyelash close-up NYC"
                 fill
-                style={{ objectFit: 'cover', filter: 'brightness(.72) contrast(1.1) saturate(.8)' }}
+                style={{ objectFit: 'cover', filter: 'brightness(.65) contrast(1.15) saturate(.75)' }}
               />
               <div className={styles.exploreImgOverlay} />
             </div>
