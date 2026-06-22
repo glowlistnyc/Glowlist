@@ -16,12 +16,6 @@ const MapClient = dynamic(() => import('@/components/MapClient'), {
 });
 
 type BigArea = 'all' | 'manhattan' | 'brooklyn' | 'queens';
-
-interface Props {
-  areas: Area[];
-  pins: SalonPin[];
-}
-
 const BIG_LABELS: Record<BigArea, string> = {
   all: 'All NYC',
   manhattan: 'Manhattan',
@@ -29,105 +23,146 @@ const BIG_LABELS: Record<BigArea, string> = {
   queens: 'Queens',
 };
 
-// ボロごとのフォーカス座標・ズーム
-const BIG_FOCUS: Record<string, { lat: number; lng: number; zoom: number }> = {
-  manhattan: { lat: 40.760, lng: -73.980, zoom: 13 },
-  brooklyn:  { lat: 40.700, lng: -73.975, zoom: 13 },
-  queens:    { lat: 40.748, lng: -73.948, zoom: 13 },
-};
+interface Props { areas: Area[]; pins: SalonPin[] }
 
 export default function AreaIndexClient({ areas, pins }: Props) {
   const [bigFilter, setBigFilter] = useState<BigArea>('all');
+  const [subFilter, setSubFilter] = useState<string | null>(null);
 
-  // エリアごとのサロン数
+  // サロン数
   const countBySlug = useMemo(() => {
     const c: Record<string, number> = {};
     pins.forEach((p) => { c[p.areaSlug] = (c[p.areaSlug] || 0) + 1; });
     return c;
   }, [pins]);
 
-  // 表示するエリアリスト（bigFilter でフィルタ）
-  const filteredAreas = useMemo(
-    () => bigFilter === 'all' ? areas : areas.filter(a => a.fields.bigArea === bigFilter),
-    [areas, bigFilter]
-  );
+  // 2段目チップ（選択ボロのエリア一覧）
+  const subAreas = useMemo(() =>
+    bigFilter === 'all' ? [] : areas.filter(a => a.fields.bigArea === bigFilter),
+  [areas, bigFilter]);
 
-  // マップのズーム対象（bigFilter が all 以外 → そのボロのピンのみ）
-  const focusPins = useMemo(
-    () => bigFilter === 'all' ? pins : pins.filter(p => {
-      const area = areas.find(a => a.fields.slug === p.areaSlug);
-      return area?.fields.bigArea === bigFilter;
-    }),
-    [pins, bigFilter, areas]
-  );
+  // マップに表示するピン
+  const focusPins = useMemo(() => {
+    if (subFilter) return pins.filter(p => p.areaSlug === subFilter);
+    if (bigFilter !== 'all') {
+      const slugSet = new Set(subAreas.map(a => a.fields.slug));
+      return pins.filter(p => slugSet.has(p.areaSlug));
+    }
+    return pins;
+  }, [pins, bigFilter, subFilter, subAreas]);
+
+  // カードリストに表示するエリア（サロンがあるものを優先、全部表示）
+  const displayedAreas = useMemo(() => {
+    if (bigFilter === 'all') return areas;
+    return subAreas;
+  }, [areas, bigFilter, subAreas]);
 
   const byBig = useMemo(() =>
-    filteredAreas.reduce<Record<string, typeof areas>>((acc, a) => {
+    displayedAreas.reduce<Record<string, typeof areas>>((acc, a) => {
       const big = a.fields.bigArea;
       if (!acc[big]) acc[big] = [];
       acc[big].push(a);
       return acc;
     }, {}),
-  [filteredAreas]);
+  [displayedAreas]);
 
-  const bigOptions: BigArea[] = ['all', 'manhattan', 'brooklyn', 'queens'];
+  function handleBig(val: BigArea) {
+    setBigFilter(val);
+    setSubFilter(null);
+  }
+  function handleSub(slug: string) {
+    setSubFilter(prev => prev === slug ? null : slug);
+  }
+
+  // 現在のフィルター状態の説明文
+  const hintText = useMemo(() => {
+    if (subFilter) {
+      const area = areas.find(a => a.fields.slug === subFilter);
+      const n = focusPins.length;
+      return `${n} spot${n !== 1 ? 's' : ''} in ${area?.fields.name ?? subFilter}. Tap a pin for details.`;
+    }
+    if (bigFilter !== 'all') {
+      return `${focusPins.length} spot${focusPins.length !== 1 ? 's' : ''} in ${BIG_LABELS[bigFilter]}. Select a neighborhood below to zoom in further.`;
+    }
+    return `${pins.length} spots across NYC. Select a borough to filter, or click an area card to browse.`;
+  }, [subFilter, bigFilter, focusPins, pins, areas]);
 
   return (
     <div>
-      {/* ── ボロ選択フィルター（マップズーム制御） ── */}
-      <div className={styles.filterRow}>
-        <p className={styles.filterLabel}>Filter by borough</p>
+      {/* ── 1段目：ボロフィルター ── */}
+      <div className={styles.filterBlock}>
+        <p className={styles.rowLabel}>Borough</p>
         <div className={styles.chips}>
-          {bigOptions.map((opt) => (
+          {(['all', 'manhattan', 'brooklyn', 'queens'] as BigArea[]).map((opt) => (
             <button
               key={opt}
               className={`${styles.chip} ${bigFilter === opt ? styles.chipActive : ''}`}
-              onClick={() => setBigFilter(opt)}
+              onClick={() => handleBig(opt)}
             >
               {BIG_LABELS[opt]}
             </button>
           ))}
         </div>
+
+        {/* ── 2段目：ネイバーフッドチップ（ボロ選択後に展開） ── */}
+        {subAreas.length > 0 && (
+          <>
+            <p className={styles.rowLabel} style={{ marginTop: '.8rem' }}>Neighborhood</p>
+            <div className={styles.chips}>
+              <button
+                className={`${styles.chip} ${styles.chipSub} ${subFilter === null ? styles.chipActive : ''}`}
+                onClick={() => setSubFilter(null)}
+              >
+                All {BIG_LABELS[bigFilter]}
+              </button>
+              {subAreas.map((area) => {
+                const count = countBySlug[area.fields.slug] ?? 0;
+                return (
+                  <button
+                    key={area.fields.slug}
+                    className={`${styles.chip} ${styles.chipSub} ${subFilter === area.fields.slug ? styles.chipActive : ''}`}
+                    onClick={() => handleSub(area.fields.slug)}
+                  >
+                    {area.fields.name}
+                    {count > 0 && <span className={styles.chipCount}>{count}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
 
-      {/* ── マップ（bigFilterに連動してズーム） ── */}
+      {/* ── マップ ── */}
       <div className={styles.mapWrap}>
-        <MapClient
-          pins={focusPins}
-          height="480px"
-          activeAreaSlug={bigFilter !== 'all' ? bigFilter + '-focus' : null}
-        />
-        <p className={styles.mapHint}>
-          {bigFilter === 'all'
-            ? `${pins.length} spots across NYC. Tap a pin to see salon details.`
-            : `${focusPins.length} spot${focusPins.length !== 1 ? 's' : ''} in ${BIG_LABELS[bigFilter]}. Tap a pin for details.`
-          }
-        </p>
+        <MapClient pins={focusPins} height="480px" />
+        <p className={styles.mapHint}>{hintText}</p>
       </div>
 
-      {/* ── エリアカードリスト（クリック→ページ遷移） ── */}
+      {/* ── エリアカード（クリック → /area/[slug] へ遷移） ── */}
       <div className={styles.areaSection}>
         {(['manhattan', 'brooklyn', 'queens'] as const)
-          .filter((big) => (byBig[big] ?? []).length > 0)
+          .filter(big => bigFilter === 'all' || bigFilter === big)
+          .filter(big => (byBig[big] ?? []).length > 0)
           .map((big) => (
             <div key={big} className={styles.group}>
-              <h2 className={styles.groupTitle}>
-                {BIG_LABELS[big]}
-              </h2>
+              <h2 className={styles.groupTitle}>{BIG_LABELS[big]}</h2>
               <div className={styles.grid}>
                 {(byBig[big] ?? []).map((area) => {
                   const count = countBySlug[area.fields.slug] ?? 0;
+                  const isSubActive = subFilter === area.fields.slug;
                   return (
                     <Link
                       key={area.sys.id}
                       href={`/area/${area.fields.slug}`}
-                      className={styles.card}
+                      className={`${styles.card} ${isSubActive ? styles.cardHighlight : ''}`}
                     >
                       <span className={styles.cardInner}>
                         <span className={styles.areaName}>{area.fields.name}</span>
-                        {count > 0 && (
-                          <span className={styles.count}>{count} spot{count !== 1 ? 's' : ''}</span>
-                        )}
+                        {count > 0
+                          ? <span className={styles.count}>{count} spot{count !== 1 ? 's' : ''}</span>
+                          : <span className={styles.countEmpty}>No spots yet</span>
+                        }
                       </span>
                       <span className={styles.arrow}>→</span>
                     </Link>

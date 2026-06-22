@@ -1,47 +1,77 @@
-/* ── Filter row ── */
-.filterRow {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
+/* ── Filter block ── */
+.filterBlock {
+  background: var(--navy-l);
+  border: .5px solid var(--border);
+  padding: 1.5rem 1.8rem;
   margin-bottom: 1.5rem;
-  flex-wrap: wrap;
 }
 
-.filterLabel {
-  font-size: .67rem;
-  letter-spacing: .18em;
+.rowLabel {
+  font-size: .65rem;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--beige-d);
-  white-space: nowrap;
-  flex-shrink: 0;
+  margin-bottom: .7rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.rowLabel::after {
+  content: '';
+  flex: 1;
+  height: .5px;
+  background: var(--border);
 }
 
 .chips {
   display: flex;
-  gap: .4rem;
   flex-wrap: wrap;
+  gap: .4rem;
 }
 
+/* 1段目チップ */
 .chip {
-  font-size: .69rem;
+  font-size: .68rem;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--beige-d);
   border: .5px solid var(--border);
   background: none;
-  padding: .32rem .85rem;
+  padding: .3rem .8rem;
   cursor: pointer;
   transition: all .2s;
   font-family: var(--sans);
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
 }
 .chip:hover { color: var(--beige); border-color: var(--beige-s); background: var(--beige-f); }
-.chipActive { color: var(--navy); background: var(--beige-s); border-color: var(--beige-s); }
+.chipActive { color: var(--navy) !important; background: var(--beige-s) !important; border-color: var(--beige-s) !important; }
+
+/* 2段目チップ（やや小さく） */
+.chipSub {
+  font-size: .63rem;
+  padding: .24rem .65rem;
+}
+
+.chipCount {
+  background: var(--beige-f2);
+  color: var(--beige-d);
+  border-radius: 999px;
+  padding: .05rem .32rem;
+  font-size: .58rem;
+  line-height: 1.3;
+  transition: background .2s, color .2s;
+}
+.chipActive .chipCount {
+  background: rgba(26,32,53,.25);
+  color: var(--navy);
+}
 
 /* ── Map ── */
 .mapWrap {
   border: .5px solid var(--border);
   overflow: hidden;
-  margin-bottom: .5px;
 }
 
 .mapHint {
@@ -49,13 +79,14 @@
   color: var(--beige-d);
   padding: .6rem 1rem;
   background: var(--navy-l);
-  border: .5px solid var(--border);
-  border-top: none;
+  border-top: .5px solid var(--border);
   letter-spacing: .04em;
   margin-bottom: 3.5rem;
+  min-height: 2.2rem;
+  transition: opacity .2s;
 }
 
-/* ── Area list ── */
+/* ── Area cards ── */
 .areaSection {}
 
 .group { margin-bottom: 3rem; }
@@ -80,19 +111,20 @@
 
 .card {
   background: var(--navy);
-  padding: 1.4rem 1.6rem;
+  padding: 1.3rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background .2s;
+  transition: background .18s;
   text-decoration: none;
 }
 .card:hover { background: var(--navy-l); }
+.cardHighlight { background: var(--navy-l); border-left: 2px solid var(--beige-s); }
 
 .cardInner {
   display: flex;
   flex-direction: column;
-  gap: .3rem;
+  gap: .28rem;
 }
 
 .areaName {
@@ -100,14 +132,21 @@
   font-size: 1.05rem;
   color: var(--beige-s);
   font-weight: 400;
-  transition: color .2s;
+  transition: color .18s;
+  line-height: 1.3;
 }
 .card:hover .areaName { color: var(--beige); }
 
 .count {
   font-size: .64rem;
-  letter-spacing: .08em;
+  letter-spacing: .07em;
   color: var(--beige-d);
+}
+.countEmpty {
+  font-size: .62rem;
+  letter-spacing: .06em;
+  color: var(--beige-d);
+  opacity: .5;
 }
 
 .arrow {
@@ -122,7 +161,7 @@
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .grid { grid-template-columns: 1fr 1fr; }
-  .filterRow { gap: .8rem; }
+  .filterBlock { padding: 1.2rem; }
 }
 @media (max-width: 480px) {
   .grid { grid-template-columns: 1fr; }
