@@ -6,16 +6,11 @@ interface Props {
   salon: Salon;
 }
 
-function toSalonId(name: string) {
-  return name
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '');
-}
-
 function addGlowlistUtm(url: string, salonId: string) {
-  if (!url) return url;
+  if (!url) return '';
+
+  // すでにGlowlistのUTMが付いている場合は二重につけない
+  if (url.includes('utm_source=glowlist')) return url;
 
   const separator = url.includes('?') ? '&' : '?';
 
@@ -36,9 +31,10 @@ export default function SalonCard({ salon }: Props) {
     verified,
   } = salon.fields;
 
-  const igUrl = `https://www.instagram.com/${instagramHandle}/`;
-  const salonId = toSalonId(name);
-  const bookingUrlWithUtm = addGlowlistUtm(bookingUrl, salonId);
+  const salonId = slug;
+  const igHandle = instagramHandle?.replace('@', '');
+  const igUrl = igHandle ? `https://www.instagram.com/${igHandle}/` : '';
+  const bookingUrlWithUtm = bookingUrl ? addGlowlistUtm(bookingUrl, salonId) : '';
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
   return (
@@ -68,33 +64,37 @@ export default function SalonCard({ salon }: Props) {
       </Link>
 
       <div className={styles.links}>
-        <a
-          href={igUrl}
-          target="_blank"
-          rel="noopener"
-          className={`${styles.link} glow-instagram-link`}
-          data-salon-id={salonId}
-          data-salon-name={name}
-          data-category={category}
-          data-area={area}
-          data-link-type="instagram"
-        >
-          Instagram ↗
-        </a>
+        {igUrl && (
+          <a
+            href={igUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${styles.link} glow-instagram-link`}
+            data-salon-id={salonId}
+            data-salon-name={name}
+            data-category={category}
+            data-area={area}
+            data-link-type="instagram"
+          >
+            Instagram ↗
+          </a>
+        )}
 
-        <a
-          href={bookingUrlWithUtm}
-          target="_blank"
-          rel="noopener"
-          className={`${styles.link} glow-book-link`}
-          data-salon-id={salonId}
-          data-salon-name={name}
-          data-category={category}
-          data-area={area}
-          data-link-type="book"
-        >
-          Book ↗
-        </a>
+        {bookingUrlWithUtm && (
+          <a
+            href={bookingUrlWithUtm}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${styles.link} glow-book-link`}
+            data-salon-id={salonId}
+            data-salon-name={name}
+            data-category={category}
+            data-area={area}
+            data-link-type="book"
+          >
+            Book ↗
+          </a>
+        )}
       </div>
     </article>
   );
