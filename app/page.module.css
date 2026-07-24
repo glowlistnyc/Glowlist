@@ -1,11 +1,11 @@
 .hero {
-  min-height: 90vh;
+  min-height: 55vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 5rem 5vw 3rem;
+  padding: 5rem 5vw 4rem;
 }
 
 .eyebrow {
@@ -13,51 +13,62 @@
   letter-spacing: .28em;
   text-transform: uppercase;
   color: var(--beige-s);
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.eyebrow::before, .eyebrow::after {
-  content: '';
-  width: 2.5rem;
-  height: .5px;
-  background: var(--beige-s);
-  opacity: .45;
-}
+.eyebrow > span:first-child::before,
+.eyebrow > span:last-child::after { display: none; }
+.eyebrow > span { display: inline-block; width: 2.5rem; height: .5px; background: var(--beige-s); opacity: .45; }
 
 .h1 {
-  font-size: clamp(3rem, 8.5vw, 6.8rem);
-  line-height: .98;
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  line-height: 1.0;
   color: var(--beige);
-  margin-bottom: .3em;
+  margin-bottom: .9em;
 }
 .h1 em { font-style: italic; color: var(--beige-s); }
 
-.city {
-  font-family: var(--serif);
-  font-size: clamp(.85rem, 1.8vw, 1.15rem);
-  letter-spacing: .55em;
-  text-transform: uppercase;
-  color: var(--beige-s);
-  margin-bottom: 2.5rem;
+/* ── Search ── */
+.searchWrap {
+  width: 100%;
+  max-width: 660px;
+  margin-bottom: 1.4rem;
 }
 
-.desc {
-  max-width: 500px;
-  font-size: .96rem;
-  color: var(--beige-s);
-  line-height: 1.85;
-  margin-bottom: 2.8rem;
-  font-weight: 300;
-}
-
-.ctaRow {
+/* ── Quick pills ── */
+.quickPills {
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
+  gap: .4rem;
   justify-content: center;
 }
+.pill {
+  font-size: .67rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  border: .5px solid var(--border);
+  padding: .3rem .8rem;
+  transition: all .2s;
+  text-decoration: none;
+}
+.pill:hover { color: var(--beige); border-color: var(--beige-s); background: var(--beige-f); }
+
+/* About link in community section */
+.aboutLink {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  border-bottom: .5px solid var(--border);
+  text-decoration: none;
+  transition: color .2s;
+}
+.aboutLink:hover { color: var(--beige-s); }
 
 /* ── Section ── */
 .section { padding: 5.5rem 5vw; }
@@ -90,6 +101,13 @@
   position: relative;
   overflow: hidden;
   margin-bottom: .4rem;
+}
+
+.exploreImgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(26,32,53,.55) 100%);
+  z-index: 1;
 }
 
 .exploreImgOverlay {

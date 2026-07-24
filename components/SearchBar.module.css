@@ -1,0 +1,124 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  margin: 0 auto;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  background: rgba(224,212,188,.06);
+  border: 1px solid var(--border-s);
+  transition: border-color .2s, background .2s;
+  gap: 0;
+}
+.inputRow:focus-within {
+  border-color: var(--beige-s);
+  background: rgba(224,212,188,.1);
+}
+
+.icon {
+  padding: 0 1rem;
+  color: var(--beige-d);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 1rem 0;
+  font-family: var(--sans);
+  font-size: .9rem;
+  font-weight: 300;
+  color: var(--beige);
+  letter-spacing: .02em;
+  min-width: 0;
+}
+.input::placeholder { color: var(--beige-d); }
+.input::-webkit-search-cancel-button { display: none; }
+
+.clear {
+  background: none;
+  border: none;
+  color: var(--beige-d);
+  cursor: pointer;
+  padding: 0 1rem;
+  font-size: .85rem;
+  transition: color .2s;
+  flex-shrink: 0;
+}
+.clear:hover { color: var(--beige); }
+
+/* ── Dropdown ── */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--navy-l);
+  border: .5px solid var(--border-s);
+  z-index: 200;
+  list-style: none;
+  padding: .4rem 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+
+.result {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  padding: .8rem 1.2rem;
+  text-align: left;
+  transition: background .15s;
+}
+.result:hover { background: var(--beige-f2); }
+
+.resultName {
+  font-family: var(--serif);
+  font-size: .98rem;
+  color: var(--beige);
+  font-weight: 400;
+}
+
+.resultMeta {
+  font-size: .7rem;
+  letter-spacing: .06em;
+  color: var(--beige-d);
+}
+
+.hint {
+  font-size: .62rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  padding: .5rem 1.2rem .35rem;
+  border-top: .5px solid var(--border);
+  margin-top: .2rem;
+  opacity: .7;
+}
+
+.noResult {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--navy-l);
+  border: .5px solid var(--border-s);
+  padding: 1rem 1.2rem;
+  font-size: .82rem;
+  color: var(--beige-d);
+}
+
+@media (max-width: 480px) {
+  .input { font-size: .8rem; padding: .85rem 0; }
+  .icon { padding: 0 .75rem; }
+}
