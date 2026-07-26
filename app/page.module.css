@@ -73,7 +73,59 @@
 /* ── Section ── */
 .section { padding: 5.5rem 5vw; }
 
-/* ── Explore ── */
+/* ── Service grid (6 cards, compact) ── */
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  background: var(--border);
+  margin-top: 2rem;
+}
+
+.svcCard {
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: background .2s;
+  overflow: hidden;
+}
+.svcCard:hover { background: var(--navy-l); }
+
+.svcImg {
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+}
+
+.svcImgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(26,32,53,.75) 100%);
+  z-index: 1;
+}
+
+.svcLabel {
+  position: absolute;
+  bottom: .75rem;
+  left: .9rem;
+  z-index: 2;
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--beige);
+  line-height: 1.2;
+}
+
+.svcSub {
+  font-size: .72rem;
+  color: var(--beige-d);
+  padding: .7rem .9rem .85rem;
+  letter-spacing: .04em;
+  font-weight: 300;
+}
+
+/* ── Old explore grid (keep for reference but replaced) ── */
 .exploreGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -245,6 +297,7 @@
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .section { padding: 4rem 5vw; }
+  .serviceGrid { grid-template-columns: repeat(2, 1fr); }
   .exploreGrid { grid-template-columns: 1fr; }
   .whyGrid { grid-template-columns: 1fr; gap: 0; }
   .areaGrid { grid-template-columns: repeat(2, 1fr); }

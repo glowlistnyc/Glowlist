@@ -82,48 +82,70 @@ export default async function HomePage() {
       <section className={styles.section} id="explore">
         <span className="sec-label">Start Here</span>
         <h2 className="sec-title">What are you looking for?</h2>
-        <div className={styles.exploreGrid}>
-          <Link href="/service/japanese-gel-nails" className={styles.exploreCard}>
-            <div className={styles.exploreImg}>
-              <Image
-                src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900&q=80&auto=format&fit=crop"
-                alt="Japanese gel nails NYC"
-                fill
-                style={{ objectFit: 'cover', filter: 'brightness(.75) contrast(1.08) saturate(.85)' }}
-              />
-              <div className={styles.exploreImgOverlay} />
-            </div>
-            <span className={styles.ecNum}>01</span>
-            <h2 className={styles.ecTitle}>Japanese<br /><em>Gel Nails</em></h2>
-            <p className={styles.ecDesc}>Soft, minimal, long-lasting. Japanese gel technique prioritises nail health.</p>
-            <div className={styles.ecTags}>
-              <span className="tag">Japanese gel</span>
-              <span className="tag">Kokoist</span>
-              <span className="tag">Minimal</span>
-            </div>
-            <span className={styles.ecArrow}>→</span>
-          </Link>
-
-          <Link href="/service/korean-lash-lift" className={styles.exploreCard}>
-            <div className={styles.exploreImg}>
-              <Image
-                src="https://images.unsplash.com/photo-1542833807-ad5af0977050?w=900&q=80&auto=format&fit=crop&crop=top"
-                alt="Asian woman eyelash lift NYC"
-                fill
-                style={{ objectFit: 'cover', filter: 'brightness(.65) contrast(1.15) saturate(.75)' }}
-              />
-              <div className={styles.exploreImgOverlay} />
-            </div>
-            <span className={styles.ecNum}>02</span>
-            <h2 className={styles.ecTitle}>Lashes &amp;<br /><em>Lash Lifts</em></h2>
-            <p className={styles.ecDesc}>Natural lift that lasts 6–8 weeks. Korean technique, no extensions needed.</p>
-            <div className={styles.ecTags}>
-              <span className="tag">Lash lift</span>
-              <span className="tag">Korean-style</span>
-              <span className="tag">Natural curl</span>
-            </div>
-            <span className={styles.ecArrow}>→</span>
-          </Link>
+        <div className={styles.serviceGrid}>
+          {[
+            {
+              href: '/service/japanese-gel-nails',
+              img: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=75&auto=format&fit=crop',
+              alt: 'Japanese gel nails NYC',
+              title: 'Japanese Gel Nails',
+              sub: 'Soft, minimal, long-lasting',
+            },
+            {
+              href: '/service/korean-lash-lift',
+              img: 'https://images.unsplash.com/photo-1542833807-ad5af0977050?w=600&q=75&auto=format&fit=crop&crop=top',
+              alt: 'Lash lift NYC',
+              title: 'Korean Lash Lift',
+              sub: 'Natural curl, 6–8 weeks',
+              filter: 'brightness(.65) contrast(1.15) saturate(.75)',
+            },
+            {
+              href: '/service/lash-extensions',
+              img: 'https://images.unsplash.com/photo-1639629509821-c54cdd984227?w=600&q=75&auto=format&fit=crop&crop=top',
+              alt: 'Lash extensions NYC',
+              title: 'Lash Extensions',
+              sub: 'Classic, hybrid, volume',
+            },
+            {
+              href: '/service/brow-lamination',
+              img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=75&auto=format&fit=crop&crop=top',
+              alt: 'Brow lamination NYC',
+              title: 'Brow Lamination',
+              sub: 'Fluffy brows, 8 weeks',
+            },
+            {
+              href: '/service/head-spa',
+              img: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=75&auto=format&fit=crop',
+              alt: 'Head spa NYC',
+              title: 'Head Spa',
+              sub: 'Japanese scalp care',
+            },
+            {
+              href: '/service/gel-x-extensions',
+              img: 'https://images.unsplash.com/photo-1604002396483-18764f53abf2?w=600&q=75&auto=format&fit=crop',
+              alt: 'Gel-X extensions NYC',
+              title: 'Gel-X Extensions',
+              sub: 'Soft gel, no damage',
+            },
+          ].map((svc) => (
+            <Link key={svc.href} href={svc.href} className={styles.svcCard}>
+              <div className={styles.svcImg}>
+                <Image
+                  src={svc.img}
+                  alt={svc.alt}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  style={{
+                    objectFit: 'cover',
+                    filter: svc.filter ?? 'brightness(.72) contrast(1.08) saturate(.82)',
+                  }}
+                />
+                <div className={styles.svcImgOverlay} />
+                <span className={styles.svcLabel}>{svc.title}</span>
+              </div>
+              <p className={styles.svcSub}>{svc.sub}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -209,7 +231,7 @@ export default async function HomePage() {
           <div className={styles.communityActions}>
             {[
               { label: 'Submit a Spot', desc: 'Know a great nail or lash salon? Add it to Glowlist.', href: 'https://forms.gle/VmLJBtzQ3tXpjFri9' },
-              { label: 'Glowlist Photo Drop ✨', desc: 'Got your nails or lashes done? Share a photo — anonymously OK.', href: 'https://forms.gle/DLBDikk6Do6LHSxu6' },
+              { label: 'Glowlist Photo Drop ✨', desc: 'Got your nails or lashes done? Share a photo — anonymously OK.', href: 'https://tally.so/r/MeQr8l' },
               { label: 'Report an Update', desc: 'Price, hours, or something changed? Let us know.', href: 'https://forms.gle/U8ame9qVVGbc4gpn9' },
               { label: 'Follow on Instagram', desc: '@glowlist_nyc — new spots, picks, and behind-the-scenes.', href: 'https://www.instagram.com/glowlist_nyc/' },
             ].map((a) => (

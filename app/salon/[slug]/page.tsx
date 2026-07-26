@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllSalons, getSalonBySlug } from '@/lib/contentful';
+import InstagramEmbed from '@/components/InstagramEmbed';
 import styles from './page.module.css';
 
 export const revalidate = 60;
@@ -31,7 +32,7 @@ export default async function SalonPage({ params }: Props) {
     name, area, areaSlug, category, tags,
     instagramHandle, bookingUrl, websiteUrl, address,
     priceRange, language, verified, notes,
-    priceDetails, photos, relatedSalons,
+    priceDetails, photos, relatedSalons, instagramPostUrls,
   } = salon.fields;
 
   const igUrl = `https://www.instagram.com/${instagramHandle}/`;
@@ -152,7 +153,7 @@ export default async function SalonPage({ params }: Props) {
             <div className={styles.noPhotos}>
               <p>Photos coming soon.</p>
               <a
-                href="https://forms.gle/DLBDikk6Do6LHSxu6"
+                href="https://tally.so/r/MeQr8l"
                 target="_blank"
                 rel="noopener"
                 className={styles.photoSubmitLink}
@@ -297,6 +298,11 @@ export default async function SalonPage({ params }: Props) {
               ))}
             </div>
           </section>
+        )}
+
+        {/* ── INSTAGRAM POSTS ── */}
+        {instagramPostUrls && instagramPostUrls.length > 0 && (
+          <InstagramEmbed postUrls={instagramPostUrls} salonName={name} />
         )}
 
         {/* ── BACK ── */}

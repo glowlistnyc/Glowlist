@@ -44,11 +44,12 @@ export interface SalonFields {
   verified: boolean;
   notes?: string;
   heroImage?: ContentfulImage;
-  photos?: ContentfulImage[];      // サロン公式写真
-  relatedSalons?: Salon[];         // 他店舗・同チェーン店
+  photos?: ContentfulImage[];
+  instagramPostUrls?: string[];      // 許可済みIG投稿URL（例: https://www.instagram.com/p/XXX/）
+  relatedSalons?: Salon[];
   seoTitle?: string;
   seoDescription?: string;
-  featured: boolean;               // Community Picksに表示
+  featured: boolean;
 }
 
 export interface Salon {

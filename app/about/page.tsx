@@ -65,7 +65,7 @@ export default function AboutPage() {
           <div className={styles.ctaGrid}>
             {[
               { label: 'Submit a Spot', href: 'https://forms.gle/VmLJBtzQ3tXpjFri9', desc: 'Know a salon that should be on Glowlist?' },
-              { label: 'Photo Drop', href: 'https://forms.gle/DLBDikk6Do6LHSxu6', desc: 'Share your nail or lash photos.' },
+              { label: 'Photo Drop', href: 'https://tally.so/r/MeQr8l', desc: 'Share your nail or lash photos.' },
               { label: 'Report an update', href: 'https://forms.gle/U8ame9qVVGbc4gpn9', desc: 'Prices or details changed?' },
               { label: 'Follow @glowlist_nyc', href: 'https://www.instagram.com/glowlist_nyc/', desc: 'New spots, picks, and behind-the-scenes.' },
             ].map((a) => (

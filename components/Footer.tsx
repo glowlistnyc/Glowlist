@@ -16,11 +16,13 @@ export default function Footer() {
             <Link href="/area">By Area</Link>
             <Link href="/service">By Service</Link>
             <Link href="/blog">Blog</Link>
+            <Link href="/about">About</Link>
+            <Link href="/disclaimer">Disclaimer</Link>
           </div>
           <div>
             <p className={styles.colTitle}>Contribute</p>
             <a href="https://forms.gle/VmLJBtzQ3tXpjFri9" target="_blank" rel="noopener">Submit a Spot</a>
-            <a href="https://forms.gle/DLBDikk6Do6LHSxu6" target="_blank" rel="noopener">Photo Drop</a>
+            <a href="https://tally.so/r/MeQr8l" target="_blank" rel="noopener">Photo Drop</a>
             <a href="https://forms.gle/U8ame9qVVGbc4gpn9" target="_blank" rel="noopener">Report Update</a>
           </div>
           <div>
