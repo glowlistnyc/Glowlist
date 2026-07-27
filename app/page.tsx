@@ -90,39 +90,39 @@ export default async function HomePage() {
               alt: 'Japanese gel nails NYC',
               title: 'Japanese Gel Nails',
               sub: 'Soft, minimal, long-lasting',
+              // Unsplash写真を維持（ユーザー指定）
             },
             {
               href: '/service/korean-lash-lift',
-              img: 'https://images.unsplash.com/photo-1542833807-ad5af0977050?w=600&q=75&auto=format&fit=crop&crop=top',
-              alt: 'Lash lift NYC',
+              img: '/images/services/korean-lash-lift.jpg',
+              alt: 'Korean lash lift NYC',
               title: 'Korean Lash Lift',
               sub: 'Natural curl, 6–8 weeks',
-              filter: 'brightness(.65) contrast(1.15) saturate(.75)',
             },
             {
               href: '/service/lash-extensions',
-              img: 'https://images.unsplash.com/photo-1639629509821-c54cdd984227?w=600&q=75&auto=format&fit=crop&crop=top',
+              img: '/images/services/lash-extensions.jpg',
               alt: 'Lash extensions NYC',
               title: 'Lash Extensions',
               sub: 'Classic, hybrid, volume',
             },
             {
               href: '/service/brow-lamination',
-              img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=75&auto=format&fit=crop&crop=top',
+              img: '/images/services/brow-lamination.jpg',
               alt: 'Brow lamination NYC',
               title: 'Brow Lamination',
               sub: 'Fluffy brows, 8 weeks',
             },
             {
               href: '/service/head-spa',
-              img: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=75&auto=format&fit=crop',
+              img: '/images/services/head-spa.jpg',
               alt: 'Head spa NYC',
               title: 'Head Spa',
               sub: 'Japanese scalp care',
             },
             {
               href: '/service/gel-x-extensions',
-              img: 'https://images.unsplash.com/photo-1604002396483-18764f53abf2?w=600&q=75&auto=format&fit=crop',
+              img: '/images/services/gel-x-extensions.jpg',
               alt: 'Gel-X extensions NYC',
               title: 'Gel-X Extensions',
               sub: 'Soft gel, no damage',
@@ -137,7 +137,7 @@ export default async function HomePage() {
                   sizes="(max-width: 768px) 50vw, 33vw"
                   style={{
                     objectFit: 'cover',
-                    filter: svc.filter ?? 'brightness(.72) contrast(1.08) saturate(.82)',
+                    filter: 'brightness(.72) contrast(1.08) saturate(.82)',
                   }}
                 />
                 <div className={styles.svcImgOverlay} />
@@ -231,16 +231,22 @@ export default async function HomePage() {
           <div className={styles.communityActions}>
             {[
               { label: 'Submit a Spot', desc: 'Know a great nail or lash salon? Add it to Glowlist.', href: 'https://forms.gle/VmLJBtzQ3tXpjFri9' },
-              { label: 'Glowlist Photo Drop ✨', desc: 'Got your nails or lashes done? Share a photo — anonymously OK.', href: 'https://tally.so/r/MeQr8l' },
+              { label: 'Glowlist Photo Drop ✨', desc: 'Got your nails or lashes done? Share a photo — anonymously OK.', href: 'https://forms.gle/DLBDikk6Do6LHSxu6' },
               { label: 'Report an Update', desc: 'Price, hours, or something changed? Let us know.', href: 'https://forms.gle/U8ame9qVVGbc4gpn9' },
               { label: 'Follow on Instagram', desc: '@glowlist_nyc — new spots, picks, and behind-the-scenes.', href: 'https://www.instagram.com/glowlist_nyc/' },
             ].map((a) => (
-              <a key={a.label} href={a.href} target="_blank" rel="noopener" className={styles.ca}>
-                <div>
-                  <h3>{a.label}</h3>
-                  <p>{a.desc}</p>
-                </div>
-                <span>→</span>
+              <a
+                key={a.label}
+                href={a.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.ca}
+              >
+                <span className={styles.caText}>
+                  <span className={styles.caTitle}>{a.label}</span>
+                  <span className={styles.caDesc}>{a.desc}</span>
+                </span>
+                <span className={styles.caArrow}>→</span>
               </a>
             ))}
           </div>

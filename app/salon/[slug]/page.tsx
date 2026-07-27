@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllSalons, getSalonBySlug } from '@/lib/contentful';
 import InstagramEmbed from '@/components/InstagramEmbed';
+import SalonReviews from '@/components/SalonReviews';
 import styles from './page.module.css';
 
 export const revalidate = 60;
@@ -36,6 +37,11 @@ export default async function SalonPage({ params }: Props) {
   } = salon.fields;
 
   const igUrl = `https://www.instagram.com/${instagramHandle}/`;
+  const reviewUrl = new URL('https://tally.so/r/MeQr8l');
+  reviewUrl.searchParams.set('salon_id', salon.fields.slug);
+  reviewUrl.searchParams.set('salon_name', name);
+  reviewUrl.searchParams.set('source', 'glowlist-salon-page');
+
   const mapQuery = address
     ? encodeURIComponent(address)
     : encodeURIComponent(`${name} ${area} New York`);
@@ -96,7 +102,15 @@ export default async function SalonPage({ params }: Props) {
               <a href={bookingUrl} target="_blank" rel="noopener" className={styles.ctaPrimary}>
                 Book Now →
               </a>
-              <a href={igUrl} target="_blank" rel="noopener" className={styles.ctaGhost}>
+              <a
+                href={reviewUrl.toString()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.ctaGhost}
+              >
+                Write a Review ↗
+              </a>
+              <a href={igUrl} target="_blank" rel="noopener noreferrer" className={styles.ctaGhost}>
                 Instagram ↗
               </a>
               {websiteUrl && (
@@ -153,9 +167,9 @@ export default async function SalonPage({ params }: Props) {
             <div className={styles.noPhotos}>
               <p>Photos coming soon.</p>
               <a
-                href="https://tally.so/r/MeQr8l"
+                href="https://forms.gle/DLBDikk6Do6LHSxu6"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 className={styles.photoSubmitLink}
               >
                 Submit a photo via Glowlist Photo Drop ✨
@@ -267,6 +281,9 @@ export default async function SalonPage({ params }: Props) {
             Book at {name} →
           </a>
         </section>
+
+        {/* ── COMMUNITY REVIEWS ── */}
+        <SalonReviews salonId={salon.fields.slug} salonName={name} />
 
         {/* ── OTHER LOCATIONS ── */}
         {relatedSalons && relatedSalons.length > 0 && (

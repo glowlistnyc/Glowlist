@@ -202,3 +202,23 @@ NEXT_PUBLIC_SITE_URL=https://glowlistnyc.com
 2. Photos / Hero Imageを差し替えてPublish
 
 **エンジニア不要で全部できます。**
+
+---
+
+## Instagram投稿をサロンページに表示する
+
+Salon content modelに一度だけ次のフィールドを追加します。
+
+| Field name | Field ID | Type |
+|---|---|---|
+| Instagram Post URLs | `instagramPostUrls` | Short text, list |
+
+各Salon entryで、許可を得た公開Instagram投稿のURLを2〜3件まで追加してPublishします。
+
+例：
+
+```text
+https://www.instagram.com/p/XXXXXXXXXXX/
+```
+
+非公開投稿、削除済み投稿、埋め込みを許可していない投稿は表示されません。

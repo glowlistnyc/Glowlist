@@ -290,9 +290,20 @@
   color: var(--beige);
 }
 .ca:hover { background: var(--navy-l); }
-.ca h3 { font-size: .95rem; font-weight: 400; margin-bottom: .25rem; }
-.ca p { font-size: .78rem; color: var(--beige-s); font-weight: 300; }
-.ca span { font-family: var(--serif); font-size: 1.3rem; color: var(--beige-s); flex-shrink: 0; }
+.caText {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  min-width: 0;
+}
+.caTitle { font-size: .95rem; font-weight: 400; color: var(--beige); }
+.caDesc { font-size: .78rem; color: var(--beige-s); font-weight: 300; }
+.caArrow {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  color: var(--beige-s);
+  flex-shrink: 0;
+}
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
