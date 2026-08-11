@@ -58,6 +58,7 @@ export default function Nav() {
         </li>
         <li><Link href="/blog">Blog</Link></li>
         <li><Link href="/about">About</Link></li>
+        <li><Link href="/contact">Contact</Link></li>
         <li>
           <a href="https://www.instagram.com/glowlist_nyc/" target="_blank" rel="noopener">
             Instagram ↗

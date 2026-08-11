@@ -230,23 +230,17 @@ export default async function HomePage() {
           </div>
           <div className={styles.communityActions}>
             {[
-              { label: 'Submit a Spot', desc: 'Know a great nail or lash salon? Add it to Glowlist.', href: 'https://forms.gle/VmLJBtzQ3tXpjFri9' },
-              { label: 'Glowlist Photo Drop ✨', desc: 'Got your nails or lashes done? Share a photo — anonymously OK.', href: 'https://forms.gle/DLBDikk6Do6LHSxu6' },
+              { label: 'Write a Review ✨', desc: 'Share your experience. Helps others find the right spot.', href: 'https://tally.so/r/MeQr8l' },
               { label: 'Report an Update', desc: 'Price, hours, or something changed? Let us know.', href: 'https://forms.gle/U8ame9qVVGbc4gpn9' },
               { label: 'Follow on Instagram', desc: '@glowlist_nyc — new spots, picks, and behind-the-scenes.', href: 'https://www.instagram.com/glowlist_nyc/' },
+              { label: 'Contact Us', desc: 'Questions or feedback? We\'d love to hear from you.', href: '/contact' },
             ].map((a) => (
-              <a
-                key={a.label}
-                href={a.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.ca}
-              >
-                <span className={styles.caText}>
-                  <span className={styles.caTitle}>{a.label}</span>
-                  <span className={styles.caDesc}>{a.desc}</span>
-                </span>
-                <span className={styles.caArrow}>→</span>
+              <a key={a.label} href={a.href} target={a.href.startsWith('http') ? '_blank' : undefined} rel={a.href.startsWith('http') ? 'noopener' : undefined} className={styles.ca}>
+                <div>
+                  <h3>{a.label}</h3>
+                  <p>{a.desc}</p>
+                </div>
+                <span>→</span>
               </a>
             ))}
           </div>

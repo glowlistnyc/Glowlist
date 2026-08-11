@@ -41,7 +41,20 @@ export default function DisclaimerPage() {
         </section>
 
         <section className={styles.section}>
-          <h2>3. Third-Party Links and Booking</h2>
+          <h2>3. Third-Party Ratings (Google &amp; Yelp)</h2>
+          <p>
+            Star ratings and review counts displayed on Glowlist NYC are sourced from Google and Yelp via their respective APIs.
+            These ratings are periodically synced and <strong>may not reflect the most current scores</strong> on those platforms.
+            The combined rating shown is a weighted average of available Google and Yelp scores and is provided for general reference only.
+          </p>
+          <p>
+            Glowlist NYC is not affiliated with Google or Yelp and does not guarantee the accuracy, completeness, or currency of any third-party rating data.
+            For the most up-to-date ratings, please visit the salon&rsquo;s Google or Yelp listing directly.
+          </p>
+        </section>
+
+        <section className={styles.section}>
+          <h2>4. Third-Party Links and Booking</h2>
           <p>
             This site links to third-party booking platforms, salon websites, and Instagram profiles.
             These are provided for convenience only.

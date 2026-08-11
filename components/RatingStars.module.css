@@ -1,0 +1,18 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+}
+.sm { font-size: .72rem; }
+.md { font-size: .9rem; }
+.stars { color: #c4a882; letter-spacing: .02em; }
+.score { color: var(--beige); font-weight: 400; }
+.count { color: var(--beige-d); }
+.source {
+  font-size: .6em;
+  color: var(--beige-d);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border: .5px solid var(--border);
+  padding: .05rem .3rem;
+}

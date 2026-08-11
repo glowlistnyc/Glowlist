@@ -1,0 +1,23 @@
+.page { padding: 5rem 5vw; max-width: 900px; }
+.h1 { font-size: clamp(2rem, 4vw, 3rem); color: var(--beige); font-weight: 300; margin-top: .6rem; margin-bottom: 1rem; }
+.sub { font-size: .92rem; color: var(--beige-s); line-height: 1.8; font-weight: 300; margin-bottom: 3rem; max-width: 500px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: var(--border); margin-bottom: 2.5rem; }
+.card { background: var(--navy); padding: 2rem; display: flex; flex-direction: column; gap: .6rem; }
+.cardTitle { font-family: var(--serif); font-size: 1.1rem; color: var(--beige); font-weight: 400; }
+.cardDesc { font-size: .82rem; color: var(--beige-s); line-height: 1.7; font-weight: 300; flex: 1; }
+.emailBtn {
+  display: inline-block;
+  margin-top: .4rem;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--beige-s);
+  border-bottom: .5px solid var(--border-s);
+  text-decoration: none;
+  transition: color .2s;
+  word-break: break-all;
+}
+.emailBtn:hover { color: var(--beige); }
+.note { font-size: .78rem; color: var(--beige-d); line-height: 1.8; }
+.note a { color: var(--beige-d); border-bottom: .5px solid var(--border-s); text-decoration: none; }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }

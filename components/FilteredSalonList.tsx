@@ -62,16 +62,26 @@ export default function FilteredSalonList({ salons }: Props) {
     return Array.from(subs).sort();
   }, [enriched, filters.areaBig]);
 
-  const filtered = useMemo(() => enriched.filter((s) => {
-    if (filters.service !== 'all' && s.fields.category !== filters.service && s.fields.category !== 'both') return false;
-    if (filters.areaBig !== 'all' && s._area.big !== filters.areaBig) return false;
-    if (filters.areaSub !== 'all' && s._area.sub !== filters.areaSub) return false;
-    if (filters.price !== 'all' && s._minPrice !== null) {
-      const [lo, hi] = filters.price.split('-').map(Number);
-      if (s._minPrice < lo || s._minPrice > hi) return false;
-    }
-    return true;
-  }), [enriched, filters]);
+  const filtered = useMemo(() => {
+    const f = enriched.filter((s) => {
+      if (filters.service !== 'all' && s.fields.category !== filters.service && s.fields.category !== 'both') return false;
+      if (filters.areaBig !== 'all' && s._area.big !== filters.areaBig) return false;
+      if (filters.areaSub !== 'all' && s._area.sub !== filters.areaSub) return false;
+      if (filters.price !== 'all' && s._minPrice !== null) {
+        const [lo, hi] = filters.price.split('-').map(Number);
+        if (s._minPrice < lo || s._minPrice > hi) return false;
+      }
+      return true;
+    });
+    // featured → verified → アルファベット順
+    return f.sort((a, b) => {
+      if (a.fields.featured && !b.fields.featured) return -1;
+      if (!a.fields.featured && b.fields.featured) return 1;
+      if (a.fields.verified && !b.fields.verified) return -1;
+      if (!a.fields.verified && b.fields.verified) return 1;
+      return a.fields.name.localeCompare(b.fields.name);
+    });
+  }, [enriched, filters]);
 
   function setFilter<K extends keyof FilterState>(key: K, val: FilterState[K]) {
     setFilters((prev) => ({

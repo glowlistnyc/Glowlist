@@ -28,25 +28,33 @@ export interface PriceCategory {
 }
 
 export interface SalonFields {
-  name: string;                    // サロン名
-  slug: string;                    // URL: /salon/mellow-bar
+  name: string;
+  slug: string;
   category: 'nails' | 'lashes' | 'both';
-  area: string;                    // 表示用エリア名 (e.g. "SoHo / West Village")
-  areaSlug: string;                // URLスラッグ (e.g. "soho")
-  tags: string[];                  // ["Japanese gel", "Kokoist", "HEMA-free"]
-  instagramHandle: string;         // mellowbarnyc (@ なし)
+  area: string;
+  areaSlug: string;
+  tags: string[];
+  instagramHandle: string;
   bookingUrl: string;
-  websiteUrl?: string;             // 公式HP URL
-  address?: string;                // 住所 (e.g. "120 Sullivan St, New York, NY 10012")
-  priceRange: string;              // "From $70" など
-  language?: string;               // "Japanese-speaking" など
-  priceDetails: PriceCategory[];   // 料金表 (JSONフィールド)
+  websiteUrl?: string;
+  address?: string;
+  priceRange: string;
+  language?: string;
+  priceDetails: PriceCategory[];
   verified: boolean;
   notes?: string;
   heroImage?: ContentfulImage;
   photos?: ContentfulImage[];
-  instagramPostUrls?: string[];      // 許可済みIG投稿URL（例: https://www.instagram.com/p/XXX/）
+  instagramPostUrls?: string[];
   relatedSalons?: Salon[];
+  // ── 外部レーティング（Google / Yelp） ──
+  googleRating?: number;        // 0.0–5.0
+  googleReviewCount?: number;
+  googlePlaceId?: string;       // sync-ratings.js で使用
+  yelpRating?: number;          // 0.0–5.0
+  yelpReviewCount?: number;
+  yelpBusinessId?: string;      // sync-ratings.js で使用
+  ratingsLastSynced?: string;   // ISO date: いつ同期したか
   seoTitle?: string;
   seoDescription?: string;
   featured: boolean;

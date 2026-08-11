@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sync:salons": "node scripts/syncSalonsToSupabase.mjs"
+    "sync:ratings": "node scripts/sync-ratings.js",
+    "setup:contentful": "node scripts/setup-contentful.js",
+    "import:salons": "node scripts/import-salons.js"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^15.22.0",

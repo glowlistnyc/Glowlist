@@ -1,11 +1,16 @@
 import Link from 'next/link';
 import type { Salon } from '@/types';
+import RatingStars from './RatingStars';
 import styles from './SalonCard.module.css';
 
 interface Props { salon: Salon }
 
 export default function SalonCard({ salon }: Props) {
-  const { name, slug, category, area, tags, instagramHandle, bookingUrl, priceRange, language, verified } = salon.fields;
+  const {
+    name, slug, category, area, tags, instagramHandle, bookingUrl,
+    priceRange, language, verified,
+    googleRating, googleReviewCount, yelpRating, yelpReviewCount,
+  } = salon.fields;
   const igUrl = `https://www.instagram.com/${instagramHandle}/`;
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -16,6 +21,14 @@ export default function SalonCard({ salon }: Props) {
           {name}
           {verified && <span className={styles.badge}>Verified</span>}
         </span>
+        {/* 星評価（Google + Yelp 融合） */}
+        <RatingStars
+          googleRating={googleRating}
+          googleReviewCount={googleReviewCount}
+          yelpRating={yelpRating}
+          yelpReviewCount={yelpReviewCount}
+          size="sm"
+        />
         <span className={styles.meta}>
           {area} · {cap(category)}
           {language && ` · ${language}`}

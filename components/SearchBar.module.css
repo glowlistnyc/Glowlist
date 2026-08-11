@@ -8,14 +8,14 @@
 .inputRow {
   display: flex;
   align-items: center;
-  background: rgba(224,212,188,.06);
+  background: var(--navy-l);
   border: 1px solid var(--border-s);
-  transition: border-color .2s, background .2s;
+  transition: border-color .2s;
   gap: 0;
 }
 .inputRow:focus-within {
   border-color: var(--beige-s);
-  background: rgba(224,212,188,.1);
+  background: var(--navy-l);
 }
 
 .icon {
