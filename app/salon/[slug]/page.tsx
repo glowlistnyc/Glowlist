@@ -3,8 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllSalons, getSalonBySlug } from '@/lib/contentful';
+import { getApprovedReviews } from '@/lib/supabase';
 import InstagramEmbed from '@/components/InstagramEmbed';
 import RatingStars from '@/components/RatingStars';
+import ReviewSection from '@/components/ReviewSection';
 import styles from './page.module.css';
 
 export const revalidate = 60;
@@ -26,7 +28,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SalonPage({ params }: Props) {
-  const salon = await getSalonBySlug(params.slug);
+  const [salon, reviews] = await Promise.all([
+    getSalonBySlug(params.slug),
+    getApprovedReviews(params.slug),
+  ]);
   if (!salon) notFound();
 
   const {
@@ -122,203 +127,181 @@ export default async function SalonPage({ params }: Props) {
 
       <div className="divider" />
 
-      {/* ── BODY ── */}
-      <div className={styles.body}>
+      {/* ── 2カラムレイアウト（PC: 左=メイン, 右=レビュー+IG / SP: 縦並び） ── */}
+      <div className={styles.twoCol}>
 
-        {/* ── PHOTOS ── */}
-        {photos && photos.length > 0 && (
-          <section className={styles.photoSection}>
-            <h2 className={styles.sectionTitle}>Photos</h2>
-            <div className={styles.photoGrid}>
-              {photos.map((photo, i) => (
-                <div key={i} className={styles.photoWrap}>
-                  <Image
-                    src={`https:${photo.fields.file.url}`}
-                    alt={photo.fields.description ?? `${name} — photo ${i + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
-              ))}
-            </div>
-            {/* 
-              ── PHOTO UPLOAD GUIDE (Contentful) ──
-              サロン写真を追加するには：
-              1. contentful.com にログイン
-              2. Content → 該当サロンのエントリを開く
-              3. "Photos" フィールドに画像をアップロード
-              4. Publish → 60秒後に自動反映
+        {/* ── LEFT: メインコンテンツ ── */}
+        <div className={styles.mainCol}>
 
-              ユーザー投稿写真を表示するには：
-              1. Google Formsでユーザーから写真を収集
-              2. 収集した写真を確認・許可取得後にContentfulのPhotosフィールドに追加
-              3. Publish → 自動反映
-            */}
-          </section>
-        )}
-
-        {photos && photos.length === 0 && (
-          <section className={styles.photoSection}>
-            <h2 className={styles.sectionTitle}>Photos</h2>
-            <div className={styles.noPhotos}>
-              <p>Photos coming soon.</p>
-              <a
-                href="https://tally.so/r/MeQr8l"
-                target="_blank"
-                rel="noopener"
-                className={styles.photoSubmitLink}
-              >
-                Submit a photo via Glowlist Photo Drop ✨
-              </a>
-            </div>
-          </section>
-        )}
-
-        {/* ── BASIC INFO ── */}
-        <section className={styles.infoSection}>
-          <h2 className={styles.sectionTitle}>Basic Information</h2>
-          <table className={styles.infoTable}>
-            <tbody>
-              <tr>
-                <td className={styles.infoLabel}>Category</td>
-                <td className={styles.infoVal}>{cap(category)}</td>
-              </tr>
-              <tr>
-                <td className={styles.infoLabel}>Area</td>
-                <td className={styles.infoVal}>{area}</td>
-              </tr>
-              {address && (
-                <tr>
-                  <td className={styles.infoLabel}>Address</td>
-                  <td className={styles.infoVal}>
-                    <a href={mapUrl} target="_blank" rel="noopener" className={styles.infoLink}>
-                      {address} ↗
-                    </a>
-                  </td>
-                </tr>
-              )}
-              {language && (
-                <tr>
-                  <td className={styles.infoLabel}>Language</td>
-                  <td className={styles.infoVal}>{language}</td>
-                </tr>
-              )}
-              {priceRange && (
-                <tr>
-                  <td className={styles.infoLabel}>Price</td>
-                  <td className={styles.infoVal}>{priceRange}</td>
-                </tr>
-              )}
-              {websiteUrl && (
-                <tr>
-                  <td className={styles.infoLabel}>Website</td>
-                  <td className={styles.infoVal}>
-                    <a href={websiteUrl} target="_blank" rel="noopener" className={styles.infoLink}>
-                      {websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗
-                    </a>
-                  </td>
-                </tr>
-              )}
-              <tr>
-                <td className={styles.infoLabel}>Instagram</td>
-                <td className={styles.infoVal}>
-                  <a href={igUrl} target="_blank" rel="noopener" className={styles.infoLink}>
-                    @{instagramHandle} ↗
-                  </a>
-                </td>
-              </tr>
-              {notes && (
-                <tr>
-                  <td className={styles.infoLabel}>Notes</td>
-                  <td className={styles.infoVal}>{notes}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-          <div className={styles.tagRow}>
-            {tags.map((t) => <span key={t} className="tag">{t}</span>)}
-          </div>
-          {address && (
-            <a href={mapUrl} target="_blank" rel="noopener" className={styles.mapLink}>
-              Open in Google Maps ↗
-            </a>
-          )}
-        </section>
-
-        {/* ── PRICES ── */}
-        <section className={styles.priceSection}>
-          <h2 className={styles.sectionTitle}>Prices</h2>
-          {priceDetails && priceDetails.length > 0 ? (
-            priceDetails.map((cat) => (
-              <div key={cat.category} className={styles.priceCat}>
-                <p className={styles.priceCatTitle}>{cat.category}</p>
-                {cat.items.map((item) => (
-                  <div key={item.service} className={styles.priceRow}>
-                    <span className={styles.priceSvc}>{item.service}</span>
-                    <span className={styles.priceAmt}>{item.price}</span>
+          {/* PHOTOS */}
+          {photos && photos.length > 0 && (
+            <section className={styles.photoSection}>
+              <h2 className={styles.sectionTitle}>Photos</h2>
+              <div className={styles.photoGrid}>
+                {photos.map((photo, i) => (
+                  <div key={i} className={styles.photoWrap}>
+                    <Image
+                      src={`https:${photo.fields.file.url}`}
+                      alt={photo.fields.description ?? `${name} — photo ${i + 1}`}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                      style={{ objectFit: 'cover' }}
+                    />
                   </div>
                 ))}
               </div>
-            ))
-          ) : (
-            <p className={styles.noPrice}>
-              Pricing not listed.{' '}
-              <a href={websiteUrl ?? bookingUrl} target="_blank" rel="noopener">
-                Check their site
-              </a>{' '}
-              for current prices.
-            </p>
+            </section>
           )}
-          <p className={styles.disclaimer}>
-            Prices sourced from public menus and may not reflect current rates. Confirm directly before booking.
-          </p>
-          <a href={bookingUrl} target="_blank" rel="noopener" className={styles.bookBtn}>
-            Book at {name} →
-          </a>
-        </section>
 
-        {/* ── OTHER LOCATIONS ── */}
-        {relatedSalons && relatedSalons.length > 0 && (
-          <section className={styles.relatedSection}>
-            <h2 className={styles.sectionTitle}>Other locations</h2>
-            <div className={styles.relatedGrid}>
-              {relatedSalons.map((related) => (
-                <Link
-                  key={related.sys.id}
-                  href={`/salon/${related.fields.slug}`}
-                  className={styles.relatedCard}
-                >
-                  <div className={styles.relatedCardInner}>
-                    <p className={styles.relatedName}>{related.fields.name}</p>
-                    <p className={styles.relatedMeta}>
-                      {related.fields.area}
-                      {related.fields.address && (
-                        <span className={styles.relatedAddress}>
-                          {related.fields.address}
-                        </span>
-                      )}
-                    </p>
-                    {related.fields.priceRange && (
-                      <p className={styles.relatedPrice}>{related.fields.priceRange}</p>
-                    )}
-                  </div>
-                  <span className={styles.relatedArrow}>→</span>
-                </Link>
-              ))}
-            </div>
+          {/* BASIC INFO */}
+          <section className={styles.infoSection}>
+            <h2 className={styles.sectionTitle}>Basic Information</h2>
+            <table className={styles.infoTable}>
+              <tbody>
+                <tr><td className={styles.infoLabel}>Category</td><td className={styles.infoVal}>{cap(category)}</td></tr>
+                <tr><td className={styles.infoLabel}>Area</td><td className={styles.infoVal}>{area}</td></tr>
+                {address && (
+                  <tr>
+                    <td className={styles.infoLabel}>Address</td>
+                    <td className={styles.infoVal}>
+                      <a href={mapUrl} target="_blank" rel="noopener" className={styles.infoLink}>{address} ↗</a>
+                    </td>
+                  </tr>
+                )}
+                {language && <tr><td className={styles.infoLabel}>Language</td><td className={styles.infoVal}>{language}</td></tr>}
+                {priceRange && <tr><td className={styles.infoLabel}>Price</td><td className={styles.infoVal}>{priceRange}</td></tr>}
+                {websiteUrl && (
+                  <tr>
+                    <td className={styles.infoLabel}>Website</td>
+                    <td className={styles.infoVal}><a href={websiteUrl} target="_blank" rel="noopener" className={styles.infoLink}>{websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗</a></td>
+                  </tr>
+                )}
+                <tr>
+                  <td className={styles.infoLabel}>Instagram</td>
+                  <td className={styles.infoVal}><a href={igUrl} target="_blank" rel="noopener" className={styles.infoLink}>@{instagramHandle} ↗</a></td>
+                </tr>
+                {notes && <tr><td className={styles.infoLabel}>Notes</td><td className={styles.infoVal}>{notes}</td></tr>}
+              </tbody>
+            </table>
+            <div className={styles.tagRow}>{tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
+            {address && <a href={mapUrl} target="_blank" rel="noopener" className={styles.mapLink}>Open in Google Maps ↗</a>}
           </section>
-        )}
 
-        {/* ── INSTAGRAM POSTS ── */}
-        {instagramPostUrls && instagramPostUrls.length > 0 && (
-          <InstagramEmbed postUrls={instagramPostUrls} salonName={name} />
-        )}
+          {/* PRICES */}
+          <section className={styles.priceSection}>
+            <h2 className={styles.sectionTitle}>Prices</h2>
+            {priceDetails && priceDetails.length > 0 ? (
+              priceDetails.map((cat) => (
+                <div key={cat.category} className={styles.priceCat}>
+                  <p className={styles.priceCatTitle}>{cat.category}</p>
+                  {cat.items.map((item) => (
+                    <div key={item.service} className={styles.priceRow}>
+                      <span className={styles.priceSvc}>{item.service}</span>
+                      <span className={styles.priceAmt}>{item.price}</span>
+                    </div>
+                  ))}
+                </div>
+              ))
+            ) : (
+              <p className={styles.noPrice}>
+                Pricing not listed.{' '}
+                <a href={websiteUrl ?? bookingUrl} target="_blank" rel="noopener">Check their site</a> for current prices.
+              </p>
+            )}
+            <p className={styles.disclaimer}>
+              Prices sourced from public menus and may not reflect current rates. Confirm directly before booking.
+            </p>
+            <a href={bookingUrl} target="_blank" rel="noopener" className={styles.bookBtn}>
+              Book at {name} →
+            </a>
+          </section>
 
-        {/* ── BACK ── */}
-        <div className={styles.backLink}>
-          <Link href="/#spots" className="btn btn-ghost">← Back to all spots</Link>
+          {/* OTHER LOCATIONS */}
+          {relatedSalons && relatedSalons.length > 0 && (
+            <section className={styles.relatedSection}>
+              <h2 className={styles.sectionTitle}>Other locations</h2>
+              <div className={styles.relatedGrid}>
+                {relatedSalons.map((related) => (
+                  <Link key={related.sys.id} href={`/salon/${related.fields.slug}`} className={styles.relatedCard}>
+                    <div className={styles.relatedCardInner}>
+                      <p className={styles.relatedName}>{related.fields.name}</p>
+                      <p className={styles.relatedMeta}>
+                        {related.fields.area}
+                        {related.fields.address && <span className={styles.relatedAddress}>{related.fields.address}</span>}
+                      </p>
+                      {related.fields.priceRange && <p className={styles.relatedPrice}>{related.fields.priceRange}</p>}
+                    </div>
+                    <span className={styles.relatedArrow}>→</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <div className={styles.backLink}>
+            <Link href="/#spots" className="btn btn-ghost">← Back to all spots</Link>
+          </div>
         </div>
+
+        {/* ── RIGHT: レビュー + IG ── */}
+        <aside className={styles.sideCol}>
+
+          {/* Google + Yelp 総合評価 */}
+          <div className={styles.ratingCard}>
+            <h2 className={styles.sectionTitle}>Ratings</h2>
+            {(googleRating || yelpRating) ? (
+              <>
+                <div className={styles.ratingMain}>
+                  <RatingStars
+                    googleRating={googleRating}
+                    googleReviewCount={googleReviewCount}
+                    yelpRating={yelpRating}
+                    yelpReviewCount={yelpReviewCount}
+                    size="md"
+                    showSources
+                  />
+                </div>
+                <div className={styles.ratingBreakdown}>
+                  {googleRating && (
+                    <div className={styles.ratingSource}>
+                      <span className={styles.ratingSourceName}>Google</span>
+                      <span className={styles.ratingSourceVal}>★ {googleRating} ({googleReviewCount?.toLocaleString()})</span>
+                    </div>
+                  )}
+                  {yelpRating && (
+                    <div className={styles.ratingSource}>
+                      <span className={styles.ratingSourceName}>Yelp</span>
+                      <span className={styles.ratingSourceVal}>★ {yelpRating} ({yelpReviewCount?.toLocaleString()})</span>
+                    </div>
+                  )}
+                </div>
+                {ratingsLastSynced && (
+                  <p className={styles.ratingUpdated}>
+                    Updated {new Date(ratingsLastSynced).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                    {' · '}<Link href="/disclaimer" className={styles.ratingDisclaimerLink}>Disclaimer</Link>
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className={styles.ratingEmpty}>
+                Google & Yelp ratings will appear here once synced.
+                <br />
+                <span style={{ fontSize: '.65rem', opacity: .7 }}>
+                  Run <code>npm run sync:ratings</code> after setting up API keys.
+                </span>
+              </p>
+            )}
+          </div>
+
+          {/* コミュニティレビュー (Supabase) */}
+          <ReviewSection reviews={reviews} />
+
+          {/* Instagram 投稿 */}
+          {instagramPostUrls && instagramPostUrls.length > 0 && (
+            <InstagramEmbed postUrls={instagramPostUrls} salonName={name} />
+          )}
+        </aside>
+
       </div>
     </>
   );

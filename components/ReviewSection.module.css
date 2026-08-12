@@ -1,0 +1,130 @@
+.wrap {
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: .7rem;
+  border-bottom: .5px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  color: var(--beige);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.count {
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: var(--beige-d);
+  background: var(--beige-f2);
+  border: .5px solid var(--border);
+  padding: .1rem .45rem;
+  font-family: var(--sans);
+}
+
+.writeBtn {
+  font-size: .67rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--beige-s);
+  border-bottom: .5px solid var(--border-s);
+  text-decoration: none;
+  transition: color .2s;
+  white-space: nowrap;
+}
+.writeBtn:hover { color: var(--beige); }
+
+.empty {
+  font-size: .84rem;
+  color: var(--beige-d);
+  line-height: 1.7;
+  padding: 1.5rem 0;
+}
+
+/* ── Review cards - 縦に並ぶ ── */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+}
+
+.card {
+  background: var(--navy-l);
+  padding: 1.3rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  border: .5px solid var(--border);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.reviewerName {
+  font-size: .82rem;
+  color: var(--beige);
+  font-weight: 400;
+}
+
+.date {
+  font-size: .65rem;
+  letter-spacing: .06em;
+  color: var(--beige-d);
+  white-space: nowrap;
+}
+
+.stars {
+  font-size: .9rem;
+  color: #c4a882;
+  letter-spacing: .04em;
+}
+
+.body {
+  font-size: .84rem;
+  color: var(--beige-s);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* 詳細評価 */
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  padding-top: .5rem;
+  border-top: .5px solid var(--beige-f2);
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+}
+
+.detailLabel {
+  font-size: .68rem;
+  letter-spacing: .05em;
+  color: var(--beige-d);
+}
+
+.detailStars {
+  font-size: .7rem;
+  color: #c4a882;
+  letter-spacing: .03em;
+}

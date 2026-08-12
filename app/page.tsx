@@ -78,74 +78,48 @@ export default async function HomePage() {
 
       <div className="divider" />
 
-      {/* ── EXPLORE CATEGORIES ── */}
+      {/* ── EXPLORE CATEGORIES（Contentfulから動的に生成）── */}
       <section className={styles.section} id="explore">
         <span className="sec-label">Start Here</span>
         <h2 className="sec-title">What are you looking for?</h2>
         <div className={styles.serviceGrid}>
-          {[
-            {
-              href: '/service/japanese-gel-nails',
-              img: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=75&auto=format&fit=crop',
-              alt: 'Japanese gel nails NYC',
-              title: 'Japanese Gel Nails',
-              sub: 'Soft, minimal, long-lasting',
-              // Unsplash写真を維持（ユーザー指定）
-            },
-            {
-              href: '/service/korean-lash-lift',
-              img: '/images/services/korean-lash-lift.jpg',
-              alt: 'Korean lash lift NYC',
-              title: 'Korean Lash Lift',
-              sub: 'Natural curl, 6–8 weeks',
-            },
-            {
-              href: '/service/lash-extensions',
-              img: '/images/services/lash-extensions.jpg',
-              alt: 'Lash extensions NYC',
-              title: 'Lash Extensions',
-              sub: 'Classic, hybrid, volume',
-            },
-            {
-              href: '/service/brow-lamination',
-              img: '/images/services/brow-lamination.jpg',
-              alt: 'Brow lamination NYC',
-              title: 'Brow Lamination',
-              sub: 'Fluffy brows, 8 weeks',
-            },
-            {
-              href: '/service/head-spa',
-              img: '/images/services/head-spa.jpg',
-              alt: 'Head spa NYC',
-              title: 'Head Spa',
-              sub: 'Japanese scalp care',
-            },
-            {
-              href: '/service/gel-x-extensions',
-              img: '/images/services/gel-x-extensions.jpg',
-              alt: 'Gel-X extensions NYC',
-              title: 'Gel-X Extensions',
-              sub: 'Soft gel, no damage',
-            },
-          ].map((svc) => (
-            <Link key={svc.href} href={svc.href} className={styles.svcCard}>
-              <div className={styles.svcImg}>
-                <Image
-                  src={svc.img}
-                  alt={svc.alt}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  style={{
-                    objectFit: 'cover',
-                    filter: 'brightness(.72) contrast(1.08) saturate(.82)',
-                  }}
-                />
-                <div className={styles.svcImgOverlay} />
-                <span className={styles.svcLabel}>{svc.title}</span>
-              </div>
-              <p className={styles.svcSub}>{svc.sub}</p>
-            </Link>
-          ))}
+          {services.map((svc) => {
+            // slug → ローカル画像マッピング
+            const LOCAL_IMAGES: Record<string, string> = {
+              'japanese-gel-nails': 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=75&auto=format&fit=crop',
+              'korean-lash-lift':   '/images/services/lash-extensions.jpg',
+              'lash-extensions':    '/images/services/lash-extensions.jpg',
+              'brow-lamination':    '/images/services/brow-lamination.jpg',
+              'head-spa':           '/images/services/head-spa.jpg',
+              'gel-x-extensions':   '/images/services/gel-x-extensions.jpg',
+              'hair-salon':         '/images/services/hair-salon.jpg',
+              'massage':            '/images/services/massage.jpg',
+            };
+            const imgSrc =
+              LOCAL_IMAGES[svc.fields.slug] ||
+              (svc.fields.heroImage
+                ? `https:${svc.fields.heroImage.fields.file.url}`
+                : '/images/services/head-spa.jpg'); // fallback
+            return (
+              <Link key={svc.sys.id} href={`/service/${svc.fields.slug}`} className={styles.svcCard}>
+                <div className={styles.svcImg}>
+                  <Image
+                    src={imgSrc}
+                    alt={`${svc.fields.name} NYC`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    style={{
+                      objectFit: 'cover',
+                      filter: 'brightness(.72) contrast(1.08) saturate(.82)',
+                    }}
+                  />
+                  <div className={styles.svcImgOverlay} />
+                  <span className={styles.svcLabel}>{svc.fields.name}</span>
+                </div>
+                <p className={styles.svcSub}>{svc.fields.shortDescription}</p>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

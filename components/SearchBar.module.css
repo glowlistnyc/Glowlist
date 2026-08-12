@@ -3,6 +3,7 @@
   width: 100%;
   max-width: 660px;
   margin: 0 auto;
+  z-index: 150; /* pills の上に重ねる */
 }
 
 .inputRow {
@@ -116,6 +117,8 @@
   padding: 1rem 1.2rem;
   font-size: .82rem;
   color: var(--beige-d);
+  z-index: 200;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
 }
 
 @media (max-width: 480px) {

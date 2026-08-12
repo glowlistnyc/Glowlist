@@ -110,10 +110,53 @@
 .ctaGhost:hover { background: var(--beige-f2); border-color: var(--beige); }
 
 /* ── BODY ── */
-.body {
-  max-width: 860px;
+/* ── 2カラムレイアウト ── */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 3.5rem;
   padding: 4rem 5vw;
+  max-width: 1280px;
+  align-items: start;
 }
+
+.mainCol {} /* 左: Photos / Basic Info / Prices / Other Locations */
+
+.sideCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  position: sticky;
+  top: 5rem; /* ナビの高さ分 */
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-right: .3rem;
+}
+/* スクロールバーを目立たなく */
+.sideCol::-webkit-scrollbar { width: 3px; }
+.sideCol::-webkit-scrollbar-thumb { background: var(--border-s); }
+
+/* ── Ratings card (右カラム) ── */
+.ratingCard {
+  background: var(--navy-l);
+  border: .5px solid var(--border);
+  padding: 1.4rem 1.6rem;
+}
+.ratingMain { margin-bottom: .8rem; }
+.ratingBreakdown { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .6rem; }
+.ratingSource {
+  display: flex;
+  justify-content: space-between;
+  font-size: .72rem;
+  color: var(--beige-d);
+}
+.ratingSourceName { letter-spacing: .06em; }
+.ratingSourceVal { color: var(--beige-s); }
+.ratingUpdated { font-size: .62rem; color: var(--beige-d); letter-spacing: .04em; margin-top: .4rem; }
+.ratingDisclaimerLink { color: var(--beige-d); border-bottom: .5px solid var(--border); text-decoration: none; }
+.ratingEmpty { font-size: .78rem; color: var(--beige-d); line-height: 1.75; }
+
+/* 既存の .body は削除してtwoColに統合済み */
 
 .sectionTitle {
   font-family: var(--serif);
@@ -309,11 +352,18 @@
 .relatedCard:hover .relatedArrow { transform: translateX(4px); }
 
 /* ── Responsive ── */
+@media (max-width: 1024px) {
+  .twoCol { grid-template-columns: 1fr 300px; gap: 2rem; }
+}
+@media (max-width: 900px) {
+  /* 1カラムに戻す: サイドは下に */
+  .twoCol { grid-template-columns: 1fr; gap: 0; padding: 2.5rem 5vw; }
+  .sideCol { position: static; max-height: none; overflow-y: visible; padding-right: 0; margin-top: 2rem; }
+}
 @media (max-width: 768px) {
   .header { padding: 2rem 5vw 1.8rem; }
   .titleRow { flex-direction: column; gap: 1.5rem; }
   .ctaGroup { width: 100%; }
-  .body { padding: 2.5rem 5vw; }
   .photoGrid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {
