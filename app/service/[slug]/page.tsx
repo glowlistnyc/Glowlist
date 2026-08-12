@@ -27,7 +27,7 @@ export default async function ServicePage({ params }: Props) {
   const svc = await getServiceBySlug(params.slug);
   if (!svc) notFound();
 
-  const salons = await getSalonsByService(svc.fields.tags[0] ?? '');
+  const salons = await getSalonsByService(svc.fields.tags?.[0] ?? '');
 
   const schema = {
     '@context': 'https://schema.org',
@@ -75,3 +75,4 @@ export default async function ServicePage({ params }: Props) {
     </>
   );
 }
+
