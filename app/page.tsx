@@ -64,38 +64,26 @@ export default async function HomePage() {
     <>
       <HomeSchema />
 
-      {/* ── HERO（50vh・新画像）── */}
+      {/* ── HERO（40vh・新画像・ピルなし）── */}
       <section className={styles.hero}>
         <div className={styles.heroImg}>
           <Image
-            src="/images/services/brow-lamination.jpg"
-            alt="Beauty treatment in New York"
+            src="/images/services/gel-x-extensions.jpg"
+            alt="Nail and beauty services in New York"
             fill
             priority
             sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
+            style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
           />
         </div>
         <div className={styles.heroOverlay} />
-
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>
             <span /><T k="hero.eyebrow" /><span />
           </p>
           <h1 className={styles.h1}><T k="hero.title" /></h1>
-
-          {/* 3フィールド検索（エリア・サービス・フリーワード）*/}
           <div className={styles.searchWrap}>
             <AdvancedSearch salons={salons} areas={areas} services={services} />
-          </div>
-
-          {/* クイックピル */}
-          <div className={styles.quickPills}>
-            <Link href="/service/japanese-gel-nails" className={styles.pill}><T k="pills.gelNails" /></Link>
-            <Link href="/service/korean-lash-lift"   className={styles.pill}><T k="pills.lashLift" /></Link>
-            <Link href="/service/lash-extensions"    className={styles.pill}><T k="pills.lashExtensions" /></Link>
-            <Link href="/service/head-spa"            className={styles.pill}><T k="pills.headSpa" /></Link>
-            <Link href="/area"                        className={styles.pill}><T k="pills.browseArea" /></Link>
           </div>
         </div>
       </section>

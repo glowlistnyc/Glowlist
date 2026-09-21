@@ -5,52 +5,50 @@ import type { Salon } from '@/types';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import styles from './SalonCard.module.css';
 
+// カテゴリーラベルの翻訳
+const CATEGORY_LABEL: Record<string, Record<string, string>> = {
+  nails:  { en:'Nails',         ja:'ネイル',         ko:'네일',      'zh-TW':'美甲',     'zh-CN':'美甲' },
+  lashes: { en:'Lashes',        ja:'まつ毛',         ko:'속눈썹',    'zh-TW':'睫毛',     'zh-CN':'睫毛' },
+  both:   { en:'Nails & Lashes',ja:'ネイル＆まつ毛', ko:'네일 & 속눈썹','zh-TW':'美甲＆睫毛','zh-CN':'美甲＆睫毛' },
+};
+
+// 写真なし時のカテゴリー別フォールバック
 const CATEGORY_IMG: Record<string, string> = {
   nails:  'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&q=80&auto=format&fit=crop',
   lashes: '/images/services/korean-lash-lift.jpg',
   both:   'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&q=80&auto=format&fit=crop',
 };
 
-interface Props {
-  salon: Salon;
-  googlePhotoUrl?: string;
-}
+interface Props { salon: Salon; googlePhotoUrl?: string }
 
-function StarDisplay({ rating }: { rating: number }) {
-  const full = Math.min(Math.round(rating), 5);
+function Stars({ n }: { n: number }) {
+  const f = Math.min(Math.round(n), 5);
   return (
-    <span className={styles.stars} aria-label={`${rating} out of 5`}>
-      {'★'.repeat(full)}{'☆'.repeat(5 - full)}
-      <span className={styles.starsNum}>{rating.toFixed(1)}</span>
+    <span className={styles.stars}>
+      {'★'.repeat(f)}{'☆'.repeat(5 - f)}
+      <span className={styles.starsNum}>{n.toFixed(1)}</span>
     </span>
   );
 }
 
 export default function SalonCard({ salon, googlePhotoUrl }: Props) {
-  const { t } = useLanguage();
-  const {
-    name, slug, category, area, tags,
-    instagramHandle, bookingUrl, priceRange,
-    language, verified, photos,
-    googleRating, yelpRating,
-  } = salon.fields;
+  const { t, lang } = useLanguage();
+  const { name, slug, category, area, instagramHandle, bookingUrl,
+          priceRange, language, verified, photos, googleRating, yelpRating } = salon.fields;
 
   const igUrl = `https://www.instagram.com/${instagramHandle}/`;
-
   const photoSrc =
     googlePhotoUrl ||
-    (photos?.[0]?.fields?.file?.url ? `https:${photos[0].fields.file.url}?w=500&h=320&fit=fill` : null) ||
+    (photos?.[0]?.fields?.file?.url ? `https:${photos[0].fields.file.url}?w=500&h=375&fit=fill` : null) ||
     (CATEGORY_IMG[category] ?? CATEGORY_IMG.nails);
 
-  // 表示評価: Google優先 → Yelp
   const displayRating = googleRating || yelpRating;
-  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  const catLabel = (CATEGORY_LABEL[category]?.[lang]) ?? (CATEGORY_LABEL[category]?.['en'] ?? category);
 
   return (
     <article className={styles.card}>
       <Link href={`/salon/${slug}`} className={styles.link}>
-
-        {/* 写真（3:2 コンパクト）*/}
+        {/* 写真 — サービスカードと同じ 4:3 */}
         <div className={styles.photo}>
           <Image
             src={photoSrc}
@@ -59,40 +57,28 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
             sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 25vw"
             style={{ objectFit: 'cover' }}
           />
-          <div className={styles.photoOverlay} />
+          <div className={styles.overlay} />
           {verified && <span className={styles.badge}>{t.card.verified}</span>}
         </div>
 
-        {/* テキスト情報 */}
+        {/* 情報 */}
         <div className={styles.info}>
-          {/* 名前 + 評価 */}
-          <div className={styles.nameRow}>
+          <div className={styles.row}>
             <h3 className={styles.name}>{name}</h3>
-            {displayRating && <StarDisplay rating={displayRating} />}
+            {displayRating && <Stars n={displayRating} />}
           </div>
-
-          {/* エリア */}
           <p className={styles.area}>{area}</p>
-
-          {/* サービス + 言語 バッジ */}
-          <div className={styles.badges}>
-            <span className={styles.serviceTag}>{cap(category)}</span>
+          <div className={styles.tags}>
+            <span className={styles.catTag}>{catLabel}</span>
             {language && <span className={styles.langTag}>{language}</span>}
           </div>
-
-          {/* 価格 */}
-          {priceRange && <span className={styles.price}>{priceRange}</span>}
+          {priceRange && <p className={styles.price}>{priceRange}</p>}
         </div>
       </Link>
 
-      {/* アクション */}
       <div className={styles.actions}>
-        <a href={igUrl} target="_blank" rel="noopener" className={styles.action}>
-          {t.card.instagram} ↗
-        </a>
-        <a href={bookingUrl} target="_blank" rel="noopener" className={`${styles.action} ${styles.actionBook}`}>
-          {t.card.book} ↗
-        </a>
+        <a href={igUrl}     target="_blank" rel="noopener" className={styles.action}>{t.card.instagram} ↗</a>
+        <a href={bookingUrl} target="_blank" rel="noopener" className={`${styles.action} ${styles.bookBtn}`}>{t.card.book} ↗</a>
       </div>
     </article>
   );

@@ -1,76 +1,57 @@
+/* サービスカードと同じルール（4:3・隙間あり）*/
 .card {
   background: var(--navy);
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   overflow: hidden;
   transition: transform .3s cubic-bezier(.25,.1,.25,1), box-shadow .3s;
 }
-.card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,.5); z-index: 2; position: relative; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 16px 44px rgba(0,0,0,.5); z-index: 2; position: relative; }
 
 .link { display: flex; flex-direction: column; flex: 1; text-decoration: none; }
 
-/* 写真 — 3:2 (コンパクト) */
+/* 写真 — 4:3（サービスカードと同じ） */
 .photo {
-  aspect-ratio: 3/2;
-  position: relative;
-  overflow: hidden;
-  background: var(--navy-l);
+  aspect-ratio: 4/3;
+  position: relative; overflow: hidden; background: var(--navy-l);
 }
 .photo img { transition: transform .6s cubic-bezier(.25,.1,.25,1); }
 .card:hover .photo img { transform: scale(1.06); }
 
-.photoOverlay {
+.overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, rgba(26,32,53,.5) 100%);
-  z-index: 1; transition: opacity .3s;
+  background: linear-gradient(to bottom, transparent 35%, rgba(26,32,53,.55) 100%);
+  z-index: 1;
 }
-.card:hover .photoOverlay { opacity: .7; }
 
 .badge {
-  position: absolute; top: .7rem; left: .7rem; z-index: 3;
-  font-size: .5rem; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--beige); background: rgba(26,32,53,.7);
-  border: .5px solid rgba(224,212,188,.25); padding: .15rem .4rem;
-  backdrop-filter: blur(4px);
+  position: absolute; top: .65rem; left: .65rem; z-index: 3;
+  font-size: .48rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--beige); background: rgba(26,32,53,.72);
+  border: .5px solid rgba(224,212,188,.25); padding: .12rem .38rem;
 }
 
-/* テキスト情報 */
-.info { padding: .85rem 1rem .7rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
-
-.nameRow { display: flex; align-items: flex-start; justify-content: space-between; gap: .4rem; }
+/* テキスト */
+.info { padding: .8rem .9rem .6rem; display: flex; flex-direction: column; gap: .28rem; flex: 1; }
+.row  { display: flex; align-items: flex-start; justify-content: space-between; gap: .4rem; }
 .name {
-  font-family: var(--serif); font-size: 1.05rem; color: var(--beige);
+  font-family: var(--serif); font-size: 1rem; color: var(--beige);
   font-weight: 400; line-height: 1.2; flex: 1; min-width: 0;
 }
-
-/* 評価 */
-.stars { font-size: .62rem; color: #c4a882; display: flex; align-items: center; gap: .2rem; white-space: nowrap; flex-shrink: 0; }
-.starsNum { color: var(--beige-s); font-family: var(--sans); letter-spacing: 0; }
-
-.area { font-size: .68rem; color: var(--beige-d); letter-spacing: .06em; }
-
-/* バッジ */
-.badges { display: flex; gap: .3rem; flex-wrap: wrap; }
-.serviceTag {
-  font-size: .58rem; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--beige-d); background: var(--beige-f2); border: .5px solid var(--border);
-  padding: .1rem .4rem;
-}
-.langTag {
-  font-size: .58rem; letter-spacing: .06em; color: var(--beige-s);
-  background: rgba(196,168,130,.12); border: .5px solid rgba(196,168,130,.25);
-  padding: .1rem .4rem;
-}
-
-.price { font-family: var(--serif); font-size: .88rem; color: var(--beige-s); margin-top: auto; padding-top: .2rem; }
+.stars { font-size: .6rem; color: #c4a882; display: flex; align-items: center; gap: .15rem; white-space: nowrap; flex-shrink: 0; }
+.starsNum { color: var(--beige-s); font-family: var(--sans); letter-spacing: 0; font-size: .68rem; }
+.area  { font-size: .65rem; color: var(--beige-d); letter-spacing: .05em; }
+.tags  { display: flex; gap: .28rem; flex-wrap: wrap; }
+.catTag  { font-size: .56rem; letter-spacing: .08em; text-transform: uppercase; color: var(--beige-d); background: var(--beige-f2); border: .5px solid var(--border); padding: .09rem .38rem; }
+.langTag { font-size: .56rem; letter-spacing: .06em; color: var(--beige-s); background: rgba(196,168,130,.12); border: .5px solid rgba(196,168,130,.25); padding: .09rem .38rem; }
+.price { font-family: var(--serif); font-size: .84rem; color: var(--beige-s); margin-top: auto; padding-top: .18rem; }
 
 /* アクション */
 .actions { display: flex; border-top: .5px solid var(--border); }
 .action {
-  flex: 1; text-align: center; padding: .55rem .5rem;
-  font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--beige-d); text-decoration: none; transition: color .2s, background .2s;
+  flex: 1; text-align: center; padding: .5rem .4rem;
+  font-size: .58rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--beige-d); text-decoration: none; transition: color .18s, background .18s;
 }
 .action:first-child { border-right: .5px solid var(--border); }
 .action:hover { color: var(--beige); background: var(--beige-f); }
-.actionBook { color: var(--beige-s); }
+.bookBtn { color: var(--beige-s); }

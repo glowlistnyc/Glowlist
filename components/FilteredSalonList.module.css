@@ -72,8 +72,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  background: var(--border);
+  gap: 12px;           /* サービスカードと同じ隙間 */
 }
 
 .empty {
@@ -99,7 +98,7 @@
   .grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 1.5px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .panel { padding: 1rem; }
 }
 @media (max-width: 400px) {
