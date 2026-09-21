@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Salon } from '@/types';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import styles from './SalonCard.module.css';
 
 // サロン写真がない場合のカテゴリー別フォールバック画像
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function SalonCard({ salon, googlePhotoUrl }: Props) {
+  const { t } = useLanguage();
   const {
     name, slug, category, area,
     tags, instagramHandle, bookingUrl,
@@ -47,7 +49,7 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
 
           {/* バッジ（Verified） */}
           {verified && (
-            <span className={styles.badge}>Verified</span>
+            <span className={styles.badge}>{t.card.verified}</span>
           )}
 
           {/* タグ（写真の上に小さく） */}
@@ -77,21 +79,11 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
 
       {/* ── アクションリンク ── */}
       <div className={styles.actions}>
-        <a
-          href={igUrl}
-          target="_blank"
-          rel="noopener"
-          className={styles.action}
-        >
-          Instagram ↗
+        <a href={igUrl} target="_blank" rel="noopener" className={styles.action}>
+          {t.card.instagram} ↗
         </a>
-        <a
-          href={bookingUrl}
-          target="_blank"
-          rel="noopener"
-          className={`${styles.action} ${styles.actionPrimary}`}
-        >
-          Book ↗
+        <a href={bookingUrl} target="_blank" rel="noopener" className={`${styles.action} ${styles.actionPrimary}`}>
+          {t.card.book} ↗
         </a>
       </div>
     </article>

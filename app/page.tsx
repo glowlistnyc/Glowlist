@@ -7,6 +7,7 @@ import { getPlaceFirstPhoto } from '@/lib/googlePlaces';
 import FilteredSalonList from '@/components/FilteredSalonList';
 import SearchBar from '@/components/SearchBar';
 import LPMapSection from '@/components/LPMapSection';
+import T from '@/components/T';
 import styles from './page.module.css';
 
 export const revalidate = 300;
@@ -81,19 +82,19 @@ export default async function HomePage() {
         {/* コンテンツ */}
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>
-            <span />Asian-inspired Beauty · New York<span />
+            <span /><T k="hero.eyebrow" /><span />
           </p>
           <h1 className={styles.h1}>
-            Find your next<br /><em>beauty spot in NYC.</em>
+            <T k="hero.title" />
           </h1>
 
-          {/* クイックピル（検索ボックスの上） */}
+          {/* クイックピル */}
           <div className={styles.quickPills}>
-            <Link href="/service/japanese-gel-nails" className={styles.pill}>Gel Nails</Link>
-            <Link href="/service/korean-lash-lift" className={styles.pill}>Lash Lift</Link>
-            <Link href="/service/lash-extensions" className={styles.pill}>Lash Extensions</Link>
-            <Link href="/service/head-spa" className={styles.pill}>Head Spa</Link>
-            <Link href="/area" className={styles.pill}>Browse by Area</Link>
+            <Link href="/service/japanese-gel-nails" className={styles.pill}><T k="pills.gelNails" /></Link>
+            <Link href="/service/korean-lash-lift" className={styles.pill}><T k="pills.lashLift" /></Link>
+            <Link href="/service/lash-extensions" className={styles.pill}><T k="pills.lashExtensions" /></Link>
+            <Link href="/service/head-spa" className={styles.pill}><T k="pills.headSpa" /></Link>
+            <Link href="/area" className={styles.pill}><T k="pills.browseArea" /></Link>
           </div>
 
           {/* 検索バー */}
@@ -105,10 +106,10 @@ export default async function HomePage() {
 
       <div className="divider" />
 
-      {/* ── EXPLORE CATEGORIES（Contentfulから動的に生成）── */}
+      {/* ── EXPLORE CATEGORIES ── */}
       <section className={styles.section} id="explore">
-        <span className="sec-label">Start Here</span>
-        <h2 className="sec-title">What are you looking for?</h2>
+        <span className="sec-label"><T k="sections.startHere" /></span>
+        <h2 className="sec-title"><T k="sections.whatLooking" /></h2>
         <div className={styles.serviceGrid}>
           {services.map((svc) => {
             // slug → ローカル画像マッピング
@@ -154,25 +155,22 @@ export default async function HomePage() {
 
       {/* ── SPOTS WITH FILTER ── */}
       <section className={styles.section} id="spots">
-        <span className="sec-label">Curated List</span>
-        <h2 className="sec-title">Spots to try in NYC</h2>
+        <span className="sec-label"><T k="sections.curated" /></span>
+        <h2 className="sec-title"><T k="sections.spotsNYC" /></h2>
         <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', marginBottom: '1.8rem', fontWeight: 300 }}>
-          Every salon is handpicked. Tap any card for prices and details.
+          <T k="sections.spotsDesc" />
         </p>
         <FilteredSalonList salons={salons} googlePhotos={googlePhotos} />
       </section>
 
       <div className="divider" />
 
-      {/* ── MAP（ボロ + サービス絞り込み）── */}
+      {/* ── MAP ── */}
       {pins.length > 0 && (
         <>
           <section className={styles.section}>
-            <span className="sec-label">On the Map</span>
-            <h2 className="sec-title">Find spots near you</h2>
-            <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', marginBottom: '0', fontWeight: 300 }}>
-              Filter by borough and service type, then tap a pin to see details.
-            </p>
+            <span className="sec-label"><T k="sections.onMap" /></span>
+            <h2 className="sec-title"><T k="sections.findSpots" /></h2>
             <LPMapSection pins={pins} />
           </section>
           <div className="divider" />
@@ -181,8 +179,8 @@ export default async function HomePage() {
 
       {/* ── BLOG ── */}
       <section className={styles.section}>
-        <span className="sec-label">From the Blog</span>
-        <h2 className="sec-title">Guides & recommendations</h2>
+        <span className="sec-label"><T k="sections.blog" /></span>
+        <h2 className="sec-title"><T k="sections.guides" /></h2>
         {posts.length > 0 ? (
           <>
             <div className={styles.blogGrid}>
@@ -217,29 +215,24 @@ export default async function HomePage() {
       <section className={styles.section} id="community">
         <div className={styles.communityWrap}>
           <div>
-            <span className="sec-label">Contribute</span>
-            <h2 className="sec-title">
-              Help us build the beauty map<br />
-              <em style={{ fontStyle: 'italic', color: 'var(--beige-s)' }}>NYC actually needs.</em>
-            </h2>
+            <span className="sec-label"><T k="sections.contribute" /></span>
+            <h2 className="sec-title"><T k="sections.helpBuild" /></h2>
             <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', lineHeight: 1.9, marginTop: '1rem', fontWeight: 300 }}>
-              Found a spot that deserves to be here?<br />
-              Had a great experience worth sharing?<br />
-              This guide gets better when more people contribute.
+              <T k="sections.contributeDesc" />
             </p>
-            <Link href="/about" className={styles.aboutLink}>Learn about Glowlist →</Link>
+            <Link href="/about" className={styles.aboutLink}><T k="common.learnAbout" /></Link>
           </div>
           <div className={styles.communityActions}>
-            {[
-              { label: 'Write a Review ✨', desc: 'Share your experience. Helps others find the right spot.', href: 'https://tally.so/r/MeQr8l' },
-              { label: 'Report an Update', desc: 'Price, hours, or something changed? Let us know.', href: 'https://forms.gle/U8ame9qVVGbc4gpn9' },
-              { label: 'Follow on Instagram', desc: '@glowlist_nyc — new spots, picks, and behind-the-scenes.', href: 'https://www.instagram.com/glowlist_nyc/' },
-              { label: 'Contact Us', desc: 'Questions or feedback? We\'d love to hear from you.', href: '/contact' },
-            ].map((a) => (
-              <a key={a.label} href={a.href} target={a.href.startsWith('http') ? '_blank' : undefined} rel={a.href.startsWith('http') ? 'noopener' : undefined} className={styles.ca}>
+            {([
+              { lk: 'community.writeReview',  dk: 'community.writeReviewDesc',  href: 'https://tally.so/r/MeQr8l' },
+              { lk: 'community.reportUpdate', dk: 'community.reportUpdateDesc', href: 'https://forms.gle/U8ame9qVVGbc4gpn9' },
+              { lk: 'community.followIG',     dk: 'community.followIGDesc',     href: 'https://www.instagram.com/glowlist_nyc/' },
+              { lk: 'community.contactUs',    dk: 'community.contactUsDesc',    href: '/contact' },
+            ] as const).map((a) => (
+              <a key={a.lk} href={a.href} target={a.href.startsWith('http') ? '_blank' : undefined} rel={a.href.startsWith('http') ? 'noopener' : undefined} className={styles.ca}>
                 <div>
-                  <h3>{a.label}</h3>
-                  <p>{a.desc}</p>
+                  <h3><T k={a.lk} /></h3>
+                  <p><T k={a.dk} /></p>
                 </div>
                 <span>→</span>
               </a>

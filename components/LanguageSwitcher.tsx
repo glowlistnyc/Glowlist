@@ -13,7 +13,7 @@ export default function LanguageSwitcher() {
           className={`${styles.btn} ${lang === code ? styles.active : ''}`}
           onClick={() => setLang(code)}
           aria-pressed={lang === code}
-          aria-label={label}
+          lang={code}
         >
           {label}
         </button>

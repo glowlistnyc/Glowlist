@@ -1,8 +1,170 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Glowlist NYC — LP Styles
    Design: Omakase / 一休 inspired
-   Photo-forward · Luxury minimal · Dark editorial
+   Full-bleed · Photo-forward · Minimal text
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  height: 92vh;
+  min-height: 600px;
+  max-height: 1080px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;   /* Omakase: text sits LOW on the photo */
+  justify-content: flex-start;
+}
+
+.heroImg { position: absolute; inset: 0; z-index: 0; }
+
+.heroOverlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(26,32,53,.92) 0%,
+    rgba(26,32,53,.55) 40%,
+    rgba(26,32,53,.12) 80%
+  );
+}
+
+.heroInner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: flex-start; text-align: left;
+  padding: 0 7vw 6vh;
+  width: 100%; max-width: 900px;
+}
+
+.eyebrow {
+  font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
+  color: rgba(224,212,188,.65); margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.eyebrow > span { display: inline-block; width: 2.5rem; height: .5px; background: currentColor; opacity: .4; }
+
+.h1 {
+  font-size: clamp(2.8rem, 6.5vw, 6.5rem);
+  line-height: .96; color: var(--beige);
+  margin-bottom: 2.2rem; font-weight: 300; letter-spacing: -.015em;
+  max-width: 820px;
+}
+.h1 em { font-style: italic; color: rgba(224,212,188,.75); }
+
+/* ── Quick pills ── */
+.quickPills {
+  display: flex; flex-wrap: wrap; gap: .4rem;
+  margin-bottom: 1.6rem; position: relative; z-index: 1;
+}
+.pill {
+  font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(224,212,188,.68); border: .5px solid rgba(224,212,188,.22);
+  padding: .3rem .85rem; transition: all .22s; text-decoration: none;
+  backdrop-filter: blur(4px); background: rgba(26,32,53,.3);
+}
+.pill:hover { color: var(--beige); border-color: rgba(224,212,188,.55); background: rgba(26,32,53,.5); }
+
+/* ── Search ── */
+.searchWrap {
+  width: 100%; max-width: 560px;
+  position: relative; z-index: 100;
+}
+
+/* ── Section ── */
+.section { padding: 7rem 7vw; }
+
+/* ── Service grid — 横スクロール感・4列 ── */
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px; background: var(--border);
+  margin-top: 3rem;
+}
+.svcCard {
+  background: var(--navy); display: flex; flex-direction: column;
+  text-decoration: none; overflow: hidden; cursor: pointer;
+}
+.svcImg { aspect-ratio: 2/3; position: relative; overflow: hidden; }
+.svcImg img { transition: transform .7s cubic-bezier(.25,.1,.25,1); }
+.svcCard:hover .svcImg img { transform: scale(1.08); }
+.svcImgOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(26,32,53,.78) 100%);
+  z-index: 1; transition: opacity .35s;
+}
+.svcLabel {
+  position: absolute; bottom: .9rem; left: 1rem; right: 1rem; z-index: 2;
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--beige); line-height: 1.25;
+}
+.svcSub { font-size: .67rem; color: var(--beige-d); padding: .55rem .9rem .75rem; letter-spacing: .04em; }
+
+/* ── Areas ── */
+.areaGrid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2px; background: var(--border); margin-top: 2.5rem;
+}
+.areaCard {
+  background: var(--navy); padding: 2rem; display: flex; flex-direction: column;
+  gap: .4rem; transition: background .2s; text-decoration: none;
+}
+.areaCard:hover { background: var(--navy-l); }
+.areaName { font-family: var(--serif); font-size: 1.1rem; color: var(--beige); font-weight: 400; }
+.areaBig { font-size: .67rem; letter-spacing: .14em; text-transform: uppercase; color: var(--beige-d); }
+.areaArrow { font-family: var(--serif); font-size: 1.1rem; color: var(--beige-s); margin-top: auto; padding-top: 1.2rem; }
+
+/* ── Blog ── */
+.blogGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; background: var(--border); margin-top: 2.5rem;
+}
+.blogCard {
+  background: var(--navy); padding: 2.4rem 2.6rem;
+  display: flex; flex-direction: column; gap: .9rem;
+  transition: background .2s; text-decoration: none;
+}
+.blogCard:hover { background: var(--navy-l); }
+.blogDate { font-size: .64rem; letter-spacing: .1em; color: var(--beige-d); text-transform: uppercase; }
+.blogTitle { font-family: var(--serif); font-size: 1.3rem; color: var(--beige); font-weight: 400; line-height: 1.25; }
+.blogExcerpt { font-size: .84rem; color: var(--beige-s); line-height: 1.78; font-weight: 300; flex: 1; }
+.blogArrow { font-size: .68rem; color: var(--beige-s); letter-spacing: .12em; text-transform: uppercase; }
+
+/* ── Community ── */
+.communityWrap { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.communityActions { display: flex; flex-direction: column; gap: 2px; background: var(--border); }
+.ca {
+  background: var(--navy); padding: 2rem 2.4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; transition: background .2s; color: var(--beige); text-decoration: none;
+}
+.ca:hover { background: var(--navy-l); }
+.ca h3 { font-size: .98rem; font-weight: 400; margin-bottom: .25rem; }
+.ca p { font-size: .78rem; color: var(--beige-s); font-weight: 300; }
+.ca span { font-family: var(--serif); font-size: 1.3rem; color: var(--beige-s); flex-shrink: 0; }
+
+.aboutLink {
+  display: inline-block; margin-top: 1.5rem; font-size: .7rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--beige-d);
+  border-bottom: .5px solid var(--border); text-decoration: none; transition: color .2s;
+}
+.aboutLink:hover { color: var(--beige-s); }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) { .serviceGrid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px) {
+  .hero { align-items: center; }
+  .heroInner { align-items: center; text-align: center; padding: 0 5vw 5vh; }
+  .h1 { font-size: clamp(2.4rem, 8vw, 4rem); }
+  .section { padding: 5rem 5vw; }
+  .serviceGrid { grid-template-columns: repeat(2, 1fr); }
+  .areaGrid { grid-template-columns: repeat(2, 1fr); }
+  .blogGrid { grid-template-columns: 1fr; }
+  .communityWrap { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+@media (max-width: 520px) {
+  .hero { height: 88svh; }
+  .areaGrid { grid-template-columns: 1fr; }
+  .serviceGrid { grid-template-columns: repeat(2, 1fr); }
+}
 
 /* ── HERO (full-bleed photo) ── */
 .hero {

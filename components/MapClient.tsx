@@ -36,13 +36,15 @@ export default function MapClient({ pins, height = '500px', activeAreaSlug }: Pr
       });
       mapRef.current = map;
 
+      // OpenStreetMap（完全無料・APIキー不要）
+      // CSS filter でダークテーマ化（globals.cssで定義）
       L.default.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-        { subdomains: 'abcd', maxZoom: 19 }
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { subdomains: 'abc', maxZoom: 19 }
       ).addTo(map);
 
       L.default.control.attribution({ prefix: false })
-        .addAttribution('© <a href="https://www.openstreetmap.org/copyright" style="color:#a08a68">OpenStreetMap</a> © <a href="https://carto.com/attributions" style="color:#a08a68">CARTO</a>')
+        .addAttribution('© <a href="https://www.openstreetmap.org/copyright" style="color:#a08a68">OpenStreetMap</a> contributors')
         .addTo(map);
 
       pins.forEach((pin) => {

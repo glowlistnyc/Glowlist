@@ -199,3 +199,13 @@ section.hero + .divider {
   display: block;
   margin-bottom: .4rem;
 }
+
+/* ── OpenStreetMap タイルをダーク反転（CartoDB代替・APIキー不要）── */
+.leaflet-tile-pane {
+  filter: invert(1) hue-rotate(195deg) saturate(0.6) brightness(0.82);
+}
+/* ポップアップ・コントロールは反転しない */
+.leaflet-popup-pane,
+.leaflet-control-container {
+  filter: none;
+}

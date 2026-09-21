@@ -1,18 +1,10 @@
 'use client';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { type Lang, type Translations, translations } from './translations';
+import { type Lang, type T, translations } from './translations';
 
-interface Ctx {
-  lang: Lang;
-  setLang: (l: Lang) => void;
-  t: Translations;
-}
+interface Ctx { lang: Lang; setLang: (l: Lang) => void; t: T }
 
-const LanguageContext = createContext<Ctx>({
-  lang: 'en',
-  setLang: () => {},
-  t: translations.en,
-});
+const LanguageContext = createContext<Ctx>({ lang: 'en', setLang: () => {}, t: translations.en });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>('en');
@@ -20,9 +12,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const stored = localStorage.getItem('gl-lang') as Lang;
-      if (stored && Object.keys(translations).includes(stored)) {
-        setLangState(stored);
-      }
+      const valid: Lang[] = ['en','ja','ko','zh-TW','zh-CN'];
+      if (stored && valid.includes(stored)) setLangState(stored);
     } catch {}
   }, []);
 
@@ -32,12 +23,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] as Translations }}>
+    <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] }}>
       {children}
     </LanguageContext.Provider>
   );
 }
 
-export function useLanguage() {
-  return useContext(LanguageContext);
-}
+export function useLanguage() { return useContext(LanguageContext); }
