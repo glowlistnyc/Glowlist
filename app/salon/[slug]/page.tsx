@@ -4,9 +4,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllSalons, getSalonBySlug } from '@/lib/contentful';
 import { getApprovedReviews } from '@/lib/supabase';
+import { getYelpData } from '@/lib/yelp';
+import { getPlaceSummary } from '@/lib/googlePlaces';
 import InstagramEmbed from '@/components/InstagramEmbed';
-import RatingStars from '@/components/RatingStars';
 import ReviewSection from '@/components/ReviewSection';
+import GooglePlaceReviews from '@/components/GooglePlaceReviews';
+import YelpReviews from '@/components/YelpReviews';
 import styles from './page.module.css';
 
 export const revalidate = 60;
@@ -39,8 +42,14 @@ export default async function SalonPage({ params }: Props) {
     instagramHandle, bookingUrl, websiteUrl, address,
     priceRange, language, verified, notes,
     priceDetails, photos, relatedSalons, instagramPostUrls,
-    googleRating, googleReviewCount, yelpRating, yelpReviewCount, ratingsLastSynced,
+    googlePlaceId, yelpBusinessId,
   } = salon.fields;
+
+  // Google Photos + Yelp を並列取得
+  const [googlePlace, yelpData] = await Promise.all([
+    googlePlaceId ? getPlaceSummary(googlePlaceId) : Promise.resolve(null),
+    yelpBusinessId ? getYelpData(yelpBusinessId) : Promise.resolve(null),
+  ]);
 
   const igUrl = `https://www.instagram.com/${instagramHandle}/`;
   const mapQuery = address
@@ -96,15 +105,6 @@ export default async function SalonPage({ params }: Props) {
               <div className={styles.tags}>
                 {tags.map((t) => <span key={t} className="tag">{t}</span>)}
               </div>
-              {/* 外部評価（Google + Yelp） */}
-              <RatingStars
-                googleRating={googleRating}
-                googleReviewCount={googleReviewCount}
-                yelpRating={yelpRating}
-                yelpReviewCount={yelpReviewCount}
-                size="md"
-                showSources
-              />
             </div>
 
             {/* CTA buttons — 全て同じサイズ */}
@@ -133,25 +133,45 @@ export default async function SalonPage({ params }: Props) {
         {/* ── LEFT: メインコンテンツ ── */}
         <div className={styles.mainCol}>
 
-          {/* PHOTOS */}
-          {photos && photos.length > 0 && (
-            <section className={styles.photoSection}>
-              <h2 className={styles.sectionTitle}>Photos</h2>
-              <div className={styles.photoGrid}>
-                {photos.map((photo, i) => (
-                  <div key={i} className={styles.photoWrap}>
-                    <Image
-                      src={`https:${photo.fields.file.url}`}
-                      alt={photo.fields.description ?? `${name} — photo ${i + 1}`}
-                      fill
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+          {/* PHOTOS — Contentful + Google Places */}
+          {(() => {
+            const allPhotos = [
+              ...(photos ?? []).map((p, i) => ({
+                src: `https:${p.fields.file.url}?w=600&h=440&fit=fill`,
+                alt: p.fields.description ?? `${name} — photo ${i + 1}`,
+                key: `cf-${i}`,
+              })),
+              ...(googlePlace?.photos ?? []).map((p, i) => ({
+                src: p.proxyUrl,
+                alt: `${name} — Google photo ${i + 1}`,
+                key: `gp-${i}`,
+              })),
+            ];
+            if (allPhotos.length === 0) return null;
+            return (
+              <section className={styles.photoSection}>
+                <h2 className={styles.sectionTitle}>Photos</h2>
+                <div className={styles.photoGrid}>
+                  {allPhotos.map((p) => (
+                    <div key={p.key} className={styles.photoWrap}>
+                      <Image
+                        src={p.src}
+                        alt={p.alt}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {googlePlace?.photos && googlePlace.photos.length > 0 && (
+                  <p className={styles.photoAttrib}>
+                    Some photos from <a href={`https://www.google.com/maps/place/?q=place_id:${googlePlaceId}`} target="_blank" rel="noopener">Google</a>.
+                  </p>
+                )}
+              </section>
+            );
+          })()}
 
           {/* BASIC INFO */}
           <section className={styles.infoSection}>
@@ -246,55 +266,16 @@ export default async function SalonPage({ params }: Props) {
         {/* ── RIGHT: レビュー + IG ── */}
         <aside className={styles.sideCol}>
 
-          {/* Google + Yelp 総合評価 */}
-          <div className={styles.ratingCard}>
-            <h2 className={styles.sectionTitle}>Ratings</h2>
-            {(googleRating || yelpRating) ? (
-              <>
-                <div className={styles.ratingMain}>
-                  <RatingStars
-                    googleRating={googleRating}
-                    googleReviewCount={googleReviewCount}
-                    yelpRating={yelpRating}
-                    yelpReviewCount={yelpReviewCount}
-                    size="md"
-                    showSources
-                  />
-                </div>
-                <div className={styles.ratingBreakdown}>
-                  {googleRating && (
-                    <div className={styles.ratingSource}>
-                      <span className={styles.ratingSourceName}>Google</span>
-                      <span className={styles.ratingSourceVal}>★ {googleRating} ({googleReviewCount?.toLocaleString()})</span>
-                    </div>
-                  )}
-                  {yelpRating && (
-                    <div className={styles.ratingSource}>
-                      <span className={styles.ratingSourceName}>Yelp</span>
-                      <span className={styles.ratingSourceVal}>★ {yelpRating} ({yelpReviewCount?.toLocaleString()})</span>
-                    </div>
-                  )}
-                </div>
-                {ratingsLastSynced && (
-                  <p className={styles.ratingUpdated}>
-                    Updated {new Date(ratingsLastSynced).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-                    {' · '}<Link href="/disclaimer" className={styles.ratingDisclaimerLink}>Disclaimer</Link>
-                  </p>
-                )}
-              </>
-            ) : (
-              <p className={styles.ratingEmpty}>
-                Google & Yelp ratings will appear here once synced.
-                <br />
-                <span style={{ fontSize: '.65rem', opacity: .7 }}>
-                  Run <code>npm run sync:ratings</code> after setting up API keys.
-                </span>
-              </p>
-            )}
-          </div>
-
-          {/* コミュニティレビュー (Supabase) */}
+          {/* ── Glowlist コミュニティレビュー（primary） ── */}
           <ReviewSection reviews={reviews} />
+
+          {/* ── Google レビュー（Places UI Kit） ── */}
+          {googlePlaceId && (
+            <GooglePlaceReviews placeId={googlePlaceId} salonName={name} />
+          )}
+
+          {/* ── Yelp レビュー ── */}
+          {yelpData && <YelpReviews data={yelpData} />}
 
           {/* Instagram 投稿 */}
           {instagramPostUrls && instagramPostUrls.length > 0 && (

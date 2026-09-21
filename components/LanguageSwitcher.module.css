@@ -1,0 +1,21 @@
+.wrap {
+  display: flex;
+  gap: 1px;
+  background: var(--border);
+  height: 28px;
+}
+.btn {
+  background: var(--navy-l);
+  border: none;
+  color: var(--beige-d);
+  font-family: var(--sans);
+  font-size: .6rem;
+  letter-spacing: .12em;
+  padding: 0 .7rem;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  display: flex;
+  align-items: center;
+}
+.btn:hover { background: var(--beige-f2); color: var(--beige); }
+.active { background: var(--beige-s) !important; color: var(--navy) !important; font-weight: 500; }

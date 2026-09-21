@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import '@/styles/globals.css';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -52,9 +53,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </head>
       <body>
-        <Nav />
-        <main>{children}</main>
-        <Footer />
+        <LanguageProvider>
+          <Nav />
+          <main>{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

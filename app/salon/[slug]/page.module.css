@@ -182,6 +182,9 @@
   background: var(--navy-l);
   border: .5px solid var(--border);
 }
+.photoAttrib { font-size: .62rem; color: var(--beige-d); margin-top: .6rem; letter-spacing: .03em; }
+.photoAttrib a { color: var(--beige-d); text-decoration: underline; }
+
 .noPhotos {
   padding: 2.5rem;
   background: var(--navy-l);

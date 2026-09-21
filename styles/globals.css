@@ -172,3 +172,30 @@ img { max-width: 100%; display: block; }
   background: #222b45 !important;
   color: #e0d4bc !important;
 }
+
+/* ── Omakase / 一休 インスパイアード ── */
+
+/* Hero の後の divider は非表示（写真 → コンテンツが自然につながるよう）*/
+section.hero + .divider {
+  display: none;
+}
+
+/* sec-title をより優雅に */
+.sec-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--beige);
+  line-height: 1.1;
+  font-weight: 300;
+  margin: .5rem 0 0;
+}
+
+/* sec-label の洗練 */
+.sec-label {
+  font-size: .64rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--beige-d);
+  display: block;
+  margin-bottom: .4rem;
+}

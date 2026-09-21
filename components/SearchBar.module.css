@@ -58,15 +58,15 @@
 /* ── Dropdown ── */
 .dropdown {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 2px);
   left: 0;
   right: 0;
   background: var(--navy-l);
   border: .5px solid var(--border-s);
-  z-index: 200;
+  z-index: 300;
   list-style: none;
   padding: .4rem 0;
-  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  box-shadow: 0 12px 48px rgba(0,0,0,.6);
 }
 
 .result {
@@ -109,7 +109,7 @@
 
 .noResult {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 2px);
   left: 0;
   right: 0;
   background: var(--navy-l);
@@ -117,8 +117,9 @@
   padding: 1rem 1.2rem;
   font-size: .82rem;
   color: var(--beige-d);
-  z-index: 200;
-  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  z-index: 300;
+  box-shadow: 0 12px 48px rgba(0,0,0,.6);
+  pointer-events: none; /* ドロップダウン外のクリックを通す */
 }
 
 @media (max-width: 480px) {

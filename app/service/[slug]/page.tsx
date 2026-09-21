@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { getAllServices, getServiceBySlug, getSalonsByService } from '@/lib/contentful';
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const svc = await getServiceBySlug(params.slug);
   if (!svc) return {};
-  const title = svc.fields.seoTitle ?? `${svc.fields.name} in NYC — Glowlist`;
+  const title = svc.fields.seoTitle ?? `${svc.fields.name} in NYC â€” Glowlist`;
   const description = svc.fields.seoDescription ?? `Find the best ${svc.fields.name} salons in New York City. Curated guide by Glowlist NYC.`;
   return { title, description, openGraph: { title, description } };
 }
@@ -52,7 +52,7 @@ export default async function ServicePage({ params }: Props) {
           {' / '}<span style={{ color: 'var(--beige-s)' }}>{svc.fields.name}</span>
         </nav>
 
-        <span className="sec-label">Service Guide · NYC</span>
+        <span className="sec-label">Service Guide Â· NYC</span>
         <h1 className="sec-title">{svc.fields.name} in NYC</h1>
         <p style={{ color: 'var(--beige-s)', fontSize: '.95rem', maxWidth: 560, lineHeight: 1.8, marginBottom: '2rem', fontWeight: 300 }}>
           {svc.fields.shortDescription}

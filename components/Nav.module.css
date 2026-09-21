@@ -168,3 +168,11 @@
   .links { display: none; }
   .ham { display: flex; }
 }
+
+/* ── Language Switcher in mobile menu ── */
+.mobileLang {
+  padding: 1rem 1.5rem;
+  border-top: .5px solid var(--border);
+  display: flex;
+  justify-content: flex-start;
+}

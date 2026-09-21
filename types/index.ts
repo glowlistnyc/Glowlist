@@ -47,14 +47,11 @@ export interface SalonFields {
   photos?: ContentfulImage[];
   instagramPostUrls?: string[];
   relatedSalons?: Salon[];
-  // ── 外部レーティング（Google / Yelp） ──
-  googleRating?: number;        // 0.0–5.0
-  googleReviewCount?: number;
-  googlePlaceId?: string;       // sync-ratings.js で使用
-  yelpRating?: number;          // 0.0–5.0
-  yelpReviewCount?: number;
-  yelpBusinessId?: string;      // sync-ratings.js で使用
-  ratingsLastSynced?: string;   // ISO date: いつ同期したか
+  // ── 外部サービス連携 ──
+  // Google Places UI Kit でリアルタイム表示するために Place ID のみ保存
+  // 評価値（rating, reviewCount）は Contentful に保存せず Google から直接取得
+  googlePlaceId?: string;  // 例: "ChIJN1t_tDeuEmsRUsoyG83frY4"
+  yelpBusinessId?: string; // Yelp Business ID（例: "mellow-bar-new-york"）
   seoTitle?: string;
   seoDescription?: string;
   featured: boolean;

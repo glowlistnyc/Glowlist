@@ -1,0 +1,60 @@
+.section {}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: .7rem;
+  border-bottom: .5px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  color: var(--beige);
+  font-weight: 300;
+}
+
+.summary { display: flex; align-items: center; gap: .3rem; }
+.stars { color: #c4a882; font-size: .88rem; letter-spacing: .03em; }
+.score { color: var(--beige); font-size: .88rem; }
+.count { color: var(--beige-d); font-size: .78rem; }
+
+.list { display: flex; flex-direction: column; gap: 1.5px; }
+
+.card {
+  background: var(--navy-l);
+  border: .5px solid var(--border);
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+.reviewer { font-size: .84rem; color: var(--beige); font-weight: 400; }
+.date { font-size: .65rem; letter-spacing: .06em; color: var(--beige-d); }
+.text { font-size: .82rem; color: var(--beige-s); line-height: 1.72; font-weight: 300; }
+
+.yelpLink {
+  display: inline-block;
+  margin-top: .9rem;
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--beige-s);
+  border-bottom: .5px solid var(--border-s);
+  text-decoration: none;
+  transition: color .2s;
+}
+.yelpLink:hover { color: var(--beige); }
+
+.attribution {
+  font-size: .6rem;
+  color: var(--beige-d);
+  margin-top: .5rem;
+  letter-spacing: .03em;
+}
+.attribution a { color: var(--beige-d); text-decoration: underline; }

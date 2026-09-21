@@ -1,60 +1,115 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Glowlist NYC — LP Styles
+   Design: Omakase / 一休 inspired
+   Photo-forward · Luxury minimal · Dark editorial
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ── HERO (full-bleed photo) ── */
 .hero {
-  min-height: 55vh;
+  position: relative;
+  height: 88vh;
+  min-height: 560px;
+  max-height: 960px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroImg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* 写真の上にかけるグラデーションオーバーレイ */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom,
+      rgba(26,32,53,.25) 0%,
+      rgba(26,32,53,.55) 60%,
+      rgba(26,32,53,.8) 100%);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 5rem 5vw 4rem;
+  padding: 2rem 5vw;
+  width: 100%;
+  max-width: 760px;
 }
 
 .eyebrow {
-  font-size: .7rem;
-  letter-spacing: .28em;
+  font-size: .68rem;
+  letter-spacing: .32em;
   text-transform: uppercase;
-  color: var(--beige-s);
-  margin-bottom: 1.8rem;
+  color: rgba(224,212,188,.75);
+  margin-bottom: 1.6rem;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.eyebrow > span:first-child::before,
-.eyebrow > span:last-child::after { display: none; }
-.eyebrow > span { display: inline-block; width: 2.5rem; height: .5px; background: var(--beige-s); opacity: .45; }
+.eyebrow > span {
+  display: inline-block;
+  width: 2rem;
+  height: .5px;
+  background: currentColor;
+  opacity: .5;
+}
 
 .h1 {
-  font-size: clamp(2.2rem, 6vw, 5rem);
-  line-height: 1.0;
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  line-height: .95;
   color: var(--beige);
-  margin-bottom: .9em;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  letter-spacing: -.01em;
 }
-.h1 em { font-style: italic; color: var(--beige-s); }
-
-/* ── Search ── */
-.searchWrap {
-  width: 100%;
-  max-width: 660px;
-  margin-bottom: 1.4rem;
-}
+.h1 em { font-style: italic; color: rgba(224,212,188,.8); }
 
 /* ── Quick pills ── */
 .quickPills {
   display: flex;
   flex-wrap: wrap;
-  gap: .4rem;
+  gap: .5rem;
   justify-content: center;
+  margin-bottom: 1.4rem;
+  position: relative;
+  z-index: 1;
 }
+
 .pill {
-  font-size: .67rem;
-  letter-spacing: .1em;
+  font-size: .63rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--beige-d);
-  border: .5px solid var(--border);
-  padding: .3rem .8rem;
-  transition: all .2s;
+  color: rgba(224,212,188,.7);
+  border: .5px solid rgba(224,212,188,.28);
+  padding: .32rem .9rem;
+  transition: all .22s;
   text-decoration: none;
+  backdrop-filter: blur(4px);
+  background: rgba(26,32,53,.35);
 }
-.pill:hover { color: var(--beige); border-color: var(--beige-s); background: var(--beige-f); }
+.pill:hover {
+  color: var(--beige);
+  border-color: rgba(224,212,188,.6);
+  background: rgba(26,32,53,.55);
+}
+
+/* ── Search ── */
+.searchWrap {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  z-index: 100;
+}
 
 /* About link in community section */
 .aboutLink {
@@ -71,15 +126,15 @@
 .aboutLink:hover { color: var(--beige-s); }
 
 /* ── Section ── */
-.section { padding: 5.5rem 5vw; }
+.section { padding: 6rem 5vw; }
 
-/* ── Service grid (6 cards, compact) ── */
+/* ── Service grid — portrait, editorial ── */
 .serviceGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
   background: var(--border);
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .svcCard {
@@ -87,141 +142,54 @@
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  transition: background .2s;
   overflow: hidden;
+  cursor: pointer;
 }
-.svcCard:hover { background: var(--navy-l); }
 
 .svcImg {
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;   /* portrait — taller, more editorial */
   position: relative;
   overflow: hidden;
+}
+/* hover zoom on photo */
+.svcImg img {
+  transition: transform .6s cubic-bezier(.25,.1,.25,1);
+}
+.svcCard:hover .svcImg img {
+  transform: scale(1.06);
 }
 
 .svcImgOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 30%, rgba(26,32,53,.75) 100%);
+  background: linear-gradient(to bottom,
+    transparent 30%,
+    rgba(26,32,53,.72) 100%);
   z-index: 1;
+  transition: opacity .3s;
 }
+.svcCard:hover .svcImgOverlay { opacity: .85; }
 
 .svcLabel {
   position: absolute;
-  bottom: .75rem;
-  left: .9rem;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
   z-index: 2;
   font-family: var(--serif);
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: 400;
   color: var(--beige);
   line-height: 1.2;
 }
 
 .svcSub {
-  font-size: .72rem;
+  font-size: .69rem;
   color: var(--beige-d);
-  padding: .7rem .9rem .85rem;
-  letter-spacing: .04em;
+  padding: .65rem 1rem .8rem;
+  letter-spacing: .05em;
   font-weight: 300;
 }
-
-/* ── Old explore grid (keep for reference but replaced) ── */
-.exploreGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5px;
-  background: var(--border);
-  margin-top: 2.5rem;
-}
-
-.exploreCard {
-  background: var(--navy);
-  padding: 3rem 2.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
-  cursor: pointer;
-  transition: background .3s;
-  overflow: hidden;
-  text-decoration: none;
-}
-.exploreCard:hover { background: var(--navy-l); }
-
-.exploreImg {
-  width: 100%;
-  aspect-ratio: 3/2;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: .4rem;
-}
-
-.exploreImgOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, rgba(26,32,53,.55) 100%);
-  z-index: 1;
-}
-
-.exploreImgOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, rgba(26,32,53,.5) 100%);
-  z-index: 1;
-}
-
-.ecNum {
-  font-family: var(--serif);
-  font-size: .82rem;
-  letter-spacing: .2em;
-  color: var(--beige-d);
-}
-
-.ecTitle {
-  font-family: var(--serif);
-  font-size: clamp(1.8rem, 3.5vw, 2.9rem);
-  font-weight: 300;
-  color: var(--beige);
-  line-height: 1.0;
-}
-.ecTitle em { font-style: italic; color: var(--beige-s); }
-
-.ecDesc { font-size: .83rem; color: var(--beige-s); line-height: 1.75; font-weight: 300; }
-.ecTags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: auto; }
-
-.ecArrow {
-  font-family: var(--serif);
-  font-size: 1.4rem;
-  color: var(--beige-s);
-  align-self: flex-end;
-  transition: transform .2s;
-}
-.exploreCard:hover .ecArrow { transform: translateX(5px); }
-
-/* ── Why ── */
-.whyGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
-  margin-top: 3.5rem;
-}
-.whyNum {
-  font-family: var(--serif);
-  font-size: 2.6rem;
-  font-weight: 300;
-  color: var(--beige-f2);
-  line-height: 1;
-  margin-bottom: .4rem;
-  border-top: .5px solid var(--border);
-  padding-top: 1.4rem;
-}
-.whyItem h3 {
-  font-family: var(--serif);
-  font-size: 1.18rem;
-  color: var(--beige);
-  margin-bottom: .65rem;
-  font-weight: 400;
-}
-.whyItem p { font-size: .85rem; color: var(--beige-s); line-height: 1.78; font-weight: 300; }
 
 /* ── Areas ── */
 .areaGrid {
@@ -238,6 +206,7 @@
   flex-direction: column;
   gap: .4rem;
   transition: background .2s;
+  text-decoration: none;
 }
 .areaCard:hover { background: var(--navy-l); }
 .areaName { font-family: var(--serif); font-size: 1.1rem; color: var(--beige); font-weight: 400; }
@@ -254,17 +223,18 @@
 }
 .blogCard {
   background: var(--navy);
-  padding: 2rem 2.2rem;
+  padding: 2.2rem 2.4rem;
   display: flex;
   flex-direction: column;
-  gap: .8rem;
+  gap: .85rem;
   transition: background .2s;
+  text-decoration: none;
 }
 .blogCard:hover { background: var(--navy-l); }
-.blogDate { font-size: .68rem; letter-spacing: .1em; color: var(--beige-d); text-transform: uppercase; }
-.blogTitle { font-family: var(--serif); font-size: 1.2rem; color: var(--beige); font-weight: 400; line-height: 1.3; }
-.blogExcerpt { font-size: .82rem; color: var(--beige-s); line-height: 1.7; font-weight: 300; }
-.blogArrow { font-size: .72rem; color: var(--beige-s); letter-spacing: .1em; text-transform: uppercase; margin-top: auto; }
+.blogDate { font-size: .67rem; letter-spacing: .1em; color: var(--beige-d); text-transform: uppercase; }
+.blogTitle { font-family: var(--serif); font-size: 1.25rem; color: var(--beige); font-weight: 400; line-height: 1.3; }
+.blogExcerpt { font-size: .83rem; color: var(--beige-s); line-height: 1.75; font-weight: 300; flex: 1; }
+.blogArrow { font-size: .7rem; color: var(--beige-s); letter-spacing: .1em; text-transform: uppercase; }
 
 /* ── Community ── */
 .communityWrap {
@@ -288,6 +258,7 @@
   gap: 1rem;
   transition: background .2s;
   color: var(--beige);
+  text-decoration: none;
 }
 .ca:hover { background: var(--navy-l); }
 .ca h3 { font-size: .95rem; font-weight: 400; margin-bottom: .25rem; }
@@ -295,15 +266,20 @@
 .ca span { font-family: var(--serif); font-size: 1.3rem; color: var(--beige-s); flex-shrink: 0; }
 
 /* ── Responsive ── */
+@media (max-width: 1100px) {
+  .serviceGrid { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 768px) {
+  .hero { height: 80vh; }
+  .h1 { font-size: clamp(2.4rem, 7vw, 4rem); }
   .section { padding: 4rem 5vw; }
   .serviceGrid { grid-template-columns: repeat(2, 1fr); }
-  .exploreGrid { grid-template-columns: 1fr; }
-  .whyGrid { grid-template-columns: 1fr; gap: 0; }
   .areaGrid { grid-template-columns: repeat(2, 1fr); }
   .blogGrid { grid-template-columns: 1fr; }
   .communityWrap { grid-template-columns: 1fr; gap: 2.5rem; }
 }
 @media (max-width: 480px) {
+  .hero { height: 90svh; }
   .areaGrid { grid-template-columns: 1fr; }
+  .pill { font-size: .58rem; }
 }

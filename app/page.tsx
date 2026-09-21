@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getAllSalons, getAllAreas, getAllServices, getRecentBlogPosts } from '@/lib/contentful';
 import { resolveSalonPins } from '@/lib/salonPins';
+import { getPlaceFirstPhoto } from '@/lib/googlePlaces';
 import FilteredSalonList from '@/components/FilteredSalonList';
 import SearchBar from '@/components/SearchBar';
 import LPMapSection from '@/components/LPMapSection';
@@ -45,34 +46,60 @@ export default async function HomePage() {
     getRecentBlogPosts(3),
   ]);
 
-  // マップ用ピン（エリア代表座標 + 住所があれば実座標）
   const pins = await resolveSalonPins(salons);
+
+  // Google Place Photos（googlePlaceIdがあるサロンのみ取得、1枚目をカードに使用）
+  const googlePhotos: Record<string, string> = {};
+  await Promise.all(
+    salons
+      .filter((s) => s.fields.googlePlaceId)
+      .map(async (s) => {
+        const url = await getPlaceFirstPhoto(s.fields.googlePlaceId!);
+        if (url) googlePhotos[s.sys.id] = url;
+      })
+  );
 
   return (
     <>
       <HomeSchema />
 
-      {/* ── HERO + SEARCH ── */}
+      {/* ── HERO ── */}
       <section className={styles.hero}>
-        <p className={styles.eyebrow}>
-          <span />Asian-inspired Beauty · New York<span />
-        </p>
-        <h1 className={styles.h1}>
-          Find your next<br /><em>beauty spot in NYC.</em>
-        </h1>
-
-        {/* 検索バー */}
-        <div className={styles.searchWrap}>
-          <SearchBar salons={salons} />
+        {/* 全画面背景写真 */}
+        <div className={styles.heroImg}>
+          <Image
+            src="/images/services/head-spa.jpg"
+            alt="Asian beauty treatment in New York"
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
+          />
         </div>
+        <div className={styles.heroOverlay} />
 
-        {/* クイックカテゴリーピル */}
-        <div className={styles.quickPills}>
-          <Link href="/service/japanese-gel-nails" className={styles.pill}>Gel Nails</Link>
-          <Link href="/service/korean-lash-lift" className={styles.pill}>Lash Lift</Link>
-          <Link href="/service/lash-extensions" className={styles.pill}>Lash Extensions</Link>
-          <Link href="/service/head-spa" className={styles.pill}>Head Spa</Link>
-          <Link href="/area" className={styles.pill}>Browse by Area</Link>
+        {/* コンテンツ */}
+        <div className={styles.heroInner}>
+          <p className={styles.eyebrow}>
+            <span />Asian-inspired Beauty · New York<span />
+          </p>
+          <h1 className={styles.h1}>
+            Find your next<br /><em>beauty spot in NYC.</em>
+          </h1>
+
+          {/* クイックピル（検索ボックスの上） */}
+          <div className={styles.quickPills}>
+            <Link href="/service/japanese-gel-nails" className={styles.pill}>Gel Nails</Link>
+            <Link href="/service/korean-lash-lift" className={styles.pill}>Lash Lift</Link>
+            <Link href="/service/lash-extensions" className={styles.pill}>Lash Extensions</Link>
+            <Link href="/service/head-spa" className={styles.pill}>Head Spa</Link>
+            <Link href="/area" className={styles.pill}>Browse by Area</Link>
+          </div>
+
+          {/* 検索バー */}
+          <div className={styles.searchWrap}>
+            <SearchBar salons={salons} />
+          </div>
         </div>
       </section>
 
@@ -87,7 +114,7 @@ export default async function HomePage() {
             // slug → ローカル画像マッピング
             const LOCAL_IMAGES: Record<string, string> = {
               'japanese-gel-nails': 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=75&auto=format&fit=crop',
-              'korean-lash-lift':   '/images/services/lash-extensions.jpg',
+              'korean-lash-lift':   '/images/services/korean-lash-lift.jpg', // Eyelash_lift.png (Asian woman, lash lift)
               'lash-extensions':    '/images/services/lash-extensions.jpg',
               'brow-lamination':    '/images/services/brow-lamination.jpg',
               'head-spa':           '/images/services/head-spa.jpg',
@@ -132,7 +159,7 @@ export default async function HomePage() {
         <p style={{ color: 'var(--beige-s)', fontSize: '.88rem', marginBottom: '1.8rem', fontWeight: 300 }}>
           Every salon is handpicked. Tap any card for prices and details.
         </p>
-        <FilteredSalonList salons={salons} />
+        <FilteredSalonList salons={salons} googlePhotos={googlePhotos} />
       </section>
 
       <div className="divider" />

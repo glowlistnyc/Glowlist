@@ -4,7 +4,10 @@ import SalonCard from './SalonCard';
 import type { Salon, FilterState } from '@/types';
 import styles from './FilteredSalonList.module.css';
 
-interface Props { salons: Salon[] }
+interface Props {
+  salons: Salon[];
+  googlePhotos?: Record<string, string>; // salonId → Google photo proxy URL
+}
 
 const AREA_MAP: Record<string, { big: string; sub: string }> = {
   'soho': { big: 'manhattan', sub: 'SoHo / West Village' },
@@ -45,7 +48,7 @@ function extractMinPrice(s: string): number | null {
   return m ? parseInt(m[1].replace(',', ''), 10) : null;
 }
 
-export default function FilteredSalonList({ salons }: Props) {
+export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) {
   const [filters, setFilters] = useState<FilterState>({
     service: 'all', areaBig: 'all', areaSub: 'all', price: 'all',
   });
@@ -181,7 +184,13 @@ export default function FilteredSalonList({ salons }: Props) {
             <button onClick={reset} className={styles.resetInline}>Clear filters</button>
           </div>
         ) : (
-          filtered.map((s) => <SalonCard key={s.sys.id} salon={s} />)
+          filtered.map((s) => (
+            <SalonCard
+              key={s.sys.id}
+              salon={s}
+              googlePhotoUrl={googlePhotos[s.sys.id]}
+            />
+          ))
         )}
       </div>
     </div>
