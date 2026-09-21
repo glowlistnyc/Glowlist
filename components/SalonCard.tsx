@@ -1,10 +1,11 @@
+﻿'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Salon } from '@/types';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import styles from './SalonCard.module.css';
 
-// サロン写真がない場合のカテゴリー別フォールバック画像
+// ã‚µãƒ­ãƒ³å†™çœŸãŒãªã„å ´åˆã®ã‚«ãƒ†ã‚´ãƒªãƒ¼åˆ¥ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ç”»åƒ
 const CATEGORY_IMG: Record<string, string> = {
   nails:  'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80&auto=format&fit=crop',
   lashes: '/images/services/korean-lash-lift.jpg',
@@ -26,7 +27,7 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
 
   const igUrl = `https://www.instagram.com/${instagramHandle}/`;
 
-  // 優先順位: Google Photo → Contentful Photo → カテゴリーフォールバック
+  // å„ªå…ˆé †ä½: Google Photo â†’ Contentful Photo â†’ ã‚«ãƒ†ã‚´ãƒªãƒ¼ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯
   const photoSrc =
     googlePhotoUrl ||
     (photos?.[0]?.fields?.file?.url ? `https:${photos[0].fields.file.url}?w=600&h=440&fit=fill` : null) ||
@@ -36,7 +37,7 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
     <article className={styles.card}>
       <Link href={`/salon/${slug}`} className={styles.link}>
 
-        {/* ── 写真エリア ── */}
+        {/* â”€â”€ å†™çœŸã‚¨ãƒªã‚¢ â”€â”€ */}
         <div className={styles.photo}>
           <Image
             src={photoSrc}
@@ -47,12 +48,12 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
           />
           <div className={styles.photoOverlay} />
 
-          {/* バッジ（Verified） */}
+          {/* ãƒãƒƒã‚¸ï¼ˆVerifiedï¼‰ */}
           {verified && (
             <span className={styles.badge}>{t.card.verified}</span>
           )}
 
-          {/* タグ（写真の上に小さく） */}
+          {/* ã‚¿ã‚°ï¼ˆå†™çœŸã®ä¸Šã«å°ã•ãï¼‰ */}
           <div className={styles.photoTags}>
             {tags.slice(0, 2).map((t) => (
               <span key={t} className={styles.photoTag}>{t}</span>
@@ -60,7 +61,7 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
           </div>
         </div>
 
-        {/* ── テキスト情報 ── */}
+        {/* â”€â”€ ãƒ†ã‚­ã‚¹ãƒˆæƒ…å ± â”€â”€ */}
         <div className={styles.info}>
           <div className={styles.infoTop}>
             <h3 className={styles.name}>{name}</h3>
@@ -71,21 +72,22 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
           <p className={styles.meta}>
             {area}
             {language && (
-              <span className={styles.lang}> · {language}</span>
+              <span className={styles.lang}> Â· {language}</span>
             )}
           </p>
         </div>
       </Link>
 
-      {/* ── アクションリンク ── */}
+      {/* â”€â”€ ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãƒªãƒ³ã‚¯ â”€â”€ */}
       <div className={styles.actions}>
         <a href={igUrl} target="_blank" rel="noopener" className={styles.action}>
-          {t.card.instagram} ↗
+          {t.card.instagram} â†—
         </a>
         <a href={bookingUrl} target="_blank" rel="noopener" className={`${styles.action} ${styles.actionPrimary}`}>
-          {t.card.book} ↗
+          {t.card.book} â†—
         </a>
       </div>
     </article>
   );
 }
+
