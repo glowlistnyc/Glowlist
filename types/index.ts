@@ -50,8 +50,10 @@ export interface SalonFields {
   // ── 外部サービス連携 ──
   // Google Places UI Kit でリアルタイム表示するために Place ID のみ保存
   // 評価値（rating, reviewCount）は Contentful に保存せず Google から直接取得
-  googlePlaceId?: string;  // 例: "ChIJN1t_tDeuEmsRUsoyG83frY4"
-  yelpBusinessId?: string; // Yelp Business ID（例: "mellow-bar-new-york"）
+  googlePlaceId?: string;   // 例: "ChIJN1t_tDeuEmsRUsoyG83frY4"
+  googleRating?: number;    // 0.0–5.0 (sync:ratingsで同期)
+  yelpBusinessId?: string;  // Yelp Business ID
+  yelpRating?: number;      // 0.0–5.0 (sync:ratingsで同期)
   seoTitle?: string;
   seoDescription?: string;
   featured: boolean;

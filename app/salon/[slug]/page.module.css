@@ -4,7 +4,7 @@
   border-bottom: .5px solid var(--border);
   padding: 3rem 5vw 2.5rem;
 }
-.headerInner { max-width: 960px; }
+.headerInner { max-width: 1280px; margin: 0 auto; }
 
 .breadcrumb {
   display: flex;
@@ -117,6 +117,7 @@
   gap: 3.5rem;
   padding: 4rem 5vw;
   max-width: 1280px;
+  margin: 0 auto;      /* 中央揃え */
   align-items: start;
 }
 
@@ -173,7 +174,7 @@
 .photoGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: .8rem;
+  gap: 1rem;
 }
 .photoWrap {
   aspect-ratio: 1/1;

@@ -1,169 +1,76 @@
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SalonCard — Omakase / 一休 style
-   Photo-forward · Hover zoom · Minimal text
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .card {
   background: var(--navy);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: transform .35s cubic-bezier(.25,.1,.25,1), box-shadow .35s;
-  will-change: transform;
+  transition: transform .3s cubic-bezier(.25,.1,.25,1), box-shadow .3s;
 }
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0,0,0,.55);
-  z-index: 2;
-  position: relative;
-}
+.card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,.5); z-index: 2; position: relative; }
 
-/* ── 写真部分 ── */
-.link {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  text-decoration: none;
-}
+.link { display: flex; flex-direction: column; flex: 1; text-decoration: none; }
 
+/* 写真 — 3:2 (コンパクト) */
 .photo {
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/2;
   position: relative;
   overflow: hidden;
   background: var(--navy-l);
 }
+.photo img { transition: transform .6s cubic-bezier(.25,.1,.25,1); }
+.card:hover .photo img { transform: scale(1.06); }
 
-/* hover zoom */
-.photo img {
-  transition: transform .65s cubic-bezier(.25,.1,.25,1);
-}
-.card:hover .photo img {
-  transform: scale(1.07);
-}
-
-/* グラデーションオーバーレイ */
 .photoOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 35%,
-    rgba(26,32,53,.55) 100%
-  );
-  z-index: 1;
-  transition: opacity .35s;
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(26,32,53,.5) 100%);
+  z-index: 1; transition: opacity .3s;
 }
-.card:hover .photoOverlay { opacity: .75; }
+.card:hover .photoOverlay { opacity: .7; }
 
-/* Verified バッジ */
 .badge {
-  position: absolute;
-  top: .9rem;
-  left: .9rem;
-  z-index: 3;
-  font-family: var(--sans);
-  font-size: .5rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--beige);
-  background: rgba(26,32,53,.72);
-  border: .5px solid rgba(224,212,188,.3);
-  padding: .18rem .45rem;
-  backdrop-filter: blur(6px);
-}
-
-/* タグ（写真の下端） */
-.photoTags {
-  position: absolute;
-  bottom: .8rem;
-  left: .9rem;
-  z-index: 3;
-  display: flex;
-  gap: .3rem;
-  flex-wrap: wrap;
-}
-.photoTag {
-  font-size: .55rem;
-  letter-spacing: .08em;
-  color: rgba(224,212,188,.8);
-  background: rgba(26,32,53,.6);
-  border: .5px solid rgba(224,212,188,.18);
-  padding: .1rem .38rem;
+  position: absolute; top: .7rem; left: .7rem; z-index: 3;
+  font-size: .5rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--beige); background: rgba(26,32,53,.7);
+  border: .5px solid rgba(224,212,188,.25); padding: .15rem .4rem;
   backdrop-filter: blur(4px);
-  text-transform: uppercase;
 }
 
-/* ── テキスト情報 ── */
-.info {
-  padding: 1.1rem 1.3rem .9rem;
-  display: flex;
-  flex-direction: column;
-  gap: .35rem;
-  flex: 1;
-}
+/* テキスト情報 */
+.info { padding: .85rem 1rem .7rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
 
-.infoTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: .5rem;
-}
-
+.nameRow { display: flex; align-items: flex-start; justify-content: space-between; gap: .4rem; }
 .name {
-  font-family: var(--serif);
-  font-size: 1.18rem;
-  color: var(--beige);
-  font-weight: 400;
-  line-height: 1.2;
-  flex: 1;
-  min-width: 0;
+  font-family: var(--serif); font-size: 1.05rem; color: var(--beige);
+  font-weight: 400; line-height: 1.2; flex: 1; min-width: 0;
 }
 
-.price {
-  font-family: var(--serif);
-  font-size: .88rem;
-  color: var(--beige-s);
-  white-space: nowrap;
-  flex-shrink: 0;
+/* 評価 */
+.stars { font-size: .62rem; color: #c4a882; display: flex; align-items: center; gap: .2rem; white-space: nowrap; flex-shrink: 0; }
+.starsNum { color: var(--beige-s); font-family: var(--sans); letter-spacing: 0; }
+
+.area { font-size: .68rem; color: var(--beige-d); letter-spacing: .06em; }
+
+/* バッジ */
+.badges { display: flex; gap: .3rem; flex-wrap: wrap; }
+.serviceTag {
+  font-size: .58rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--beige-d); background: var(--beige-f2); border: .5px solid var(--border);
+  padding: .1rem .4rem;
+}
+.langTag {
+  font-size: .58rem; letter-spacing: .06em; color: var(--beige-s);
+  background: rgba(196,168,130,.12); border: .5px solid rgba(196,168,130,.25);
+  padding: .1rem .4rem;
 }
 
-.meta {
-  font-size: .7rem;
-  color: var(--beige-d);
-  letter-spacing: .06em;
-}
+.price { font-family: var(--serif); font-size: .88rem; color: var(--beige-s); margin-top: auto; padding-top: .2rem; }
 
-.lang { opacity: .8; }
-
-/* ── アクションリンク ── */
-.actions {
-  display: flex;
-  border-top: .5px solid var(--border);
-}
-
+/* アクション */
+.actions { display: flex; border-top: .5px solid var(--border); }
 .action {
-  flex: 1;
-  text-align: center;
-  padding: .65rem .5rem;
-  font-size: .62rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--beige-d);
-  text-decoration: none;
-  transition: color .2s, background .2s;
-  border: none;
-  background: none;
+  flex: 1; text-align: center; padding: .55rem .5rem;
+  font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--beige-d); text-decoration: none; transition: color .2s, background .2s;
 }
-.action:first-child {
-  border-right: .5px solid var(--border);
-}
+.action:first-child { border-right: .5px solid var(--border); }
 .action:hover { color: var(--beige); background: var(--beige-f); }
-
-.actionPrimary { color: var(--beige-s); }
-.actionPrimary:hover { color: var(--beige); }
-
-/* ── SP対応: 2列でも見やすく ── */
-@media (max-width: 640px) {
-  .photo { aspect-ratio: 3/2; }
-  .name { font-size: 1rem; }
-  .info { padding: .9rem 1rem .7rem; }
-}
+.actionBook { color: var(--beige-s); }

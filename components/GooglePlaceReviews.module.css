@@ -1,54 +1,18 @@
-.section {
-  /* Glowlist デザインに合わせたセクションスタイル */
-}
-
+.section {}
 .title {
-  font-family: var(--serif);
-  font-size: 1.3rem;
-  color: var(--beige);
-  font-weight: 300;
-  margin-bottom: 1.2rem;
-  padding-bottom: .7rem;
-  border-bottom: .5px solid var(--border);
+  font-family: var(--serif); font-size: 1.3rem; color: var(--beige); font-weight: 300;
+  margin-bottom: 1.2rem; padding-bottom: .7rem; border-bottom: .5px solid var(--border);
 }
-
-/* gmpx-place-reviews が注入されるコンテナ */
-.embedWrap {
-  margin-bottom: .8rem;
-  /* Google コンポーネントは内部で幅100%を占める */
-  width: 100%;
-  min-height: 2rem; /* ロード中にレイアウトシフトを防ぐ */
-}
-
-/* gmpx-place-reviews のグローバルスタイル上書き（Light DOM 部分） */
-.embedWrap gmpx-place-reviews {
-  display: block;
-  width: 100%;
-}
-
+.overviewWrap { margin-bottom: 1.2rem; width: 100%; min-height: 1rem; }
+.reviewsWrap  { margin-bottom: .8rem; width: 100%; min-height: 1rem; }
+/* gmpx内部要素のLight DOM部分 */
+.overviewWrap gmpx-place-overview,
+.reviewsWrap  gmpx-place-reviews  { display: block; width: 100%; }
 .mapLink {
-  display: inline-block;
-  font-size: .72rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--beige-s);
-  border-bottom: .5px solid var(--border-s);
-  text-decoration: none;
-  margin-bottom: .8rem;
-  transition: color .2s;
+  display: inline-block; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--beige-s); border-bottom: .5px solid var(--border-s); text-decoration: none;
+  margin-bottom: .7rem; transition: color .2s;
 }
 .mapLink:hover { color: var(--beige); }
-
-.attribution {
-  font-size: .62rem;
-  color: var(--beige-d);
-  letter-spacing: .03em;
-  line-height: 1.6;
-  border-top: .5px solid var(--border);
-  padding-top: .6rem;
-  margin-top: .4rem;
-}
-.attribution a {
-  color: var(--beige-d);
-  text-decoration: underline;
-}
+.attribution { font-size: .6rem; color: var(--beige-d); letter-spacing: .03em; border-top: .5px solid var(--border); padding-top: .6rem; }
+.attribution a { color: var(--beige-d); text-decoration: underline; }

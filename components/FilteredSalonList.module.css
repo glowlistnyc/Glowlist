@@ -105,3 +105,23 @@
 @media (max-width: 400px) {
   .grid { grid-template-columns: 1fr; }
 }
+
+/* ── View more ── */
+.viewMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.viewMoreBtn {
+  background: none;
+  border: .5px solid var(--border-s);
+  color: var(--beige-s);
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: .7rem 2.2rem;
+  cursor: pointer;
+  transition: all .22s;
+}
+.viewMoreBtn:hover { color: var(--beige); border-color: var(--beige-s); background: var(--beige-f); }

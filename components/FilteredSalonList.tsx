@@ -2,7 +2,10 @@
 import { useState, useMemo } from 'react';
 import SalonCard from './SalonCard';
 import type { Salon, FilterState } from '@/types';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import styles from './FilteredSalonList.module.css';
+
+const INITIAL_SHOW = 6; // 最初に表示する件数
 
 interface Props {
   salons: Salon[];
@@ -49,6 +52,8 @@ function extractMinPrice(s: string): number | null {
 }
 
 export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) {
+  const [showAll, setShowAll] = useState(false);
+  const { t } = useLanguage();
   const [filters, setFilters] = useState<FilterState>({
     service: 'all', areaBig: 'all', areaSub: 'all', price: 'all',
   });
@@ -184,7 +189,7 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
             <button onClick={reset} className={styles.resetInline}>Clear filters</button>
           </div>
         ) : (
-          filtered.map((s) => (
+          (showAll ? filtered : filtered.slice(0, INITIAL_SHOW)).map((s) => (
             <SalonCard
               key={s.sys.id}
               salon={s}
@@ -193,6 +198,20 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
           ))
         )}
       </div>
+
+      {/* View more / Collapse */}
+      {filtered.length > INITIAL_SHOW && (
+        <div className={styles.viewMore}>
+          <button
+            className={styles.viewMoreBtn}
+            onClick={() => setShowAll(v => !v)}
+          >
+            {showAll
+              ? '↑ Show less'
+              : `View more (${filtered.length - INITIAL_SHOW} more spots) →`}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

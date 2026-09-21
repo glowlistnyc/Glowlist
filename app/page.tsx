@@ -5,7 +5,7 @@ import { getAllSalons, getAllAreas, getAllServices, getRecentBlogPosts } from '@
 import { resolveSalonPins } from '@/lib/salonPins';
 import { getPlaceFirstPhoto } from '@/lib/googlePlaces';
 import FilteredSalonList from '@/components/FilteredSalonList';
-import SearchBar from '@/components/SearchBar';
+import AdvancedSearch from '@/components/AdvancedSearch';
 import LPMapSection from '@/components/LPMapSection';
 import T from '@/components/T';
 import styles from './page.module.css';
@@ -64,42 +64,38 @@ export default async function HomePage() {
     <>
       <HomeSchema />
 
-      {/* ── HERO ── */}
+      {/* ── HERO（50vh・新画像）── */}
       <section className={styles.hero}>
-        {/* 全画面背景写真 */}
         <div className={styles.heroImg}>
           <Image
-            src="/images/services/head-spa.jpg"
-            alt="Asian beauty treatment in New York"
+            src="/images/services/brow-lamination.jpg"
+            alt="Beauty treatment in New York"
             fill
             priority
             sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
+            style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
           />
         </div>
         <div className={styles.heroOverlay} />
 
-        {/* コンテンツ */}
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>
             <span /><T k="hero.eyebrow" /><span />
           </p>
-          <h1 className={styles.h1}>
-            <T k="hero.title" />
-          </h1>
+          <h1 className={styles.h1}><T k="hero.title" /></h1>
+
+          {/* 3フィールド検索（エリア・サービス・フリーワード）*/}
+          <div className={styles.searchWrap}>
+            <AdvancedSearch salons={salons} areas={areas} services={services} />
+          </div>
 
           {/* クイックピル */}
           <div className={styles.quickPills}>
             <Link href="/service/japanese-gel-nails" className={styles.pill}><T k="pills.gelNails" /></Link>
-            <Link href="/service/korean-lash-lift" className={styles.pill}><T k="pills.lashLift" /></Link>
-            <Link href="/service/lash-extensions" className={styles.pill}><T k="pills.lashExtensions" /></Link>
-            <Link href="/service/head-spa" className={styles.pill}><T k="pills.headSpa" /></Link>
-            <Link href="/area" className={styles.pill}><T k="pills.browseArea" /></Link>
-          </div>
-
-          {/* 検索バー */}
-          <div className={styles.searchWrap}>
-            <SearchBar salons={salons} />
+            <Link href="/service/korean-lash-lift"   className={styles.pill}><T k="pills.lashLift" /></Link>
+            <Link href="/service/lash-extensions"    className={styles.pill}><T k="pills.lashExtensions" /></Link>
+            <Link href="/service/head-spa"            className={styles.pill}><T k="pills.headSpa" /></Link>
+            <Link href="/area"                        className={styles.pill}><T k="pills.browseArea" /></Link>
           </div>
         </div>
       </section>
@@ -183,28 +179,44 @@ export default async function HomePage() {
         <h2 className="sec-title"><T k="sections.guides" /></h2>
         {posts.length > 0 ? (
           <>
-            <div className={styles.blogGrid}>
-              {posts.map((post) => (
-                <Link key={post.sys.id} href={`/blog/${post.fields.slug}`} className={styles.blogCard}>
-                  <p className={styles.blogDate}>
-                    {new Date(post.fields.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                  </p>
-                  <h3 className={styles.blogTitle}>{post.fields.title}</h3>
-                  <p className={styles.blogExcerpt}>{post.fields.excerpt}</p>
-                  <span className={styles.blogArrow}>Read →</span>
-                </Link>
-              ))}
-            </div>
+            {/* 1記事目をフィーチャード（大きく表示）*/}
+            <Link href={`/blog/${posts[0].fields.slug}`} className={styles.blogFeatured}>
+              <div className={styles.blogFeaturedMeta}>
+                <span className={styles.blogFeaturedLabel}>Featured</span>
+                <span className={styles.blogDate}>
+                  {new Date(posts[0].fields.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </span>
+              </div>
+              <h3 className={styles.blogFeaturedTitle}>{posts[0].fields.title}</h3>
+              <p className={styles.blogFeaturedExcerpt}>{posts[0].fields.excerpt}</p>
+              <span className={styles.blogArrow}>Read →</span>
+            </Link>
+
+            {/* 残りのブログ記事 */}
+            {posts.length > 1 && (
+              <div className={styles.blogGrid}>
+                {posts.slice(1).map((post) => (
+                  <Link key={post.sys.id} href={`/blog/${post.fields.slug}`} className={styles.blogCard}>
+                    <p className={styles.blogDate}>
+                      {new Date(post.fields.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                    <h3 className={styles.blogTitle}>{post.fields.title}</h3>
+                    <p className={styles.blogExcerpt}>{post.fields.excerpt}</p>
+                    <span className={styles.blogArrow}>Read →</span>
+                  </Link>
+                ))}
+              </div>
+            )}
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-              <Link href="/blog" className="btn btn-ghost">All posts →</Link>
+              <Link href="/blog" className="btn btn-ghost"><T k="common.allPosts" /></Link>
             </div>
           </>
         ) : (
           <div style={{ textAlign: 'center', padding: '3rem 0' }}>
             <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', marginBottom: '1.5rem', fontWeight: 300 }}>
-              Beauty guides and recommendations coming soon.
+              <T k="common.noPosts" />
             </p>
-            <Link href="/blog" className="btn btn-ghost">Visit Blog →</Link>
+            <Link href="/blog" className="btn btn-ghost"><T k="common.visitBlog" /></Link>
           </div>
         )}
       </section>
