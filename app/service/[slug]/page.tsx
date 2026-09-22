@@ -4,6 +4,7 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { getAllServices, getServiceBySlug, getSalonsByService } from '@/lib/contentful';
 import SalonCard from '@/components/SalonCard';
 import Link from 'next/link';
+import T from '@/components/T';
 
 export const revalidate = 60;
 
@@ -48,12 +49,12 @@ export default async function ServicePage({ params }: Props) {
       <section style={{ padding: '5rem 5vw' }}>
         <nav style={{ fontSize: '.68rem', color: 'var(--beige-d)', marginBottom: '1.5rem', letterSpacing: '.08em' }}>
           <Link href="/" style={{ color: 'var(--beige-d)' }}>Home</Link>
-          {' / '}<Link href="/service" style={{ color: 'var(--beige-d)' }}>Services</Link>
+          {' / '}<Link href="/service" style={{ color: 'var(--beige-d)' }}><T k="service.label" /></Link>
           {' / '}<span style={{ color: 'var(--beige-s)' }}>{svc.fields.name}</span>
         </nav>
 
-        <span className="sec-label">Service Guide Â· NYC</span>
-        <h1 className="sec-title">{svc.fields.name} in NYC</h1>
+        <span className="sec-label"><T k="service.label" /></span>
+        <h1 className="sec-title">{svc.fields.name} NYC</h1>
         <p style={{ color: 'var(--beige-s)', fontSize: '.95rem', maxWidth: 560, lineHeight: 1.8, marginBottom: '2rem', fontWeight: 300 }}>
           {svc.fields.shortDescription}
         </p>
@@ -65,7 +66,7 @@ export default async function ServicePage({ params }: Props) {
         )}
 
         <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.6rem', color: 'var(--beige)', marginBottom: '1.5rem', fontWeight: 300 }}>
-          {salons.length} spot{salons.length !== 1 ? 's' : ''} offering {svc.fields.name}
+          {salons.length} <T k="service.salonsOffering" />
         </h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1.5px', background: 'var(--border)' }}>

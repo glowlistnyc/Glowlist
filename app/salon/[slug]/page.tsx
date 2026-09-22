@@ -237,6 +237,11 @@ export default async function SalonPage({ params }: Props) {
             </a>
           </section>
 
+          {/* ── INSTAGRAM POSTS（料金表の直下）── */}
+          {instagramPostUrls && instagramPostUrls.length > 0 && (
+            <InstagramEmbed postUrls={instagramPostUrls} salonName={name} />
+          )}
+
           {/* OTHER LOCATIONS */}
           {relatedSalons && relatedSalons.length > 0 && (
             <section className={styles.relatedSection}>
@@ -264,24 +269,13 @@ export default async function SalonPage({ params }: Props) {
           </div>
         </div>
 
-        {/* ── RIGHT: レビュー + IG ── */}
+        {/* ── RIGHT: レビューのみ ── */}
         <aside className={styles.sideCol}>
-
-          {/* ── Glowlist コミュニティレビュー（primary） ── */}
           <ReviewSection reviews={reviews} />
-
-          {/* ── Google レビュー（Places UI Kit） ── */}
           {googlePlaceId && (
             <GooglePlaceReviews placeId={googlePlaceId} salonName={name} />
           )}
-
-          {/* ── Yelp レビュー ── */}
           {yelpData && <YelpReviews data={yelpData} />}
-
-          {/* Instagram 投稿 */}
-          {instagramPostUrls && instagramPostUrls.length > 0 && (
-            <InstagramEmbed postUrls={instagramPostUrls} salonName={name} />
-          )}
         </aside>
 
       </div>

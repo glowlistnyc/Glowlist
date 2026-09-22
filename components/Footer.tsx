@@ -1,43 +1,42 @@
+'use client';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import styles from './Footer.module.css';
 
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className={styles.footer}>
       <div className={styles.top}>
         <div className={styles.brand}>
           <Link href="/" className={styles.logo}>Glowlist NYC</Link>
-          <p>A curated guide to Asian-inspired nails, lashes, and beauty spots in New York.</p>
+          <p>{t.footer.tagline}</p>
         </div>
 
         <div className={styles.links}>
           <div>
-            <p className={styles.colTitle}>Explore</p>
-            <Link href="/area">By Area</Link>
-            <Link href="/service">By Service</Link>
-            <Link href="/blog">Blog</Link>
-            <Link href="/about">About</Link>
-            <Link href="/disclaimer">Disclaimer</Link>
+            <p className={styles.colTitle}>{t.footer.explore}</p>
+            <Link href="/area">{t.footer.byArea}</Link>
+            <Link href="/service">{t.footer.byService}</Link>
+            <Link href="/blog">{t.footer.blog}</Link>
+            <Link href="/about">{t.footer.about}</Link>
+            <Link href="/disclaimer">{t.footer.disclaimer}</Link>
           </div>
           <div>
-            <p className={styles.colTitle}>Contribute</p>
-            <a href="https://forms.gle/VmLJBtzQ3tXpjFri9" target="_blank" rel="noopener">Submit a Spot</a>
-            <a href="https://tally.so/r/MeQr8l" target="_blank" rel="noopener">Photo Drop</a>
-            <a href="https://forms.gle/U8ame9qVVGbc4gpn9" target="_blank" rel="noopener">Report Update</a>
+            <p className={styles.colTitle}>{t.footer.contribute}</p>
+            <a href="https://forms.gle/VmLJBtzQ3tXpjFri9" target="_blank" rel="noopener">{t.footer.submitSpot}</a>
+            <a href="https://tally.so/r/MeQr8l" target="_blank" rel="noopener">{t.footer.photoDrop}</a>
+            <a href="https://forms.gle/U8ame9qVVGbc4gpn9" target="_blank" rel="noopener">{t.footer.reportUpdate}</a>
           </div>
           <div>
-            <p className={styles.colTitle}>Follow</p>
+            <p className={styles.colTitle}>{t.footer.follow}</p>
             <a href="https://www.instagram.com/glowlist_nyc/" target="_blank" rel="noopener">Instagram ↗</a>
           </div>
         </div>
       </div>
 
       <div className={styles.bottom}>
-        <p className={styles.disclaimer}>
-          Glowlist NYC is an independent curated beauty discovery guide. Not affiliated with any listed salon unless explicitly stated.
-          Prices, services, and availability may change — confirm directly with each salon before booking.
-          Paid placements are always disclosed.
-        </p>
+        <p className={styles.disclaimer}>{t.footer.legalNote}</p>
         <p className={styles.copy}>© {new Date().getFullYear()} Glowlist NYC</p>
       </div>
     </footer>

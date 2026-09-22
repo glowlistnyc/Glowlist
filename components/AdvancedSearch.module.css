@@ -61,8 +61,9 @@
 .results {
   position: absolute; top: calc(100% + 4px); left: 0; right: 0;
   background: var(--navy-l); border: .5px solid var(--border-s);
-  z-index: 300; list-style: none; padding: .3rem 0;
-  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  z-index: 9999;       /* ヒーロー下のセクションより必ず上に */
+  list-style: none; padding: .3rem 0;
+  box-shadow: 0 16px 60px rgba(0,0,0,.7);
 }
 .result {
   display: flex; flex-direction: column; gap: .12rem;
@@ -75,7 +76,8 @@
 .noResult {
   position: absolute; top: calc(100% + 4px); left: 0; right: 0;
   background: var(--navy-l); border: .5px solid var(--border-s);
-  padding: .9rem 1.2rem; font-size: .8rem; color: var(--beige-d); z-index: 300;
+  padding: .9rem 1.2rem; font-size: .8rem; color: var(--beige-d);
+  z-index: 9999;
 }
 
 @media (max-width: 600px) {

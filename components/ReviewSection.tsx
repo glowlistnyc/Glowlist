@@ -1,4 +1,6 @@
+'use client';
 import type { Review } from '@/lib/supabase';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import styles from './ReviewSection.module.css';
 
 interface Props {
@@ -31,13 +33,14 @@ function DetailRating({ label, value }: { label: string; value?: number | null }
 }
 
 export default function ReviewSection({ reviews }: Props) {
+  const { t } = useLanguage();
   const count = reviews.length;
 
   return (
     <section className={styles.wrap}>
       <div className={styles.header}>
         <h2 className={styles.title}>
-          Community Reviews
+          {t.salon.communityReviews}
           {count > 0 && <span className={styles.count}>{count}</span>}
         </h2>
         <a
@@ -46,14 +49,12 @@ export default function ReviewSection({ reviews }: Props) {
           rel="noopener"
           className={styles.writeBtn}
         >
-          Write a Review →
+          {t.community.writeReview} →
         </a>
       </div>
 
       {count === 0 ? (
-        <p className={styles.empty}>
-          No reviews yet. Be the first to share your experience.
-        </p>
+        <p className={styles.empty}>{t.salon.noReviews}</p>
       ) : (
         <div className={styles.list}>
           {reviews.map((r) => {

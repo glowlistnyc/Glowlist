@@ -43,7 +43,7 @@ const en = {
     learnAbout:'Learn about Glowlist →',
   },
   community: {
-    writeReview:'Write a Review ✨', writeReviewDesc:"Share your experience. Helps others find the right spot.",
+    writeReview:'Write a Review', writeReviewDesc:"Share your experience. Helps others find the right spot.",
     reportUpdate:'Report an Update', reportUpdateDesc:'Price, hours, or something changed? Let us know.',
     followIG:'Follow on Instagram', followIGDesc:'@glowlist_nyc — new spots, picks, and behind-the-scenes.',
     contactUs:'Contact Us', contactUsDesc:"Questions or feedback? We'd love to hear from you.",
@@ -85,6 +85,22 @@ const en = {
     disclaimer:'Disclaimer',
     clickToZoom:'Click an area to zoom in on the map.',
     spotIn:'spots in',
+  },
+  footer: {
+    explore:'Explore', contribute:'Contribute', follow:'Follow',
+    byArea:'By Area', byService:'By Service', blog:'Blog', about:'About', disclaimer:'Disclaimer',
+    submitSpot:'Submit a Spot', photoDrop:'Photo Drop', reportUpdate:'Report Update',
+    tagline:'A curated guide to Asian-inspired nails, lashes, and beauty spots in New York.',
+    legalNote:'Prices and availability may change — confirm directly with each salon.',
+  },
+  blog: {
+    label:'Blog', title:'Guides & Recommendations', readMore:'Read →', backToBlog:'← Back to Blog',
+    noPostsYet:'No posts yet. Check back soon.', writtenBy:'By',
+    autoTranslateNote:'Blog posts are written in English. Use your browser\'s translation feature for other languages.',
+  },
+  service: {
+    label:'Services', title:'Beauty Services in NYC', salonsOffering:'Salons offering this service',
+    backToServices:'← All Services', noSalons:'No salons listed for this service yet.',
   },
 } as const;
 
@@ -142,6 +158,19 @@ export type T = {
     clickToZoom: string;
     spotIn: string;  // "X spots in [area]"
   };
+  footer: {
+    explore: string; contribute: string; follow: string;
+    byArea: string; byService: string; blog: string; about: string; disclaimer: string;
+    submitSpot: string; photoDrop: string; reportUpdate: string;
+    tagline: string; legalNote: string;
+  };
+  blog: {
+    label: string; title: string; readMore: string; backToBlog: string;
+    noPostsYet: string; writtenBy: string; autoTranslateNote: string;
+  };
+  service: {
+    label: string; title: string; salonsOffering: string; backToServices: string; noSalons: string;
+  };
 };
 
 export const translations: Record<Lang, T> = {
@@ -181,7 +210,7 @@ export const translations: Record<Lang, T> = {
       learnAbout:'Glowlistについて →',
     },
     community: {
-      writeReview:'レビューを書く ✨', writeReviewDesc:'体験を共有して、次の人のお役に立ちましょう。',
+      writeReview:'レビューを書く', writeReviewDesc:'体験を共有して、次の人のお役に立ちましょう。',
       reportUpdate:'更新情報を送る', reportUpdateDesc:'価格や営業時間が変わりましたか？',
       followIG:'Instagramをフォロー', followIGDesc:'@glowlist_nyc — 新しいスポット・ピックなど',
       contactUs:'お問い合わせ', contactUsDesc:'ご質問やフィードバックをお聞かせください。',
@@ -194,7 +223,7 @@ export const translations: Record<Lang, T> = {
       priceFrom:'〜',
     },
     about: {
-      label:'について', title:'NYCで良いビューティーを探すのは',
+      label:'Glowlistについて', title:'NYCで良いビューティーを探すのは',
       subtitle:'こんなに難しくあるべきではない。',
       whyTitle:'Glowlistとは',
       whyBody1:'ニューヨークにはアジアンインスパイアードのネイル・まつ毛サロンが数多くありますが、自分に合ったサロンを見つけるのは依然として難しいです。Googleは星評価を、Instagramはビジュアルを提供しますが、どちらもKokoist使用かどうか、日本で研修を積んだ技術者かどうか、初めての方でも安心できる雰囲気かどうかは教えてくれません。',
@@ -223,6 +252,22 @@ export const translations: Record<Lang, T> = {
       disclaimer:'免責事項',
       clickToZoom:'エリアをクリックするとマップにズームイン。',
       spotIn:'件',
+    },
+    footer: {
+      explore:'カテゴリ', contribute:'投稿する', follow:'フォロー',
+      byArea:'エリア別', byService:'サービス別', blog:'ブログ', about:'Glowlistについて', disclaimer:'免責事項',
+      submitSpot:'サロンを投稿', photoDrop:'写真投稿', reportUpdate:'更新報告',
+      tagline:'ニューヨークのアジアインスパイアードなネイル・まつ毛・ビューティースポットのキュレーションガイド。',
+      legalNote:'料金やサービスは変わる場合があります。必ず各サロンに直接ご確認ください。',
+    },
+    blog: {
+      label:'ブログ', title:'ガイドとおすすめ', readMore:'読む →', backToBlog:'← ブログ一覧へ',
+      noPostsYet:'まだ記事がありません。後でまたご確認ください。', writtenBy:'著者',
+      autoTranslateNote:'ブログ記事は英語で書かれています。ブラウザの翻訳機能をご利用ください。',
+    },
+    service: {
+      label:'サービス', title:'NYCのビューティーサービス', salonsOffering:'このサービスを提供するサロン',
+      backToServices:'← サービス一覧へ', noSalons:'このサービスのサロンはまだありません。',
     },
   },
   ko: {
@@ -260,7 +305,7 @@ export const translations: Record<Lang, T> = {
       learnAbout:'Glowlist 소개 →',
     },
     community: {
-      writeReview:'리뷰 작성 ✨', writeReviewDesc:'경험을 공유해서 다른 분들께 도움을 드리세요.',
+      writeReview:'리뷰 작성', writeReviewDesc:'경험을 공유해서 다른 분들께 도움을 드리세요.',
       reportUpdate:'업데이트 보고', reportUpdateDesc:'가격이나 영업 시간이 변경되었나요?',
       followIG:'인스타그램 팔로우', followIGDesc:'@glowlist_nyc — 새로운 스팟, 추천 등',
       contactUs:'문의하기', contactUsDesc:'질문이나 피드백이 있으시면 알려주세요.',
@@ -303,6 +348,22 @@ export const translations: Record<Lang, T> = {
       clickToZoom:'지역을 클릭하면 지도가 확대됩니다.',
       spotIn:'개',
     },
+    footer: {
+      explore:'탐색', contribute:'공유', follow:'팔로우',
+      byArea:'지역별', byService:'서비스별', blog:'블로그', about:'Glowlist 소개', disclaimer:'면책조항',
+      submitSpot:'살롱 제안', photoDrop:'사진 공유', reportUpdate:'업데이트 보고',
+      tagline:'뉴욕의 아시안 인스파이어드 네일, 속눈썹 및 뷰티 스팟 큐레이션 가이드.',
+      legalNote:'가격과 서비스는 변경될 수 있습니다. 예약 전 각 살롱에 직접 확인하세요.',
+    },
+    blog: {
+      label:'블로그', title:'가이드 및 추천', readMore:'읽기 →', backToBlog:'← 블로그로',
+      noPostsYet:'아직 게시물이 없습니다. 나중에 다시 확인하세요.', writtenBy:'작성자',
+      autoTranslateNote:'블로그 게시물은 영어로 작성됩니다. 브라우저 번역을 사용하세요.',
+    },
+    service: {
+      label:'서비스', title:'NYC 뷰티 서비스', salonsOffering:'이 서비스를 제공하는 살롱',
+      backToServices:'← 모든 서비스', noSalons:'이 서비스의 살롱이 아직 없습니다.',
+    },
   },
   'zh-TW': {
     hero: {
@@ -339,7 +400,7 @@ export const translations: Record<Lang, T> = {
       learnAbout:'了解 Glowlist →',
     },
     community: {
-      writeReview:'撰寫評論 ✨', writeReviewDesc:'分享您的體驗，幫助他人找到合適的地方。',
+      writeReview:'撰寫評論', writeReviewDesc:'分享您的體驗，幫助他人找到合適的地方。',
       reportUpdate:'回報更新', reportUpdateDesc:'價格或營業時間有變化嗎？',
       followIG:'追蹤 Instagram', followIGDesc:'@glowlist_nyc — 新地點、推薦等',
       contactUs:'聯絡我們', contactUsDesc:'有任何問題或建議，歡迎告知我們。',
@@ -382,6 +443,22 @@ export const translations: Record<Lang, T> = {
       clickToZoom:'點擊地區可在地圖上放大顯示。',
       spotIn:'個地點',
     },
+    footer: {
+      explore:'探索', contribute:'貢獻', follow:'追蹤',
+      byArea:'按地區', byService:'按服務', blog:'部落格', about:'關於 Glowlist', disclaimer:'免責聲明',
+      submitSpot:'推薦沙龍', photoDrop:'上傳照片', reportUpdate:'報告更新',
+      tagline:'紐約亞洲風格美甲、睫毛及美容景點的精選指南。',
+      legalNote:'價格和服務可能有所變動——請在預約前直接向各沙龍確認。',
+    },
+    blog: {
+      label:'部落格', title:'指南與推薦', readMore:'閱讀 →', backToBlog:'← 返回部落格',
+      noPostsYet:'暫無文章，請稍後再來查看。', writtenBy:'作者',
+      autoTranslateNote:'部落格文章以英文撰寫，請使用瀏覽器翻譯功能。',
+    },
+    service: {
+      label:'服務', title:'紐約美容服務', salonsOffering:'提供此服務的沙龍',
+      backToServices:'← 所有服務', noSalons:'此服務尚未有沙龍列入。',
+    },
   },
   'zh-CN': {
     hero: {
@@ -418,7 +495,7 @@ export const translations: Record<Lang, T> = {
       learnAbout:'了解 Glowlist →',
     },
     community: {
-      writeReview:'写评论 ✨', writeReviewDesc:'分享您的体验，帮助他人找到合适的地方。',
+      writeReview:'写评论', writeReviewDesc:'分享您的体验，帮助他人找到合适的地方。',
       reportUpdate:'报告更新', reportUpdateDesc:'价格或营业时间有变化吗？',
       followIG:'关注 Instagram', followIGDesc:'@glowlist_nyc — 新地点、推荐等',
       contactUs:'联系我们', contactUsDesc:'有任何问题或建议，欢迎告知我们。',
@@ -460,6 +537,22 @@ export const translations: Record<Lang, T> = {
       disclaimer:'免责声明',
       clickToZoom:'点击地区可在地图上放大显示。',
       spotIn:'个地点',
+    },
+    footer: {
+      explore:'探索', contribute:'贡献', follow:'关注',
+      byArea:'按地区', byService:'按服务', blog:'博客', about:'关于 Glowlist', disclaimer:'免责声明',
+      submitSpot:'推荐沙龙', photoDrop:'上传照片', reportUpdate:'报告更新',
+      tagline:'纽约亚洲风格美甲、睫毛及美容景点的精选指南。',
+      legalNote:'价格和服务可能有所变动——请在预约前直接向各沙龙确认。',
+    },
+    blog: {
+      label:'博客', title:'指南与推荐', readMore:'阅读 →', backToBlog:'← 返回博客',
+      noPostsYet:'暂无文章，请稍后再来查看。', writtenBy:'作者',
+      autoTranslateNote:'博客文章以英文撰写，请使用浏览器翻译功能。',
+    },
+    service: {
+      label:'服务', title:'纽约美容服务', salonsOffering:'提供此服务的沙龙',
+      backToServices:'← 所有服务', noSalons:'此服务暂无沙龙列入。',
     },
   },
 };

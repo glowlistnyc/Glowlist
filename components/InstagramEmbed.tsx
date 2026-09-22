@@ -42,7 +42,7 @@ export default function InstagramEmbed({ postUrls, salonName }: Props) {
             className={`instagram-media ${styles.embed}`}
             data-instgrm-permalink={url}
             data-instgrm-version="14"
-            data-instgrm-captioned
+            /* data-instgrm-captioned は削除 → 写真のみ表示（文章カット）*/
           />
         ))}
       </div>

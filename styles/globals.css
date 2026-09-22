@@ -209,3 +209,16 @@ section.hero + .divider {
 .leaflet-control-container {
   filter: none;
 }
+
+/* ── スマホで全グリッドを1列に ── */
+@media (max-width: 480px) {
+  /* インラインスタイルのグリッドをオーバーライド */
+  section > div[style*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* blog/service/area のカードグリッド */
+  .blogGrid,
+  [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+}

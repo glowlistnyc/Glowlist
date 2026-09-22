@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import T from '@/components/T';
 import { getAllBlogPosts, getBlogPostBySlug, getAllSalons } from '@/lib/contentful';
 import SalonCard from '@/components/SalonCard';
 import styles from './page.module.css';
@@ -80,7 +81,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className={styles.content}>
           <nav className={styles.breadcrumb}>
-            <Link href="/">Home</Link> / <Link href="/blog">Blog</Link> / <span>{title}</span>
+            <Link href="/">Home</Link> / <Link href="/blog"><T k="blog.label" /></Link> / <span>{title}</span>
           </nav>
 
           <p className={styles.date}>
@@ -107,7 +108,7 @@ export default async function BlogPostPage({ params }: Props) {
           )}
 
           <div style={{ marginTop: '3rem' }}>
-            <Link href="/blog" className="btn btn-ghost">← All posts</Link>
+            <Link href="/blog" className="btn btn-ghost"><T k="blog.backToBlog" /></Link>
           </div>
         </div>
       </article>
