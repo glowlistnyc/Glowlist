@@ -19,7 +19,11 @@ const CATEGORY_IMG: Record<string, string> = {
   both:   'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&q=80&auto=format&fit=crop',
 };
 
-interface Props { salon: Salon; googlePhotoUrl?: string }
+interface Props {
+  salon: Salon;
+  googlePhotoUrl?: string;
+  fmtPrice?: (p: string) => string;
+}
 
 function Stars({ n }: { n: number }) {
   const f = Math.min(Math.round(n), 5);
@@ -31,7 +35,7 @@ function Stars({ n }: { n: number }) {
   );
 }
 
-export default function SalonCard({ salon, googlePhotoUrl }: Props) {
+export default function SalonCard({ salon, googlePhotoUrl, fmtPrice }: Props) {
   const { t, lang } = useLanguage();
   const { name, slug, category, area, instagramHandle, bookingUrl,
           priceRange, language, verified, photos, googleRating, yelpRating } = salon.fields;
@@ -72,7 +76,7 @@ export default function SalonCard({ salon, googlePhotoUrl }: Props) {
             <span className={styles.catTag}>{catLabel}</span>
             {language && <span className={styles.langTag}>{language}</span>}
           </div>
-          {priceRange && <p className={styles.price}>{priceRange}</p>}
+          {priceRange && <p className={styles.price}>{fmtPrice ? fmtPrice(priceRange) : priceRange}</p>}
         </div>
       </Link>
 

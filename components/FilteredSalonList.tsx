@@ -53,7 +53,7 @@ function extractMinPrice(s: string): number | null {
 
 export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) {
   const [showAll, setShowAll] = useState(false);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [filters, setFilters] = useState<FilterState>({
     service: 'all', areaBig: 'all', areaSub: 'all', price: 'all',
   });
@@ -112,30 +112,44 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
     if (filters.areaSub !== 'all') loc += `, ${filters.areaSub}`;
     summaryParts.push(loc);
   }
-  const pLabels: Record<string, string> = { '0-80': 'Under $80', '81-150': '$81–$150', '151-9999': '$150+' };
-  if (filters.price !== 'all') summaryParts.push(pLabels[filters.price] ?? '');
+  if (filters.price !== 'all') summaryParts.push(filters.price);
+
+  const priceLabels: Record<string, string> = {
+    'all': t.filters.priceAll, '0-80': 'Under $80', '81-150': '$81–$150', '151-9999': '$150+',
+  };
+
+  // "From $XX" プレフィックスを現在の言語に合わせて変換
+  const fmtPrice = (p: string) => {
+    if (!p || lang === 'en') return p;
+    if (p.startsWith('From ')) {
+      const amt = p.replace('From ', '');
+      const sfx = t.filters.priceFrom;
+      return (lang === 'ja' || lang === 'ko') ? `${amt}${sfx}` : `${sfx}${amt}`;
+    }
+    return p;
+  };
 
   return (
     <div>
       <div className={styles.panel}>
         {/* Service */}
-        <p className={styles.rowLabel}>Service</p>
+        <p className={styles.rowLabel}>{t.filters.service}</p>
         <div className={styles.chips}>
           {(['all', 'nails', 'lashes'] as const).map((v) => (
             <button key={v} className={`${styles.chip} ${filters.service === v ? styles.active : ''}`}
               onClick={() => setFilter('service', v)}>
-              {v === 'all' ? 'All' : v.charAt(0).toUpperCase() + v.slice(1)}
+              {v === 'all' ? t.filters.all : v === 'nails' ? t.filters.nails : t.filters.lashes}
             </button>
           ))}
         </div>
 
         {/* Area big */}
-        <p className={styles.rowLabel}>Area</p>
+        <p className={styles.rowLabel}>{t.filters.area}</p>
         <div className={styles.chips}>
           {(['all', 'manhattan', 'brooklyn', 'queens'] as const).map((v) => (
             <button key={v} className={`${styles.chip} ${filters.areaBig === v ? styles.active : ''}`}
               onClick={() => setFilter('areaBig', v)}>
-              {v === 'all' ? 'All' : v.charAt(0).toUpperCase() + v.slice(1)}
+              {v === 'all' ? t.filters.all : t.filters[v as 'manhattan'|'brooklyn'|'queens']}
             </button>
           ))}
         </div>
@@ -145,7 +159,7 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
           <div className={`${styles.chips} ${styles.subChips}`}>
             <button className={`${styles.chip} ${styles.sub} ${filters.areaSub === 'all' ? styles.active : ''}`}
               onClick={() => setFilter('areaSub', 'all')}>
-              All {filters.areaBig.charAt(0).toUpperCase() + filters.areaBig.slice(1)}
+              {t.filters.all} {filters.areaBig !== 'all' ? t.filters[filters.areaBig as 'manhattan'|'brooklyn'|'queens'] : ''}
             </button>
             {subAreas.map((sub) => (
               <button key={sub} className={`${styles.chip} ${styles.sub} ${filters.areaSub === sub ? styles.active : ''}`}
@@ -157,14 +171,12 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
         )}
 
         {/* Price */}
-        <p className={styles.rowLabel}>
-          Price <span style={{ fontSize: '.6rem', opacity: .6, textTransform: 'none', letterSpacing: 0 }}>(starting from)</span>
-        </p>
+        <p className={styles.rowLabel}>{t.filters.price}</p>
         <div className={styles.chips}>
-          {([['all', 'All'], ['0-80', 'Under $80'], ['81-150', '$81–$150'], ['151-9999', '$150+']] as [string, string][]).map(([v, label]) => (
+          {(['all', '0-80', '81-150', '151-9999'] as const).map((v) => (
             <button key={v} className={`${styles.chip} ${filters.price === v ? styles.active : ''}`}
               onClick={() => setFilter('price', v as FilterState['price'])}>
-              {label}
+              {priceLabels[v]}
             </button>
           ))}
         </div>
@@ -172,11 +184,11 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
         {/* Summary */}
         <div className={styles.summary}>
           <p>
-            Showing <strong>{filtered.length}</strong> spot{filtered.length !== 1 ? 's' : ''}
+            {t.filters.showing} <strong>{filtered.length}</strong> {t.filters.spots}{filtered.length !== 1 && lang === 'en' ? 's' : ''}
             {summaryParts.length > 0 && ` — ${summaryParts.join(' · ')}`}
           </p>
           {hasFilter && (
-            <button className={styles.reset} onClick={reset}>Clear all</button>
+            <button className={styles.reset} onClick={reset}>{t.filters.reset}</button>
           )}
         </div>
       </div>
@@ -186,7 +198,7 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
         {filtered.length === 0 ? (
           <div className={styles.empty}>
             No spots match your filters.{' '}
-            <button onClick={reset} className={styles.resetInline}>Clear filters</button>
+            <button onClick={reset} className={styles.resetInline}>{t.filters.reset}</button>
           </div>
         ) : (
           (showAll ? filtered : filtered.slice(0, INITIAL_SHOW)).map((s) => (
@@ -194,6 +206,7 @@ export default function FilteredSalonList({ salons, googlePhotos = {} }: Props) 
               key={s.sys.id}
               salon={s}
               googlePhotoUrl={googlePhotos[s.sys.id]}
+              fmtPrice={fmtPrice}
             />
           ))
         )}

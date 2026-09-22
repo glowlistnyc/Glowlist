@@ -64,16 +64,16 @@ export default async function HomePage() {
     <>
       <HomeSchema />
 
-      {/* ── HERO（40vh・新画像・ピルなし）── */}
+      {/* ── HERO（外部写真・中央揃え）── */}
       <section className={styles.hero}>
         <div className={styles.heroImg}>
           <Image
-            src="/images/services/gel-x-extensions.jpg"
-            alt="Nail and beauty services in New York"
+            src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1920&q=80&auto=format&fit=crop"
+            alt="Luxury beauty salon in New York"
             fill
             priority
             sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
+            style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
           />
         </div>
         <div className={styles.heroOverlay} />

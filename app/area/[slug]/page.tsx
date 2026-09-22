@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import T from '@/components/T';
 import { notFound } from 'next/navigation';
 import { getAllAreas, getAreaBySlug, getSalonsByArea } from '@/lib/contentful';
 import SalonCard from '@/components/SalonCard';
@@ -55,7 +56,7 @@ export default async function AreaPage({ params }: Props) {
         </nav>
 
         <span className="sec-label">{bigArea.charAt(0).toUpperCase() + bigArea.slice(1)} · NYC</span>
-        <h1 className="sec-title">Beauty spots in {name}</h1>
+        <h1 className="sec-title"><T k="pages.spotIn" /> {name}</h1>
         <p style={{ color: 'var(--beige-s)', fontSize: '.9rem', marginBottom: '2.5rem', fontWeight: 300 }}>
           {salons.length} curated spot{salons.length !== 1 ? 's' : ''} in {name}
         </p>

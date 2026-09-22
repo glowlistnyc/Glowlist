@@ -10,6 +10,7 @@ import InstagramEmbed from '@/components/InstagramEmbed';
 import ReviewSection from '@/components/ReviewSection';
 import GooglePlaceReviews from '@/components/GooglePlaceReviews';
 import YelpReviews from '@/components/YelpReviews';
+import T from '@/components/T';
 import styles from './page.module.css';
 
 export const revalidate = 60;
@@ -150,7 +151,7 @@ export default async function SalonPage({ params }: Props) {
             if (allPhotos.length === 0) return null;
             return (
               <section className={styles.photoSection}>
-                <h2 className={styles.sectionTitle}>Photos</h2>
+                <h2 className={styles.sectionTitle}><T k="salon.photos" /></h2>
                 <div className={styles.photoGrid}>
                   {allPhotos.map((p) => (
                     <div key={p.key} className={styles.photoWrap}>
@@ -175,32 +176,32 @@ export default async function SalonPage({ params }: Props) {
 
           {/* BASIC INFO */}
           <section className={styles.infoSection}>
-            <h2 className={styles.sectionTitle}>Basic Information</h2>
+            <h2 className={styles.sectionTitle}><T k="salon.basicInfo" /></h2>
             <table className={styles.infoTable}>
               <tbody>
-                <tr><td className={styles.infoLabel}>Category</td><td className={styles.infoVal}>{cap(category)}</td></tr>
-                <tr><td className={styles.infoLabel}>Area</td><td className={styles.infoVal}>{area}</td></tr>
+                <tr><td className={styles.infoLabel}><T k="salon.category" /></td><td className={styles.infoVal}>{cap(category)}</td></tr>
+                <tr><td className={styles.infoLabel}><T k="salon.area" /></td><td className={styles.infoVal}>{area}</td></tr>
                 {address && (
                   <tr>
-                    <td className={styles.infoLabel}>Address</td>
+                    <td className={styles.infoLabel}><T k="salon.address" /></td>
                     <td className={styles.infoVal}>
                       <a href={mapUrl} target="_blank" rel="noopener" className={styles.infoLink}>{address} ↗</a>
                     </td>
                   </tr>
                 )}
-                {language && <tr><td className={styles.infoLabel}>Language</td><td className={styles.infoVal}>{language}</td></tr>}
+                {language && <tr><td className={styles.infoLabel}><T k="salon.language" /></td><td className={styles.infoVal}>{language}</td></tr>}
                 {priceRange && <tr><td className={styles.infoLabel}>Price</td><td className={styles.infoVal}>{priceRange}</td></tr>}
                 {websiteUrl && (
                   <tr>
-                    <td className={styles.infoLabel}>Website</td>
+                    <td className={styles.infoLabel}><T k="salon.website" /></td>
                     <td className={styles.infoVal}><a href={websiteUrl} target="_blank" rel="noopener" className={styles.infoLink}>{websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗</a></td>
                   </tr>
                 )}
                 <tr>
-                  <td className={styles.infoLabel}>Instagram</td>
+                  <td className={styles.infoLabel}><T k="salon.instagram" /></td>
                   <td className={styles.infoVal}><a href={igUrl} target="_blank" rel="noopener" className={styles.infoLink}>@{instagramHandle} ↗</a></td>
                 </tr>
-                {notes && <tr><td className={styles.infoLabel}>Notes</td><td className={styles.infoVal}>{notes}</td></tr>}
+                {notes && <tr><td className={styles.infoLabel}><T k="salon.notes" /></td><td className={styles.infoVal}>{notes}</td></tr>}
               </tbody>
             </table>
             <div className={styles.tagRow}>{tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
@@ -209,7 +210,7 @@ export default async function SalonPage({ params }: Props) {
 
           {/* PRICES */}
           <section className={styles.priceSection}>
-            <h2 className={styles.sectionTitle}>Prices</h2>
+            <h2 className={styles.sectionTitle}><T k="salon.prices" /></h2>
             {priceDetails && priceDetails.length > 0 ? (
               priceDetails.map((cat) => (
                 <div key={cat.category} className={styles.priceCat}>
@@ -229,17 +230,17 @@ export default async function SalonPage({ params }: Props) {
               </p>
             )}
             <p className={styles.disclaimer}>
-              Prices sourced from public menus and may not reflect current rates. Confirm directly before booking.
+              <T k="salon.priceDisclaimer" />
             </p>
             <a href={bookingUrl} target="_blank" rel="noopener" className={styles.bookBtn}>
-              Book at {name} →
+              <T k="salon.bookAt" /> {name} →
             </a>
           </section>
 
           {/* OTHER LOCATIONS */}
           {relatedSalons && relatedSalons.length > 0 && (
             <section className={styles.relatedSection}>
-              <h2 className={styles.sectionTitle}>Other locations</h2>
+              <h2 className={styles.sectionTitle}><T k="salon.otherLocations" /></h2>
               <div className={styles.relatedGrid}>
                 {relatedSalons.map((related) => (
                   <Link key={related.sys.id} href={`/salon/${related.fields.slug}`} className={styles.relatedCard}>
@@ -259,7 +260,7 @@ export default async function SalonPage({ params }: Props) {
           )}
 
           <div className={styles.backLink}>
-            <Link href="/#spots" className="btn btn-ghost">← Back to all spots</Link>
+            <Link href="/#spots" className="btn btn-ghost"><T k="salon.backToAll" /></Link>
           </div>
         </div>
 
